@@ -20,7 +20,8 @@
     - Additions
     - Issues
     - Learning points
-    - etc.
+    - etc. 
+- Create project board on github  
 
 **Bridger**
 - Spend at least an hour playing GoL
@@ -30,7 +31,7 @@
     - Issues
     - Learning points
     - etc.
-- Push .md files to repo
+- Push .md files to repo DONE
 - Create pro/con list for the different options (see pacmen_proposal.md Future issues/decisions)
 
 **Josh**
