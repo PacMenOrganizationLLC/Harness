@@ -1,0 +1,144 @@
+# Capstone Project
+
+**Stakeholders**
+- Snow College Software Engineering Professors
+- Snow College Students
+
+**Culture**
+- Team
+  - Tuesday 1:30-3:30pm
+  - Friday 11:30am-1:30pm
+  - Activities/Tasks
+    - Review assignments, updates, and features
+    - Plan and design features/organization
+    - Delegate tasks
+    - Troubleshoot
+  - Weekly Scrum meeting on Tuesdays
+    - Tuesday - weekly standup lead by SM to review the previous week and assign tasks to accomplish within the next 7 days.
+    - Friday - review progress on tasks and resolve blocks
+    - Finishing tasks early - ask team members if they need help. If they don't, ask the SM what other tasks on the backlog you should do.
+  - Sprint length of 1 week
+  - A story is a description of a feature or bug and how it benefits the user. A story is in progress when it gets assigned to a user, in review when a pull request has been made, and complete when a pull request has been reviewed and merged into the master branch. 
+  - Swap scrum master every week (alphabetical first name)
+  - In case of individual abscence, spend 2 hours working individually. It is your responsibility to get the rundown of events from someone else. 
+- Subteam
+  - As needed to resolve specific issues, train/teach technology, etc.
+- Individual
+  - Minimum of 2 hours between class time (4 hours a week)
+  - Additional 4 hours of work a week
+- Github
+  - Work on individual branches
+  - Pull requests: We will utilize Trunk-based development and merge small, frequent updates to the core “trunk”/main branch. Merge as often as possible with tests passing and code compiling. If you make a request that doesn't compile you must bring snacks to the next team meeting.
+  - Merging pull requests: someone else must review and merge your request.
+  - Setup and manage tasks, todo list, story points, etc.
+    - Columns: To Do, In Progress, Blocked, Review, Done
+- Testing
+  - Test backend
+  - Practice TDD for non-CRUD features
+  - Present different wireframes to stakeholders for frontend testing.
+- Resolutions
+  - Major feature disagreements can be built in different branches to later be reviewed by everyone where a final decision will be made. If a decision cannot be made, Heber has final say.
+  - Small feature disagreements to be resolved via vote. If tie, scrum master counts as 2 votes. Vote is final unless a later, unanimous vote to revote.
+- Roles
+  - Bridger: Merge resolution expert
+  - Josh: Wordsmith
+  - Anthony: R&D expert
+  - Ethan: Documentor
+
+**Preliminary Features**
+- Classic pacman but multiplayer with some twists
+  - Players can join as either a ghost or pacman
+  - Multiple ghosts and pacmen
+- Ghost are trying to eliminate all pacmen
+- Pacmen are trying to eat all the pellets
+- Multiple levels/maps
+  - Different map sizes depending on number of players
+- Scoreboard for ghosts and pacmen
+- Players can choose their color
+  - Display both their name and color on the map
+- Powerups
+- Configure web socket to return data to each client at an interval
+- Select different game speeds
+- Display map with player movements on admin client
+- Players can join game using a code
+- Telemetry
+- Limit the number of times someone can join a game
+- If <4 players choose ghost, we have npc ghosts
+- If no players choose pacman, we have an npc pacman
+- Pacmen get points by eating pellets
+- Ghosts get the points of the pacmen they eat
+- Instructions on game rules and powerups
+
+**Harness Features**
+- Heber's priorities:
+  - Fine grain control
+    - Harness requires hosted game to have these endpoints. If the endpoint exists you can have those features
+    - Rate limiting slider
+    - scale of how fast/slow the game goes
+    - Gameplay
+    - Generic item as json item for game config like starting battery level
+    - Admin - listing players, associating with tokens, kicking, etc.
+  - Tutorials
+  - Information Outreach
+  - Telemetry
+  - Chat
+  - Profiles
+  - Endpoints for it the game is running hot, slow, throttled, etc.
+  - Sponsor
+  - Data to collect from user
+    - Current school
+    - Location
+    - Major
+    - Grade/year
+    - SSN
+    - Credit card number, exp date, CVV
+  - Show winner circle of all games/events
+  - Revenue generator? Pay a dollar to play/register?
+- Game endpoints the harness can utilize:
+  - Scoreboard
+  - Start game
+  - Stop game
+    - Returns winner so we can add to winner circle?
+  - Game speed
+  - Request game token?
+  - Kick user
+  - Get list of players
+  - General settings/config
+    - Game speed slider
+    - Starting values
+    - Rate limiting
+    - Other primitive values
+  - Get list of ongoing games
+- Harness endpoints the game can utilize:
+  - Is valid player? - sends a token to the harness and recieves if it is a valid token
+  - Logging? - error, info, etc.
+  - Get user? - pass token
+- Future issues/decisions?
+  - Authorize harness vs other users
+    - Option 1:
+      - Pass harness token to game start
+      - Game stores token
+      - On admin endpoints validates header against token
+    - Option 2:
+      - JWT contains groups
+  - Get game token for user
+    - Option 1:
+      - User token that the user gets from harness
+      - Can use that token to request game token from the game
+      - On request, game validates token against harness's valid tokens
+    - Option 2:
+      - User requests a game token through the harness
+      - Harness forwards that request to the game
+      - Game generates, stores, and returns token
+      - Harness stores and returns token
+      - User connects to game via that token
+      - Game validates token against it's stored value
+  - How to pass general settings/config
+    - Option 1:
+      - Upload json file that will get passed as the body for the game to deserialize and use
+    - Option 2:
+      - Build UI for nested object with keys and values
+      - JSONify the form
+      - Pass to game
+    - Option 3: 
+      - Don't. Just have some generic settings we ask the game to use.
