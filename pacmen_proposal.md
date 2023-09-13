@@ -1,5 +1,11 @@
 # Capstone Project
 
+**Members**
+- Ethan (Inky)
+- Anthony (Blinky)
+- Bridger (Pinky)
+- Josh (Clyde)
+
 **Stakeholders**
 - Snow College Software Engineering Professors
 - Snow College Students
@@ -9,16 +15,19 @@
   - Tuesday 1:30-3:30pm
   - Friday 11:30am-1:30pm
   - Activities/Tasks
-    - Review assignments, updates, and features
+    - Review assignments, updates, and feature requests
+      - Can request features anytime via teams or word of mouth. Approve/deny requests during team meeting.
+        - If approved, add to backlog
     - Plan and design features/organization
+    - Set goals
     - Delegate tasks
     - Troubleshoot
   - Weekly Scrum meeting on Tuesdays
-    - Tuesday - weekly standup lead by SM to review the previous week and assign tasks to accomplish within the next 7 days.
-    - Friday - review progress on tasks and resolve blocks
+    - Tuesday - weekly standup lead by SM to review the previous week's goals and task. SM assigns new ones to accomplish within the next 7 days.
+    - Friday - review progress on tasks/goals and resolve blocks
     - Finishing tasks early - ask team members if they need help. If they don't, ask the SM what other tasks on the backlog you should do.
   - Sprint length of 1 week
-  - A story is a description of a feature or bug and how it benefits the user. A story is in progress when it gets assigned to a user, in review when a pull request has been made, and complete when a pull request has been reviewed and merged into the master branch. 
+  - A story is a description of a feature or bug and how it benefits the user. A story is in progress when it gets assigned to a user, in review when a pull request has been made, and complete when a pull request has been reviewed and merged into the master branch. Update backlog as it moves.
   - Swap scrum master every week (alphabetical first name)
   - In case of individual abscence, spend 2 hours working individually. It is your responsibility to get the rundown of events from someone else. 
 - Subteam
@@ -30,7 +39,7 @@
   - Work on individual branches
   - Pull requests: We will utilize Trunk-based development and merge small, frequent updates to the core “trunk”/main branch. Merge as often as possible with tests passing and code compiling. If you make a request that doesn't compile you must bring snacks to the next team meeting.
   - Merging pull requests: someone else must review and merge your request.
-  - Setup and manage tasks, todo list, story points, etc.
+  - Backlog: setup and manage tasks, todo list, story points, etc.
     - Columns: To Do, In Progress, Blocked, Review, Done
 - Testing
   - Test backend
@@ -44,8 +53,11 @@
   - Josh: Wordsmith
   - Anthony: R&D expert
   - Ethan: Documentor
+- Goals - set SMART goals
+  - As a team during our team meeting, review goals, create new ones, etc.
+  - A goal must have a timeline, specific features/stories associated, responsibility (individual, subteam, team)
 
-**Preliminary Features**
+**Preliminary Pacmen Features**
 - Classic pacman but multiplayer with some twists
   - Players can join as either a ghost or pacman
   - Multiple ghosts and pacmen
