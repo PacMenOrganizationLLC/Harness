@@ -83,6 +83,8 @@ While we believe that we have identified key stakeholders at this moment, we ack
 
 ### How do you plan on actively seeking stakeholder feedback?
 - Regular Communication: We will maintain open and regular communication channels with our product owners and stakeholders. This includes scheduled meetings, updates, and progress reports to ensure alignment with their expectations.
+- User interviews: present wireframes, prototypes, etc. to SE students and professors as part of our development process
+- Surveys
 
 ### What is your plan to effectively communicate with stakeholders?
 - Draft questions that we can ask stakeholders to get feedback.
