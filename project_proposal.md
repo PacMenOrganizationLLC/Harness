@@ -1,36 +1,62 @@
 ## Application Description
 ### Need/Problem being solved
-something
+The annual SE programming challenges for Snow College need some form of standardization for how staff and students interact with the challenges. Additionally, the challenges need to become more accessible to students regardless of programming skill level.
 ### Customers/people it will benefit
  - Snow College Software Engineering Professors
  - Snow College Students
 
 ### Why is it large in scope?
-This coding challenge harness is designed to be versatile and adaptable, catering to a wide range of coding challenges and their corresponding inputs. It is intended for use in both future coding challenges and by organizations looking to host similar events. Its scalability and flexibility make it suitable for accommodating diverse challenges and inputs.
-
+- We must be able to handle a variety of different programming challenges
+- We need to verify and record the winners of the challenges
+- We will need to monitor the programming challenges as they are running to provide health telemetry
+- We are going to need to refactor 4 different programming challenges, with unknown levels of technical debt, in order to make them work with this harness
+  
 ### Why does it not have an obvious solution?
-The architecture and purpose of this harness are intentionally left open-ended initially. This approach allows us to define the most suitable requirements and determine the optimal way to meet those requirements as we progress. By maintaining flexibility in the early stages, we can adapt the harness to the specific needs of each coding challenge and organization, ensuring a customized and effective solution.
+- How will the harness authenticate with the game/How will we prevent other users from bypassing the harness?
+ - Pass the harness's token to the game at game start where it is in charge of storing and authenticating requests against that value token
+ - Create an admin group in our auth client. The groups a user is in will be passed by the encoded JWT in the request's headers or cookies where we can check their group
+- How will a user get a game token?
+ - Get token directly from the game
+ - User requests token through the game
+- What will the game need to provide/include to be compatible with the harness?
+ -Winner/leaderboard
+ -Dynamic updates?
+- How will general settings and configuration for a game be handled?
+ - Admin settings set with basic JSON that will be deserialized with the game
+ - Build an Admin UI to handle keys and values
+ - Set generic keys that can be used
+-Game Telemetry
+ -Prometheus/Grafana
+ -Capturing game-provided telemetry
+ -More R&D required
 
 ### What are the many component parts and sub-problems you have identified?
  - Harness
+    - Edit existing games to be compatible with the harness
     - Fine grain control
-    - Tutorials
-    - Information outreach
+     - Start game
+     - Stop game
+     - Game speed
+     - Kick user
+    - Game/User Interactions
+     - Tutorials
+     - Information outreach
+     - Chat
+     - Profiles
     - Telemetry
-    - Chat
-    - Profiles
+    - Visualization
+     - Scoreboard
+     - Show winner circle of all games/events
     - Endpoints for if the game is running hot, slow,   
     throttled, etc.
     - Sponsors
     - Data to collect from users
-    - Show winner circle of all games/events
+    - 
     - Revenue generator? (Pay a dollar to play/register?)
-    - Scoreboard
-    - Start game
-    - Stop game
-    - Game speed
+    
+   
     - Request game token?
-    - Kick user
+    
     - Get list of players
     - General settings/config
     - Get list of ongoing games
