@@ -1,6 +1,6 @@
 ## Application Description
 ### Need/Problem being solved
-
+something
 ### Customers/people it will benefit
  - Snow College Software Engineering Professors
  - Snow College Students
