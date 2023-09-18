@@ -91,9 +91,9 @@ While we believe that we have identified key stakeholders at this moment, we ack
 
 ## SDLC Phases - Identify your plan on how to apply previous knowledge:
 ### Software Design & Construction
-Front End - React, componentized design
-Back End - C#(.NET), OOP, TDD
-Database - Postgres
+- Front End - React, componentized design
+- Back End - C#(.NET), OOP, TDD
+- Database - Postgres
 
 ### Requirements Analysis
 Interviews with stakeholders, especially product owners
