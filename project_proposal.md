@@ -34,10 +34,10 @@ The annual SE programming challenges for Snow College need some form of standard
  - Harness
     - Edit existing games to be compatible with the harness
     - Fine grain control
-     - Start game
-     - Stop game
-     - Game speed
-     - Kick user
+       - Start game
+       - Stop game
+       - Game speed
+       - Kick user
     - Game/User Interactions
      - Tutorials
      - Information outreach
