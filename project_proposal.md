@@ -92,6 +92,9 @@ By introducing this coding challenge harness, we are strategically addressing se
 - In essence, this harness not only supports the educational journey of students but also aligns with broader societal and economic objectives, making it a valuable asset for multiple stakeholders.
 
 ### How will you demonstrate you are acquiring new knowledge as needed?  What is the learning strategy(ies) your team will use?
+
+TBD
+
 Regular updates to team members, commit history, screenshots/links to resources we used to solve a problem.
 
 Learning Strategies:
@@ -102,21 +105,39 @@ Learning Strategies:
 
 ## Stakeholders
 ### Role & Names of people you will be working with on the project
- - __Bridger__: Merge resolution expert
- - __Josh__: Wordsmith
- - __Anthony__: R&D expert
- - __Ethan__: Documentor
+ - Product Owners
+   - Heber Allen
+   - Jonathan Allen
+ - Developers
+   - Bridger
+   - Anthony
+   - Ethan
+   - Josh
+ - Potential Users
+   - Junior SE students
+   - Computer science club members
+   - Adam Teichert
 
 ### Is your list of stakeholders diverse enough? How do you know?
-While we believe that we have identified key stakeholders at this moment, we acknowledge that the stakeholder landscape may evolve as development progresses. Our approach is dynamic, and we remain open to the possibility of discovering new stakeholders with unique and invaluable perspectives as we continue to refine and expand our project.
+It may not be. As we further develop the project, we may find additional stakeholders or other roles that we did not consider yet.
 
 ### How do you plan on actively seeking stakeholder feedback?
 - Regular Communication: We will maintain open and regular communication channels with our product owners and stakeholders. This includes scheduled meetings, updates, and progress reports to ensure alignment with their expectations.
 - User interviews: present wireframes, prototypes, etc. to SE students and professors as part of our development process
 - Surveys
 
+- __Product Owners__
+  - Frequency: Every other week
+  - Description: Discuss and list features, wireframes, report our progress, discuss user feedback, etc.
+- __Users__
+  - Frequency: Every month
+  - Description: Present wireframes, have them use the appliction and deliver feedback, discuss pain-points, etc.
+
 ### What is your plan to effectively communicate with stakeholders?
-- Draft questions that we can ask stakeholders to get feedback.
+- Make a list of requirements that need clarification
+- Develop questions that point out those clarifications
+- Refine the questions
+- Ask stakeholders our prepared questions and any that may arise during the discussion.
 
 ## SDLC Phases - Identify your plan on how to apply previous knowledge:
 ### Software Design & Construction
@@ -124,19 +145,56 @@ While we believe that we have identified key stakeholders at this moment, we ack
 - Back End - C#(.NET), OOP, TDD
 - Database - Postgres
 
+- Getting Requirements - Two weeks
+  - Talk with stakeholders and product owners
+- Design - Two weeks
+  - User interface
+  - Back-end architecture
+- Development - Till end of semester
+  - One week SCRUM cycles of feedback and development
+  - Develop Pacmen coding challenge
+
 ### Requirements Analysis
 Interviews with stakeholders, especially product owners
+
 ### Security
 - Authentication - Keycloak
 - LINQ to avoid SQL injection
-- ENV and Secrets will not be stored in the repository. 
+- ENV and Secrets will not be stored in the repository.
 
 ### Verification
-Keycloak?
+- Passes unit tests
+- Test app with previous coding challanges
+
 ### Validation
-See above?
+- User testing
+- Product owner approval
+
 ## What iterative process will be used during the project?
-Agile/Scrum
+- Scrum:
+    - Sprint length of 1 week
+    - Switch SM each week
+    - Scrum Master responsibilities:
+      - Lead weekly standup
+      - Assign tasks/stories
+      - Make sure everyone feels heard and understands their responsibilites
+      - Work with individuals to understand their needs and abilities
+      - Setup meetings with stakeholders and other individuals as needed
+- Team's rules for planning tasks: Plan features and high level goals during team meeting
+  - Subteams or individuals then break those down into specifics as they are assigned related tasks/stories
+- Team's rules for marking a task as done
+  - Someone else must review your pull request before merging into master
+    - It is the responsibility of the person making the pull request to notify a team member that it needs review
+  - A story is in progress when it gets assigned to a user, in review when a pull request has been made, and complete when a pull request has been reviewed and merged into the master branch.
+  - Individuals can mark their task as complete
+    - Review completed tasks during team meetings
+- Branch Protocols:
+  - We will utilize Trunk-based development and merge small, frequent updates to the core “trunk”/main branch. Merge as often as possible with tests passing and code compiling. If you make a request that doesn't compile you must bring snacks to the next team meeting.
+- Demonstration to users:
+  - Schedule interviews with Heber and Jonathan (main faculty stakeholders) to get requirements gathering, review progress, etc.
+  - Present different wireframes to stakeholders.
+  - Review notes taken by offical notetaker during team meeting
+
 ## What parts of the project have you identified where you need a creative decision-making process?
 - How will the harness authenticate with the game?
 - How will a user get a game token?
