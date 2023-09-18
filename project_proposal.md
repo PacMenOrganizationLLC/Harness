@@ -33,53 +33,56 @@ The annual SE programming challenges for Snow College need some form of standard
 ### What are the many component parts and sub-problems you have identified?
  - Harness
     - Edit existing games to be compatible with the harness
-    - Fine grain control
-       - Start game
-       - Stop game
-       - Game speed
+    - Game Information
+       - Fine grain control 
+          - Start game
+          - Stop game
+          - Game speed
        - Kick user
-    - Game/User Interactions
-     - Tutorials
-     - Information outreach
-     - Chat
-     - Profiles
-    - Telemetry
-    - Visualization
-     - Scoreboard
-     - Show winner circle of all games/events
-    - Endpoints for if the game is running hot, slow,   
+       - Get list of players
+       - General settings/config
+       - Get list of ongoing games
+       - Request game token?
+       - Telemetry
+       - Endpoints for if the game is running hot, slow,   
     throttled, etc.
-    - Sponsors
-    - Data to collect from users
-    - 
-    - Revenue generator? (Pay a dollar to play/register?)
-    
-   
-    - Request game token?
-    
-    - Get list of players
-    - General settings/config
-    - Get list of ongoing games
+    - Game/User Interactions
+       - Tutorials
+       - Information outreach
+       - Chat
+    - Visualization
+       - Scoreboard
+       - Show winner circle of all games/events
+       - Display game running telemetry
+    - User Information
+       - Data to collect from users
+       - Profiles
+    - Income
+       - Revenue generator? (Pay a dollar to play/register?)
+       - Sponsors
  - Pacmen (Proof of Harness)
-    - Classic pacman but multiplayer with some twists
-    - Ghost are trying to eliminate all pacmen
-    - Pacmen are trying to eat all the pellets
-    - Multiple levels/maps
-    - Scoreboard for ghosts and pacmen
-    - Players can choose their color
-    - Powerups
-    - Configure web socket to return data to each client at an interval
-    - Select different game speeds
-    - Display map with player movements on admin client
-    - Players can join game using a code
-    - Telemetry
-    - Limit the number of times someone can join a game
-    - If <4 players choose ghost, we have npc ghosts
-    - If no players choose pacman, we have an npc pacman
-    - Pacmen get points by eating pellets
-    - Ghosts get the points of the pacmen they eat
-    - Instructions on game rules and powerups
-
+    - Framework 
+       - Classic pacman but multiplayer with some twists
+       - Multiple levels/maps
+       - Scoreboard for ghosts and pacmen
+       - Players can choose their color
+       - Powerups
+       - Instructions on game rules and powerups
+       - Telemetry
+       - Configure web socket to return data to each client at an interval
+       - Select different game speeds
+       - Display map with player movements on admin client
+       - Players can join game using a code
+       - Limit the number of times someone can join a game
+    - Pacman
+      - Pacmen are trying to eat all the pellets
+      - If no players choose pacman, we have an npc pacman
+      - Pacmen get points by eating pellets
+    - Ghost
+       - Ghost are trying to eliminate all pacmen
+       - Ghosts get the points of the pacmen they eat
+       - If <4 players choose ghost, we have npc ghosts
+    
 ### What specified needs are you addressing (public health, safety, welfare, environmental, economic).
 By introducing this coding challenge harness, we are strategically addressing several essential facets, including those related to public health, safety, welfare, environmental sustainability, and economic growth. Specifically:
 
