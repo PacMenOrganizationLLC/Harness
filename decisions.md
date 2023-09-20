@@ -9,7 +9,7 @@
     - Our endpoint to give harness token is exposed
       - What do we do if we already have a token but another request is sent to become an admin?
     - Only 1 admin allowed
-- Option 2: Create an admin group in our auth client. The groups a user is in will be passed by the encoded JWT in the request's headers or cookies where we can check their group.
+- **Option 2**: Create an admin group in our auth client. The groups a user is in will be passed by the encoded JWT in the request's headers or cookies where we can check their group.
   - Pros:
     - Multiple admins allowed
     - No vulnerable endpoint to register an admin
@@ -21,13 +21,16 @@
 - Vocab:
   - User token - token given from the harness when a user registers. Auth client token.
   - Game token - token given by the game when a client registers so it can distinguish between clients
-- Option 1: When a user is requesting a game token, they pass their user token to the game which the game then validates against the harness's list of valid user tokens before generating, storing, and returning the game token to the user
+- **Option 1**: When a user is requesting a game token, they pass their user token to the game which the game then generates a game token and passes it and the user token to the harness for validation against the harness's list of valid user tokens before returning the game token to the user
   - Pros: 
     - User only talks to game api
   - Cons:
+    - Game is in charge of associating user token with game token
 - Option 2: User requests a game token through the harness which acts like a middle man by forwarding the request to the game where the game token gets generated, stored, and returned to the harness. The harness then returns it to the user. The user now has a game token that the game can validate against on each request.
   - Pros:
     - Since the request came from the harness we know it is a valid user request without further validation
+    - Harness can associate game token with user token
+    - Wouldn't have to advertize user token to user
   - Cons:
     - User has to use both the game api (to play) and harness api (to join/register)
 
