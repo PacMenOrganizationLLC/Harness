@@ -25,16 +25,19 @@ __Endpoints__
 _Create Session_
 - post id CreateSession(config)
 - get string GetSessionStatus(id)
-_Start Session_
+  
+Start Session
 - post StartSession(id, config)
-_Game Config_
+  
+Game Config
 - post AddConfig(gameid, config)
 - delete deleteConfig(configId)
 - put updateConfig(configId, config)
 - get GetConfigs()
 - get GetConfig(id)
-__Manage Events__
--Create(event)
+  
+Manage Events
+- Create(event)
 - Update(id, updates)
 - delete(id)
 - get_all()
