@@ -22,7 +22,7 @@ __V3__
 
 __Endpoints__
 
-_Create Session_
+Create Session
 - post id CreateSession(config)
 - get string GetSessionStatus(id)
   
