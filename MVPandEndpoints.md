@@ -22,12 +22,12 @@ __V3__
 
 __Endpoints__
 
-*Create Session
+_Create Session_
 - post id CreateSession(config)
 - get string GetSessionStatus(id)
-*Start Session
+_Start Session_
 - post StartSession(id, config)
-*Game Config
+_Game Config_
 - post AddConfig(gameid, config)
 - delete deleteConfig(configId)
 - put updateConfig(configId, config)
