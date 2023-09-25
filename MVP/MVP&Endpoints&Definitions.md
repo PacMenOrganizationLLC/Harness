@@ -43,3 +43,9 @@ Manage Events
 - get_all()
 - get(id)
 
+
+__Definitions__
+- Events: A series of games/competitions over a single day
+- Game: A third-party software provided by the user that must be compatible with our code. Ex: Game of Life, Mars Rover, etc
+- Competition: People get together to play a game
+- Session: A single instance of a game that can be played in parallel with other sessions
