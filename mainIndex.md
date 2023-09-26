@@ -72,6 +72,7 @@
 - Path to:
   - Manage Game Start Configurations
   - Manage Events
+    
 **Manage Game:**
 - Needs:
   - [ ] Wireframe
@@ -80,6 +81,7 @@
   - Update Game
 - Path to:
   - Game Details
+    
 **Game Details**
 - Needs:
   - [ ] Wireframe
