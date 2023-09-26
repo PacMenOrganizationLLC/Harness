@@ -72,3 +72,28 @@
 - Path to:
   - Manage Game Start Configurations
   - Manage Events
+**Manage Game:**
+- Needs:
+  - [ ] Wireframe
+- Endpoints:
+  - Create Game
+  - Update Game
+- Path to:
+  - Game Details
+**Game Details**
+- Needs:
+  - [ ] Wireframe
+- Endpoints:
+  - Get Game Details
+- Path to:
+  - Manage Game
+ 
+**Create Game**
+- Needs:
+  - [ ] Wireframe
+- Endpoints:
+  - [ ] Create game
+    - Name
+    - Date
+    - Location
+    - Image
