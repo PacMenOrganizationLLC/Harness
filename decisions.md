@@ -11,7 +11,7 @@
     - Only 1 admin allowed
 - **Option 2**: Create an admin group in our auth client. The groups a user is in will be passed by the encoded JWT in the request's headers or cookies where we can check their group.
   - Pros:
-    - Multiple admins allowed
+    - Multiple admins allowed 
     - No vulnerable endpoint to register an admin
     - Don't have to reset it up every game
   - Cons: 
