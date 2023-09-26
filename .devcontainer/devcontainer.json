@@ -1,0 +1,18 @@
+{
+  "name": "Docker from Docker Compose",
+  "dockerComposeFile": "./docker-compose.yml",
+  "service": "editor",
+  "shutdownAction": "stopCompose",
+  "workspaceFolder": "/app/",
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  },
+  "settings": {},
+  "extensions": [
+    "irongeek.vscode-env",
+    "esbenp.prettier-vscode",
+    "dsznajder.es7-react-js-snippets"
+  ],
+  "forwardPorts": [],
+  "remoteUser": "developer"
+}

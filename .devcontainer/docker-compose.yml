@@ -1,0 +1,69 @@
+version: "3"
+
+service:
+  # editor:
+  #   container_name: pacmen_editor
+  #   build:
+  #     context: .
+  #   user: developer
+  #   privileged: true
+  #   volumes:
+  #     - developer_home:/home/developer
+  #     - ../:/app/
+  #     - $HOME/.ssh:/home/developer/.ssh
+  #     - $HOME/.gnupg:/home/developer/.gnupg
+  #   environment:
+  #     - TZ=America/Denver
+  #   working_dir: /app
+  #   command: tail -f /dev/null
+
+  client:
+    container_name: pacmen_client
+    build:
+      context: .
+    user: developer
+    volumes:
+      - ../:/app/:z
+    env_file:
+      - .env
+    command: >
+      sh -c "
+        cd client
+        npm i
+        npm start
+      "
+    ports:
+      - 3000:3000
+
+  api:
+    container_name: pacmen_api
+    build:
+      context: .
+    user: root
+    volumes:
+      - ../:/app/
+      - developer_home:/home/developer
+    working_dir: /app
+    command: >
+      sh -c "
+        mkdir -p /home/developer/virtualenv
+        chown -R developer:developer /home/developer/virtualenv
+        mkdir /app/api/competition_images
+        chown -R developer:developer /app/api/competition_images
+        su - developer
+
+        cd api
+        source /home/developer/.virtualenvs/pacmen/bin/activate
+        dotnet restore
+      "
+
+  db:
+    container_name: pacmen_db
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=Pacmen
+      - POSTGRES_USER=PacmenUser
+      - POSTGRES_PASSWORD=securepassword
+
+volumes:
+  developer_home:
