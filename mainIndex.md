@@ -2,19 +2,19 @@
 ## v1
 **Manage Events Page:**
 - Needs:
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Get all events
-  - [] Delete event
+  - [ ] Get all events
+  - [ ] Delete event
 - Path to:
   - Manage Event
   - Create Event
 
 **Create Event**
 - Needs:
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Create event
+  - [ ] Create event
     - Name
     - Date
     - Location
@@ -22,20 +22,20 @@
   
 **Manage Event:**
 - Needs: 
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Update event
-  - [] Delete Competition
-  - [] Upload photo gallery
+  - [ ] Update event
+  - [ ] Delete Competition
+  - [ ] Upload photo gallery
 - Path to:
   - Create Competition
   - Manage Competition
 
 **Create Competition:**
 - Needs: 
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Create competition
+  - [ ] Create competition
     - Name
     - Time
     - Location
@@ -43,9 +43,9 @@
 
 **Manage Competition:**
 - Needs:
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Update Competition
+  - [ ] Update Competition
 - Path to:
   - Create Session
 
@@ -53,20 +53,20 @@
 - Needs:
   - [x] Wireframe
 - Endpoints:
-  - [] Get configurations
-  - [] Get games + versions
+  - [ ] Get configurations
+  - [ ] Get games + versions
 
 **Create Session:**
 - Needs:
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
-  - [] Create Session
+  - [ ] Create Session
     - Config
     - Name 
 
 **Admin:**
 - Needs:
-  - [] Wireframe
+  - [ ] Wireframe
 - Endpoints:
   - Get Games + versions
 - Path to:
