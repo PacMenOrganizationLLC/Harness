@@ -89,7 +89,7 @@
 - Path to:
   - Manage Game
  
-**Create Game**
+**Create Game Details**
 - Needs:
   - [ ] Wireframe
 - Endpoints:
