@@ -77,7 +77,6 @@
 - Needs:
   - [ ] Wireframe
 - Endpoints:
-  - Create Game
   - Update Game
 - Path to:
   - Game Details
@@ -90,7 +89,7 @@
 - Path to:
   - Manage Game
  
-**Create Game**
+**Create Game Details**
 - Needs:
   - [ ] Wireframe
 - Endpoints:
