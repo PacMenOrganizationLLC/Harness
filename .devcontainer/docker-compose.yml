@@ -1,21 +1,21 @@
 version: "3"
 
-service:
-  # editor:
-  #   container_name: pacmen_editor
-  #   build:
-  #     context: .
-  #   user: developer
-  #   privileged: true
-  #   volumes:
-  #     - developer_home:/home/developer
-  #     - ../:/app/
-  #     - $HOME/.ssh:/home/developer/.ssh
-  #     - $HOME/.gnupg:/home/developer/.gnupg
-  #   environment:
-  #     - TZ=America/Denver
-  #   working_dir: /app
-  #   command: tail -f /dev/null
+services:
+  editor:
+    container_name: pacmen_editor
+    build:
+      context: .
+    user: developer
+    privileged: true
+    volumes:
+      - developer_home:/home/developer
+      - ../:/app/
+      - $HOME/.ssh:/home/developer/.ssh
+      - $HOME/.gnupg:/home/developer/.gnupg
+    environment:
+      - TZ=America/Denver
+    working_dir: /app
+    command: tail -f /dev/null
 
   client:
     container_name: pacmen_client
@@ -38,7 +38,7 @@ service:
   api:
     container_name: pacmen_api
     build:
-      context: .
+      context: ../api/
     user: root
     volumes:
       - ../:/app/
@@ -50,11 +50,8 @@ service:
         chown -R developer:developer /home/developer/virtualenv
         mkdir /app/api/competition_images
         chown -R developer:developer /app/api/competition_images
-        su - developer
-
-        cd api
-        source /home/developer/.virtualenvs/pacmen/bin/activate
         dotnet restore
+        dotnet api.dll
       "
 
   db:

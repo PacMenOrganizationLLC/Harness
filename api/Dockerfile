@@ -1,21 +1,15 @@
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /App
 
-WORKDIR /app
-
-COPY ./api/*.csproj ./
+# Copy everything
+COPY . ./
+# Restore as distinct layers
 RUN dotnet restore
-
-COPY ./api/ ./
-
+# Build and publish a release
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS runtime
-WORKDIR /app
-COPY --from=build /app/out ./
-
-EXPOSE 5000
-
-# Set environment variables if necessary
-# ENV ASPNETCORE_ENVIRONMENT=Production
-
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /App
+COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "api.dll"]
