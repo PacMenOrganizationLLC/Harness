@@ -1,15 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
-WORKDIR /App
+WORKDIR /app
 
-# Copy everything
-COPY . ./
-# Restore as distinct layers
+COPY *.csproj .
 RUN dotnet restore
-# Build and publish a release
-RUN dotnet publish -c Release -o out
+COPY . .
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
-WORKDIR /App
-COPY --from=build-env /App/out .
-ENTRYPOINT ["dotnet", "api.dll"]
+ENTRYPOINT ["dotnet", "watch", "run"]

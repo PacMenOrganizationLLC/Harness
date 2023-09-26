@@ -40,19 +40,14 @@ services:
     build:
       context: ../api/
     user: root
+    environment:
+      - ASPNETCORE_HTTPS_PORT=8001
     volumes:
-      - ../:/app/
+      - ../api:/app/
       - developer_home:/home/developer
     working_dir: /app
-    command: >
-      sh -c "
-        mkdir -p /home/developer/virtualenv
-        chown -R developer:developer /home/developer/virtualenv
-        mkdir /app/api/competition_images
-        chown -R developer:developer /app/api/competition_images
-        dotnet restore
-        dotnet api.dll
-      "
+    ports:
+      - 8000:8000
 
   db:
     container_name: pacmen_db
