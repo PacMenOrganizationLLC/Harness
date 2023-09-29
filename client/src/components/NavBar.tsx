@@ -7,35 +7,20 @@ export const NavBar = () => {
         <div className="row">
           <div className="col-auto">
             <Link to="/" className="text-reset text-decoration-none">
-              Harness
+              Home
             </Link>
           </div>
-          <div className="col">
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                <li className="nav-item">
-                  <Link to="/" className="text-reset text-decoration-none">
-                    Home
-                  </Link>
-                </li>
-              </ul>
-            </div>
+          <div className="col-auto">
+            <Link to="/events" className="text-reset text-decoration-none">
+              Events
+            </Link>
+          </div>
+          <div className="col-auto">
+            <Link to="/games" className="text-reset text-decoration-none">
+              Games
+            </Link>
           </div>
         </div>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
       </div>
     </nav>
   );

@@ -4,8 +4,10 @@ import "./assets/custom.scss";
 import "bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { App } from "./App";
+import { Home } from "./pages/home/Home";
 import { NavBar } from "./components/NavBar";
+import { Events } from "./pages/events/Events";
+import { Games } from "./pages/games/Games";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,7 +18,9 @@ root.render(
     <Router>
       <NavBar />
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/events" element={<Events />} />
+        <Route path="/games" element={<Games />} />
       </Routes>
     </Router>
   </React.StrictMode>
