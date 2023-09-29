@@ -4,7 +4,7 @@ module.exports = function (app) {
   app.use(
     ["/swagger", "/api/"],
     createProxyMiddleware({
-      target: "http://pacmen_api:8000",
+      target: "https://pacmen_api:8001",
     })
   )
 }

@@ -8,6 +8,10 @@ import { Home } from "./pages/home/Home";
 import { NavBar } from "./components/NavBar";
 import { Events } from "./pages/events/Events";
 import { Games } from "./pages/games/Games";
+import { getQueryClient } from "./queryClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = getQueryClient();
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,13 +19,15 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/events" element={<Events />} />
-        <Route path="/games" element={<Games />} />
-      </Routes>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <Router>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/games" element={<Games />} />
+        </Routes>
+      </Router>
+    </QueryClientProvider>
   </React.StrictMode>
 );

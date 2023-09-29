@@ -17,6 +17,7 @@ create table Event (
 
 create table Game (
   id serial primary key,
+  host_url text not null,
   name text not null,
   repo_link text,
   details text,
@@ -34,7 +35,8 @@ create table Competition (
 
 create table Session (
   id serial primary key,
-  competition_id int not null references Competition(id) ON DELETE CASCADE
+  competition_id int not null references Competition(id) ON DELETE CASCADE,
+  play_id text not null
 );
 
 create table Session_Client (
