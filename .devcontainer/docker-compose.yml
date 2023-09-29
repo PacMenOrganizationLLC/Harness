@@ -56,6 +56,8 @@ services:
       - POSTGRES_DB=Pacmen
       - POSTGRES_USER=PacmenUser
       - POSTGRES_PASSWORD=securepassword
+    ports:
+      - 5432:5432
 
 volumes:
   developer_home:
