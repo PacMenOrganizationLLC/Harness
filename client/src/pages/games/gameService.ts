@@ -2,7 +2,7 @@ import axios from "axios"
 
 export const gameService = {
   async getGames() {
-    const url = '/api/WeatherForecast'
+    const url = 'http://localhost:8000/WeatherForecast';
     const response = await axios.get(url);
     return response.data
   }
