@@ -7,12 +7,18 @@
   "remoteEnv": {
     "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
   },
-  "settings": {},
-  "extensions": [
-    "irongeek.vscode-env",
-    "esbenp.prettier-vscode",
-    "dsznajder.es7-react-js-snippets"
-  ],
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "irongeek.vscode-env",
+        "esbenp.prettier-vscode",
+        "dsznajder.es7-react-js-snippets",
+        "ms-dotnettools.csharp",
+        "humao.rest-client"
+      ],
+    }
+  },
   "forwardPorts": [],
   "remoteUser": "developer"
 }

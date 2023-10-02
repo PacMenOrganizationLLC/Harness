@@ -1,18 +1,13 @@
+FROM mcr.microsoft.com/dotnet/sdk:7.0
 
-FROM almalinux:8
-
-RUN dnf -y install \
-    openssh-clients \
-    nodejs \
-    openldap-devel && \
-    rm -rf /var/cache/yum && \
-    npm i -g n && \
-    n 16
+RUN apt-get update && \
+    apt-get install -y nodejs && \
+    apt-get install -y npm
 
 RUN groupadd --gid 1000 developer \
     && useradd --uid 1000 --gid 1000 -m developer \
     && chown -R developer. /home/developer
 
-USER developer
+USER root
 
 WORKDIR /app
