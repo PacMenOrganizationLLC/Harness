@@ -15,7 +15,13 @@ services:
     environment:
       - TZ=America/Denver
     working_dir: /app
-    command: tail -f /dev/null
+    command: >
+      sh -c "
+        cd api
+        dotnet restore
+        cd ..
+        tail -f /dev/null 
+      "
 
   client:
     container_name: pacmen_client
@@ -59,6 +65,9 @@ services:
       - POSTGRES_PASSWORD=securepassword
     ports:
       - 5432:5432
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
 volumes:
   developer_home:

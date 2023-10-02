@@ -8,6 +8,6 @@ RUN groupadd --gid 1000 developer \
     && useradd --uid 1000 --gid 1000 -m developer \
     && chown -R developer. /home/developer
 
-USER root
+USER developer
 
 WORKDIR /app
