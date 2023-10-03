@@ -1,1 +1,15 @@
-GET http://localhost:8000/WeatherForecast
+GET http://pacmen_api:8000/api/Game
+
+
+###
+
+POST http://pacmen_api:8000/api/Game
+Content-Type: application/json
+
+{
+  "name": "Actual Game",
+  "hostUrl": "google.com",
+  "repoLink": "guthib.com",
+  "details": "not actually a thing",
+  "createdBy": "Paul Bunyan"
+}

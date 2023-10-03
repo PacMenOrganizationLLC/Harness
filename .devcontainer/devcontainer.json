@@ -20,5 +20,6 @@
     }
   },
   "forwardPorts": [],
+ 
   "remoteUser": "developer"
 }
