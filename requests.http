@@ -1,3 +1,7 @@
+GET http://pacmen_api:8000/WeatherForecast
+
+###
+
 GET http://pacmen_api:8000/api/Game
 
 
