@@ -29,7 +29,7 @@ services:
       context: .
     user: developer
     volumes:
-      - ../:/app/:z
+      - ../client:/app/
     env_file:
       - .env
     command: >
@@ -44,7 +44,7 @@ services:
   api:
     container_name: pacmen_api
     build:
-      context: ../api/
+      context: .
     user: root
     # environment:
     #   - ASPNETCORE_HTTPS_PORT=8001
@@ -55,6 +55,13 @@ services:
     ports:
       - 8000:8000
       - 8001:8001
+    command: >
+      sh -c "
+        cd api
+        dotnet restore
+        dotnet watch run 
+      "
+    
 
   db:
     container_name: pacmen_db
