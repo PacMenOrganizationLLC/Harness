@@ -62,7 +62,21 @@
 - Endpoints:
   - [ ] Create Session
     - Config
-    - Name 
+    - Name
+
+**Manage Session:**
+- Needs:
+  - [ ] Wireframe
+- Endpoints:
+  - [ ] Start Session
+  - [ ] Stop Session
+ 
+**View Active Session:**
+- Needs:
+  - [x] Wireframe
+- Endpoints:
+  - [ ] Get Session URL
+    - Session ID
 
 **Admin:**
 - Needs:
@@ -73,7 +87,7 @@
   - Manage Game Start Configurations
   - Manage Events
     
-**Manage Game:**
+**Manage Game Details:**
 - Needs:
   - [ ] Wireframe
 - Endpoints:
