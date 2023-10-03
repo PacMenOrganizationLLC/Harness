@@ -57,9 +57,8 @@ services:
       - 8001:8001
     command: >
       sh -c "
-        cd api
         dotnet restore
-        dotnet watch run 
+        dotnet watch run --AlwaysRestartOnRudeEdit
       "
     
 

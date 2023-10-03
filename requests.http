@@ -1,1 +1,1 @@
-GET http://localhost:8000/WeatherForecast
+GET http://pacmen_api:8000/WeatherForecast
