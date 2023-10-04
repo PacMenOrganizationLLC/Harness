@@ -49,7 +49,6 @@ public class SessionConfigController : ControllerBase
       existingSessionConfig.Name = sessionConfig.Name;
       existingSessionConfig.JsonConfig = sessionConfig.JsonConfig;
 
-      _context.Entry(existingSessionConfig).State = EntityState.Modified;
       await _context.SaveChangesAsync();
       return Ok("Updated Session Config Successfully");
     }

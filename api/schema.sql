@@ -11,6 +11,8 @@ drop table if exists Event;
 create table Event (
   id serial primary key,
   name text not null,
+  day timestamp not null,
+  location text not null,
   description text,
   image_filename text
 );
@@ -52,7 +54,8 @@ create table Session_Client (
 create table Session_Config (
   id serial primary key,
   name text not null,
-  json_config text not null
+  json_config text not null,
+  game_id int not null references Game(id)
 );
 
 create table Competition_Image (
