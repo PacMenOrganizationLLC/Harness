@@ -17,3 +17,15 @@ Content-Type: application/json
   "details": "not actually a thing",
   "createdBy": "Paul Bunyan"
 }
+
+###
+GET http://pacmen_api:8000/api/SessionConfig
+###
+POST http://pacmen_api:8000/api/SessionConfig
+Content-Type: application/json
+
+{
+  "id": 0,
+  "name": "Test Config",
+  "jsonconfig": "{}"
+}

@@ -30,7 +30,7 @@ namespace api.Controllers
     [HttpGet("{id}")]
     public async Task<ActionResult<Game>> GetGame(int id)
     {
-      var game = await _context.Game.FindAsync(id);
+      Game? game = await _context.Game.FindAsync(id);
 
       if (game == null)
       {
@@ -48,36 +48,30 @@ namespace api.Controllers
       {
         return BadRequest();
       }
+      Game? existingGame = await _context.Game.FindAsync(id);
 
-      _context.Entry(game).State = EntityState.Modified;
-
-      try
+      if (existingGame != null)
       {
+        existingGame.CreatedBy = game.CreatedBy;
+        existingGame.Details = game.Details;
+        existingGame.HostUrl = game.HostUrl;
+        existingGame.Name = game.Name;
+        existingGame.RepoLink = game.RepoLink;
+        _context.Entry(game).State = EntityState.Modified;
         await _context.SaveChangesAsync();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!GameExists(id))
-        {
-          return NotFound();
-        }
-        else
-        {
-          throw;
-        }
+        return Ok("Updated Game Successfully");
       }
 
-      return NoContent();
+      return NotFound();
     }
 
     // POST: api/Game
     [HttpPost]
-    public async Task<ActionResult<Game>> AddGame(Game game)
+    public async Task<IActionResult> AddGame(Game game)
     {
       _context.Game.Add(game);
       await _context.SaveChangesAsync();
-
-      return CreatedAtAction(nameof(GetGame), new { id = game.Id }, game);
+      return Ok("Added Game");
     }
 
     // DELETE: api/Game/5
@@ -93,7 +87,7 @@ namespace api.Controllers
       _context.Game.Remove(game);
       await _context.SaveChangesAsync();
 
-      return NoContent();
+      return Ok("Deleted Game");
     }
 
     private bool GameExists(int id)

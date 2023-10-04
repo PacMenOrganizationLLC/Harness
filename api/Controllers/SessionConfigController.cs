@@ -24,7 +24,14 @@ public class SessionConfigController : ControllerBase
   public async void AddSessionConfig(SessionConfig sessionConfig)
   {
     _context.SessionConfig.Add(sessionConfig);
-    await _context.SaveChangesAsync();
+    try
+    {
+      await _context.SaveChangesAsync();
+    }
+    catch
+    {
+
+    }
   }
 
   [HttpPut("{id}")]
