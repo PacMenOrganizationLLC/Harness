@@ -33,6 +33,9 @@ export const GameDetails: FC<{
       <div>Details: {selectedGame.details}</div>
       <div>Host Url: {selectedGame.hostUrl}</div>
       <div>Repo Link: {selectedGame.repoLink}</div>
+      <div className="d-flex">
+        
+      </div>
     </div>
   )
 }

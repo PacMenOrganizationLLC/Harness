@@ -52,7 +52,8 @@ create table Session_Client (
 create table Session_Config (
   id serial primary key,
   name text not null,
-  json_config text not null
+  json_config text not null,
+  game_id int not null references Game(id)
 );
 
 create table Competition_Image (

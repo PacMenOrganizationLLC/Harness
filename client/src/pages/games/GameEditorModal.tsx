@@ -50,9 +50,7 @@ export const GameEditorModal: FC<{
       updateGameMutation.mutate(newGame)
     }
     else {
-      addGameMutation.mutateAsync(newGame).then(() => {
-
-      })
+      addGameMutation.mutate(newGame)
     }
     setSelectedGame(undefined)
 
@@ -87,16 +85,20 @@ export const GameEditorModal: FC<{
               labelClassName="col-12" />
             <TextInput control={hostUrlControl}
               label="*Host URL"
+              placeholder="https://your_server.xxx"
               labelClassName="col-12" />
             <TextInput control={repoLinkControl}
               label="Repo Link"
+              placeholder="https://github.com/your_repo"
               labelClassName="col-12" />
             <TextInput control={detailsControl}
               label="Details"
+              placeholder="Rules, Instructions, etc."
               isTextArea={true}
               labelClassName="col-12" />
             <TextInput control={createdByControl}
               label="*Created By"
+              placeholder="John Smith"
               labelClassName="col-12" />
             <div className="small">*Required</div>
             <div className="row text-center my-2">
