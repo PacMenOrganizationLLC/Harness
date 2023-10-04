@@ -11,6 +11,8 @@ drop table if exists Event;
 create table Event (
   id serial primary key,
   name text not null,
+  time timestamp not null,
+  location text not null,
   description text,
   image_filename text
 );
