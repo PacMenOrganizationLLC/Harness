@@ -23,5 +23,5 @@
   "include": [
     "src",
     "setupProxy.js"
-  ]
+, "src/pages/games/GameEditorModal.tsx"  ]
 }
