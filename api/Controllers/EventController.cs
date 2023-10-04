@@ -23,7 +23,7 @@ namespace api.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
     {
-      return await _context.Event.OrderByDescending(g => g.Description).ToListAsync();
+      return await _context.Event.OrderByDescending(g => g.Time).ToListAsync();
     }
 
     // GET: api/Event/5
