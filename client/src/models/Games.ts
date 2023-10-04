@@ -5,4 +5,5 @@ export interface Game {
   hostUrl: string;
   details?: string;
   createdBy: string;
+  createdAt: Date;
 }

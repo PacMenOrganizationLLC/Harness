@@ -14,18 +14,18 @@ export const GameDetails: FC<{
     setSelectedGame(undefined)
   }
   return (
-    <div className="col" key={selectedGame.id}>
+    <div className="col border rounded shadow-sm p-3" key={selectedGame.id}>
       <div className="row">
         <div className="col my-auto">
           <div className="fs-4 fw-bold">{selectedGame.name}</div>
         </div>
         <div className="col-auto">
-          <GameEditorModal existingGame={selectedGame} />
+          <GameEditorModal existingGame={selectedGame} setSelectedGame={setSelectedGame} />
         </div>
         <div className="col-auto">
           <button className="btn btn-outline-danger"
             onClick={deleteHandler}>
-            <i className="bi bi-x-lg" />
+            <i className="bi bi-trash" />
           </button>
         </div>
       </div>

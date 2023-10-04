@@ -21,7 +21,8 @@ create table Game (
   name text not null,
   repo_link text,
   details text,
-  created_by text not null
+  created_by text not null,
+  created_at timestamp not null default NOW()
 );
 
 create table Competition (

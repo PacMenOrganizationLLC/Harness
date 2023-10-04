@@ -5,8 +5,9 @@ import { TextInput, useTextInput } from "../../components/forms/TextInput"
 import { useAddGameMutation, useUpdateGameMutation } from "./gameHooks"
 
 export const GameEditorModal: FC<{
-  existingGame?: Game
-}> = ({ existingGame }) => {
+  existingGame?: Game,
+  setSelectedGame: (g?: Game) => void
+}> = ({ existingGame, setSelectedGame }) => {
   const addGameMutation = useAddGameMutation();
   const updateGameMutation = useUpdateGameMutation();
   const nameControl = useTextInput(existingGame?.name ?? "")
@@ -42,26 +43,32 @@ export const GameEditorModal: FC<{
       repoLink: repoLinkControl.value,
       hostUrl: hostUrlControl.value,
       details: detailsControl.value,
-      createdBy: createdByControl.value
+      createdBy: createdByControl.value,
+      createdAt: new Date()
     }
     if (existingGame) {
       updateGameMutation.mutate(newGame)
     }
     else {
       addGameMutation.mutateAsync(newGame).then(() => {
-        nameControl.setValue("")
-        repoLinkControl.setValue("")
-        hostUrlControl.setValue("")
-        detailsControl.setValue("")
-        createdByControl.setValue("")
+
       })
     }
+    setSelectedGame(undefined)
+
     closeHandler();
   }
 
   const closeHandler = () => {
+    nameControl.setValue("")
+    repoLinkControl.setValue("")
+    hostUrlControl.setValue("")
+    detailsControl.setValue("")
+    createdByControl.setValue("")
     gameEditorControls.hide()
   }
+
+  const canSubmit = nameControl.value !== "" && hostUrlControl.value !== "" && createdByControl.value !== ""
   return (
     <CustomModal ModalButton={ModalButton} controls={gameEditorControls}>
       <div className="modal-content">
@@ -76,10 +83,10 @@ export const GameEditorModal: FC<{
         <div className="modal-body">
           <form onSubmit={submitHandler}>
             <TextInput control={nameControl}
-              label="Name"
+              label="*Name"
               labelClassName="col-12" />
             <TextInput control={hostUrlControl}
-              label="Host URL"
+              label="*Host URL"
               labelClassName="col-12" />
             <TextInput control={repoLinkControl}
               label="Repo Link"
@@ -89,8 +96,9 @@ export const GameEditorModal: FC<{
               isTextArea={true}
               labelClassName="col-12" />
             <TextInput control={createdByControl}
-              label="Created By"
+              label="*Created By"
               labelClassName="col-12" />
+            <div className="small">*Required</div>
             <div className="row text-center my-2">
               <div className="col">
                 <button className="btn btn-secondary"
@@ -99,6 +107,7 @@ export const GameEditorModal: FC<{
               </div>
               <div className="col">
                 <button className="btn btn-primary"
+                  disabled={!canSubmit}
                   type="submit">Save</button>
               </div>
             </div>

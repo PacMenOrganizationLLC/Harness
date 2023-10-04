@@ -23,7 +23,7 @@ namespace api.Controllers
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Game>>> GetGames()
     {
-      return await _context.Game.ToListAsync();
+      return await _context.Game.OrderByDescending(g => g.CreatedAt).ToListAsync();
     }
 
     // GET: api/Game/5
@@ -57,7 +57,7 @@ namespace api.Controllers
         existingGame.HostUrl = game.HostUrl;
         existingGame.Name = game.Name;
         existingGame.RepoLink = game.RepoLink;
-        _context.Entry(game).State = EntityState.Modified;
+        existingGame.CreatedAt = game.CreatedAt;
         await _context.SaveChangesAsync();
         return Ok("Updated Game Successfully");
       }
@@ -88,11 +88,6 @@ namespace api.Controllers
       await _context.SaveChangesAsync();
 
       return Ok("Deleted Game");
-    }
-
-    private bool GameExists(int id)
-    {
-      return _context.Game.Any(e => e.Id == id);
     }
   }
 }
