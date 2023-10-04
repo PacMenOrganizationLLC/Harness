@@ -17,6 +17,7 @@ public class HarnessContext : DbContext
   public DbSet<SessionClient> SessionClient { get; set; } = null!;
   public DbSet<CompetitionImage> CompetitionImage { get; set; } = null!;
   public DbSet<CompetitionPrize> CompetitionPrize { get; set; } = null!;
+  public DbSet<SessionConfig> SessionConfig { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

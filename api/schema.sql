@@ -48,6 +48,12 @@ create table Session_Client (
   score int
 );
 
+create table Session_Config (
+  id serial primary key,
+  name text not null,
+  json_config text not null
+);
+
 create table Competition_Image (
   id serial primary key,
   competition_id int not null references Competition(id) ON DELETE CASCADE,
