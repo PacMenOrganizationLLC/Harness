@@ -41,7 +41,7 @@ public class SessionController : ControllerBase
         return session;
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{startSessionId}")]
     public async Task<IActionResult> StartSession(int id)
     {
         Session? session = await _context.Session.FindAsync(id);
@@ -56,7 +56,7 @@ public class SessionController : ControllerBase
         return Ok("Session has been started");
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{stopSessionId}")]
     public async Task<IActionResult> StopSession(int id)
     {
         Session? session = await _context.Session.FindAsync(id);
