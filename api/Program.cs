@@ -17,6 +17,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddMvc(o =>
+{
+    o.SuppressAsyncSuffixInActionNames = false;
+});
+
 var connectionString = "Host=pacmen_db;Port=5432;Database=Pacmen;Username=PacmenUser;Password=securepassword;";
 
 builder.Services.AddDbContext<HarnessContext>(options =>
