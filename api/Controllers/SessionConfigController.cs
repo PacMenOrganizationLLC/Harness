@@ -13,10 +13,10 @@ public class SessionConfigController : ControllerBase
     _context = context;
   }
 
-  [HttpGet]
-  public async Task<ActionResult<IEnumerable<SessionConfig>>> GetSessionConfigs()
+  [HttpGet("{gameId}")]
+  public async Task<ActionResult<IEnumerable<SessionConfig>>> GetSessionConfigs(int gameId)
   {
-    List<SessionConfig> sessionConfig = await _context.SessionConfig.ToListAsync();
+    List<SessionConfig> sessionConfig = await _context.SessionConfig.Where(c => c.GameId == gameId).ToListAsync();
     return sessionConfig;
   }
 
@@ -67,8 +67,18 @@ public class SessionConfigController : ControllerBase
     }
 
     _context.SessionConfig.Remove(sessionConfig);
-    await _context.SaveChangesAsync();
+    await _context.SaveChangesAsync(); 
 
     return Ok("Session Config Deleted Successfully");
+  }
+
+  [HttpGet("template/{gameId}")]
+  public Task<Dictionary<string, string>> GetGameTemplateConfiguration(int gameId)
+  {
+    Dictionary<string, string> sampleDictionary = new()
+    {
+        { "sample", "data" }
+    };
+    return Task.FromResult(sampleDictionary);
   }
 }

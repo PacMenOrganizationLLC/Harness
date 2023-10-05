@@ -2,6 +2,7 @@ import { FC } from "react"
 import { Game } from "../../models/Games"
 import { GameEditorModal } from "./GameEditorModal"
 import { useDeleteGameMutation } from "./gameHooks"
+import { SessionConfig } from "./sessionConfig/SessionConfig"
 
 export const GameDetails: FC<{
   selectedGame: Game,
@@ -13,6 +14,7 @@ export const GameDetails: FC<{
     deleteGameMutation.mutate(selectedGame.id)
     setSelectedGame(undefined)
   }
+
   return (
     <div className="col border rounded shadow-sm p-3" key={selectedGame.id}>
       <div className="row">
@@ -33,9 +35,7 @@ export const GameDetails: FC<{
       <div>Details: {selectedGame.details}</div>
       <div>Host Url: {selectedGame.hostUrl}</div>
       <div>Repo Link: {selectedGame.repoLink}</div>
-      <div className="d-flex">
-        
-      </div>
+      <SessionConfig gameId={selectedGame.id} />
     </div>
   )
 }
