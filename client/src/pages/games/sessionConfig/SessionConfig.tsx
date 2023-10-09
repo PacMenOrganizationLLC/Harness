@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { useGetSessionConfigsQuery } from "./sessionConfigHooks";
 import { Spinner } from "../../../components/Spinner";
+import { AddSessionConfigModal } from "./AddSessionConfigModal";
 
 export const SessionConfig: FC<{
   gameId: number
@@ -25,13 +26,7 @@ export const SessionConfig: FC<{
         </div>
       ))}
       <div className="card my-auto">
-        <button className="btn btn-secondary px-2 py-1">
-          <div className="card-body p-0">
-            <div className="card-title my-auto">
-              <i className="bi bi-plus-lg" />
-            </div>
-          </div>
-        </button>
+        <AddSessionConfigModal gameId={gameId} />
       </div>
     </div>
   )

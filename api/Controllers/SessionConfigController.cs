@@ -67,18 +67,19 @@ public class SessionConfigController : ControllerBase
     }
 
     _context.SessionConfig.Remove(sessionConfig);
-    await _context.SaveChangesAsync(); 
+    await _context.SaveChangesAsync();
 
     return Ok("Session Config Deleted Successfully");
   }
 
   [HttpGet("template/{gameId}")]
-  public Task<Dictionary<string, string>> GetGameTemplateConfiguration(int gameId)
+  public Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
   {
-    Dictionary<string, string> sampleDictionary = new()
+    var sampleData = new List<GameConfigTemplate>
     {
-        { "sample", "data" }
+      new("test", "data"),
+      new("more", "data")
     };
-    return Task.FromResult(sampleDictionary);
+    return Task.FromResult(sampleData);
   }
 }
