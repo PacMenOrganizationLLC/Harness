@@ -6,8 +6,10 @@ import { SessionConfig } from "../../../models/SessionConfig";
 const queryClient = getQueryClient();
 
 export const SessionConfigsKeys = {
-  gameSessionConfigKey: (gameId: number) => ["sessionConfigsKey", gameId] as const,
-  gameTemplateConfigKey: (gameId: number) => ["templateConfigKey", gameId] as const,
+  gameSessionConfigKey: (gameId: number) =>
+    ["sessionConfigsKey", gameId] as const,
+  gameTemplateConfigKey: (gameId: number) =>
+    ["templateConfigKey", gameId] as const,
 };
 
 export const useGetSessionConfigsQuery = (gameId: number) => {
@@ -20,10 +22,12 @@ export const useGetSessionConfigsQuery = (gameId: number) => {
 export const useAddSessionConfigMutation = (gameId: number) => {
   return useMutation({
     mutationFn: async (newSession: SessionConfig) => {
-      return await sessionConfigService.addSessionConfigs(newSession);
+      return await sessionConfigService.addSessionConfig(newSession);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(SessionConfigsKeys.gameSessionConfigKey(gameId));
+      queryClient.invalidateQueries(
+        SessionConfigsKeys.gameSessionConfigKey(gameId)
+      );
     },
   });
 };
@@ -31,10 +35,12 @@ export const useAddSessionConfigMutation = (gameId: number) => {
 export const useUpdateSessionConfigMutation = (gameId: number) => {
   return useMutation({
     mutationFn: async (updatedSession: SessionConfig) => {
-      return await sessionConfigService.updateSessionConfigs(updatedSession);
+      return await sessionConfigService.updateSessionConfig(updatedSession);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(SessionConfigsKeys.gameSessionConfigKey(gameId));
+      queryClient.invalidateQueries(
+        SessionConfigsKeys.gameSessionConfigKey(gameId)
+      );
     },
   });
 };
@@ -42,10 +48,12 @@ export const useUpdateSessionConfigMutation = (gameId: number) => {
 export const useDeleteSessionConfigMutation = (gameId: number) => {
   return useMutation({
     mutationFn: async (id: number) => {
-      return await sessionConfigService.deleteSessionConfigs(id);
+      return await sessionConfigService.deleteSessionConfig(id);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(SessionConfigsKeys.gameSessionConfigKey(gameId));
+      queryClient.invalidateQueries(
+        SessionConfigsKeys.gameSessionConfigKey(gameId)
+      );
     },
   });
 };
@@ -53,6 +61,7 @@ export const useDeleteSessionConfigMutation = (gameId: number) => {
 export const useGetGameTemplateConfigurationQuery = (gameId: number) => {
   return useQuery({
     queryKey: SessionConfigsKeys.gameTemplateConfigKey(gameId),
-    queryFn: async () => await sessionConfigService.getGameTemplateConfiguration(gameId),
+    queryFn: async () =>
+      await sessionConfigService.getGameTemplateConfiguration(gameId),
   });
 };

@@ -20,7 +20,7 @@ export const AddSessionConfigModal: FC<{
   )
 
   const ModalButton: ModalButton = ({ showModal }) => (
-    <button className="btn btn-secondary px-2 py-1"
+    <button className="btn btn-outline-secondary px-2 py-1"
       onClick={showModal}>
       <div className="card-body p-0">
         <div className="card-title my-auto">

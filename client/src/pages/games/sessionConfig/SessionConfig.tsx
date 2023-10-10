@@ -1,7 +1,8 @@
 import { FC } from "react"
-import { useGetSessionConfigsQuery } from "./sessionConfigHooks";
+import { useDeleteSessionConfigMutation, useGetSessionConfigsQuery } from "./sessionConfigHooks";
 import { Spinner } from "../../../components/Spinner";
 import { AddSessionConfigModal } from "./AddSessionConfigModal";
+import { ConfigDetailsModal } from "./ConfigDetailsModal";
 
 export const SessionConfig: FC<{
   gameId: number
@@ -12,18 +13,11 @@ export const SessionConfig: FC<{
   if (sessionConfigsQuery.isLoading) return <Spinner />
   if (sessionConfigsQuery.isError) return <div>Error getting session configurations</div>
   if (!sessionConfigsQuery.data) return <div>Unable to get session configurations</div>
+
   return (
     <div className="d-flex mt-3">
       {sessionConfigs.map((c) => (
-        <div className="card me-2" key={c.id}>
-          <button className="btn ">
-            <div className="card-body p-0">
-              <div className="card-title my-auto">
-                {c.name}
-              </div>
-            </div>
-          </button>
-        </div>
+        <ConfigDetailsModal config={c} gameId={gameId} />
       ))}
       <div className="card my-auto">
         <AddSessionConfigModal gameId={gameId} />
