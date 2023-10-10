@@ -17,6 +17,11 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Services.AddHttpClient("GameAPI");
+
+builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
+    .CreateClient("GameAPI"));
+
 builder.Services.AddMvc(o =>
 {
     o.SuppressAsyncSuffixInActionNames = false;

@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 public class SessionConfigController : ControllerBase
 {
   private readonly HarnessContext _context;
+  private readonly HttpClient gameApi;
 
-  public SessionConfigController(HarnessContext context)
+  public SessionConfigController(HarnessContext context, HttpClient gameApi)
   {
     _context = context;
+    this.gameApi = gameApi;
   }
 
   [HttpGet("{gameId}")]
@@ -73,13 +75,16 @@ public class SessionConfigController : ControllerBase
   }
 
   [HttpGet("template/{gameId}")]
-  public Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
+  public async Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
   {
+    string url = _context.Game.Where(g => g.Id == gameId).Select(g => g.HostUrl).FirstOrDefault();
+    // HttpResponseMessage response = await gameApi.GetAsync(url);
+    // Console.WriteLine(response.Content);
     var sampleData = new List<GameConfigTemplate>
     {
       new("test", "data"),
       new("more", "data")
     };
-    return Task.FromResult(sampleData);
+    return await Task.FromResult(sampleData);
   }
 }
