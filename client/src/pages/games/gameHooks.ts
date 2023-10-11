@@ -9,9 +9,9 @@ export const GameKeys = {
   gamesKey: ["gamesKey"] as const,
 };
 
-export const useGetGamesQuery = (id?: number) => {
+export const useGetGamesQuery = () => {
   return useQuery({
-    queryKey: ["games", id],
+    queryKey: GameKeys.gamesKey,
     queryFn: async () => await gameService.getGames(),
   });
 };
