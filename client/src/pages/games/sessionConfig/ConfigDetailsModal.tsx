@@ -11,9 +11,10 @@ export const ConfigDetailsModal: FC<{
   const deleteConfigMutation = useDeleteSessionConfigMutation(gameId);
   const controls = useModal("Session Config Details")
 
-  const deleteHandler = (id: number, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    deleteConfigMutation.mutate(id)
+  const deleteHandler = () => {
+    deleteConfigMutation.mutateAsync(config.id).then(() => {
+      controls.hide();
+    })
   }
 
   const ModalButton: ModalButton = ({ showModal }) => (
@@ -22,17 +23,7 @@ export const ConfigDetailsModal: FC<{
         onClick={showModal}>
         <div className="card-body">
           <div className="card-title my-auto">
-            <div className="row">
-              <div className="col">
-                {config.name}
-              </div>
-              <div className="col-2">
-                <button className="btn btn-outline-danger px-1 py-0"
-                  onClick={(e) => deleteHandler(config.id, e)}>
-                  <i className="bi bi-x" />
-                </button>
-              </div>
-            </div>
+            {config.name}
           </div>
         </div>
       </button>
@@ -69,8 +60,14 @@ export const ConfigDetailsModal: FC<{
             </div>
           ))}
         </div>
-        <div className="modal-footer">
-          <div className="text-end">
+        <div className="row my-2 text-center">
+          <div className="col">
+            <div className="btn btn-outline-danger"
+              onClick={deleteHandler}>
+              Delete
+            </div>
+          </div>
+          <div className="col">
             <button className="btn btn-secondary"
               onClick={controls.hide}>Close</button>
           </div>

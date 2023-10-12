@@ -4,8 +4,7 @@ import {
   useUpdateCompetitionMutation,
 } from "./competitionHooks";
 import { useGetGamesQuery } from "../games/gameHooks";
-import { FC, FormEvent, useState } from "react";
-import { CustomParamsSerializer } from "axios";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 import { TextInput, useTextInput } from "../../components/forms/TextInput";
 import { Spinner } from "../../components/Spinner";
 import {
@@ -13,6 +12,7 @@ import {
   ModalButton,
   useModal,
 } from "../../components/CustomModal";
+import { SelectInput, useSelectInput } from "../../components/forms/SelectInput";
 
 interface CompetitionEditorModalProps {
   eventId: number;
@@ -28,7 +28,13 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const getGamesQuery = useGetGamesQuery();
   const games = getGamesQuery.data ?? [];
 
-  const [gameId, setGameId] = useState(props.existingCompetition?.gameId ?? -1);
+  const gameControl = useSelectInput(
+    props.existingCompetition?.gameId ?? games[0]?.id ?? 0,
+    games,
+    (game) => game.id, 
+    (game) => game.name 
+  );
+
   const [startAt, setStartAt] = useState(
     props.existingCompetition?.startAt ?? new Date()
   );
@@ -58,20 +64,42 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
     e.preventDefault();
     const newCompetition: Competition = {
       id: props.existingCompetition?.id ?? 0,
-      gameId: gameId,
+      gameId: gameControl.value as number,
       eventId: props.eventId,
       startAt: startAt,
       endAt: endAt,
       location: locationControl.value,
     };
+    if (props.existingCompetition) {
+      updateCompetitionMutation.mutate(newCompetition);
+    } else {
+      addCompetitionMutation.mutate(newCompetition);
+    }
+    closeHandler();
   };
 
   const closeHandler = () => {
-    setGameId(0)
+    gameControl.setValue(0)
     setStartAt(new Date())
     setEndAt(new Date())
     locationControl.setValue("")
+    competitionEditorControls.hide();
   }
+
+  const handleTimeChange = (e : ChangeEvent<HTMLInputElement>, setDate: (date: Date) => void ) => {
+    const timeValue = e.target.value;
+    const [hours, minutes] = timeValue.split(':');
+    const newDate = new Date();
+    newDate.setHours(Number(hours));
+    newDate.setMinutes(Number(minutes));
+    setDate(newDate);
+  };
+
+  if (getGamesQuery.isLoading) return <Spinner />
+  if (getGamesQuery.isError) return <div>Error getting games</div>
+  if (!games) return <div>No games found</div>
+
+  const canSubmit = gameControl.value !== 0 && locationControl.value !== "" && startAt < endAt;
 
   return (
     <CustomModal ModalButton={ModalButton} controls={competitionEditorControls}>
@@ -83,17 +111,18 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
         </div>
         <div className="modal-body">
           <form onSubmit={submitHandler}>
-            <div className="row">
+            <SelectInput control={gameControl} label="Game" />
+            <div className="row mt-2">
               <label className="form-label col">
                 Start At:
-                <input type="date" className="form-control" />
+                <input type="time" className="form-control" onChange={(e) => handleTimeChange(e, setStartAt)} />
               </label>
               <label className="form-label col">
                 End At:
-                <input type="date" className="form-control" />
+                <input type="time" className="form-control" onChange={(e) => handleTimeChange(e, setEndAt)}/>
               </label>
             </div>
-            <TextInput control={locationControl} label="Location" />
+            <TextInput control={locationControl} label="Location"/>
             <div className="row text-center my-2">
               <div className="col">
                 <button className="btn btn-secondary"
@@ -102,7 +131,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
               </div>
               <div className="col">
                 <button className="btn btn-primary"
-                  // disabled={!canSubmit}
+                  disabled={!canSubmit}
                   type="submit">Save</button>
               </div>
             </div>

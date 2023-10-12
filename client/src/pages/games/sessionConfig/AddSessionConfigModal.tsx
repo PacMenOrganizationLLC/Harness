@@ -10,7 +10,7 @@ export const AddSessionConfigModal: FC<{
   const gameTemplateQuery = useGetGameTemplateConfigurationQuery(gameId);
   const gameTemplate = gameTemplateQuery.data ?? [];
 
-  const controls = useModal("Add Session Config", "xl")
+  const controls = useModal("Add Session Config")
 
   if (gameTemplateQuery.isLoading) return (
     <div className="text-center">
