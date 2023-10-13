@@ -1,8 +1,7 @@
-import { FC, useState } from "react"
+import { FC } from "react"
 import { GameConfigTemplate, SessionConfig } from "../../../models/SessionConfig"
 import { CustomModal, ModalButton, useModal } from "../../../components/CustomModal"
 import { useDeleteSessionConfigMutation, useUpdateSessionConfigMutation } from "./sessionConfigHooks"
-import { TextInput } from "../../../components/forms/TextInput"
 import { EditConfig } from "./EditConfig"
 
 export const ConfigDetailsModal: FC<{
