@@ -18,7 +18,7 @@ public class SessionConfigController : ControllerBase
   [HttpGet("{gameId}")]
   public async Task<ActionResult<IEnumerable<SessionConfig>>> GetSessionConfigs(int gameId)
   {
-    List<SessionConfig> sessionConfig = await _context.SessionConfig.Where(c => c.GameId == gameId).ToListAsync();
+    List<SessionConfig> sessionConfig = await _context.SessionConfig.Where(c => c.GameId == gameId).OrderBy(c => c.Name).ToListAsync();
     return sessionConfig;
   }
 
