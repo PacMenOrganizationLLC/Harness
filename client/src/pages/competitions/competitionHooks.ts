@@ -37,3 +37,14 @@ export const useUpdateCompetitionMutation = () => {
     },
   });
 };
+
+export const useDeleteCompetitionMutation = () => {
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await competitionService.deleteCompetition(id);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+    },
+  });
+}

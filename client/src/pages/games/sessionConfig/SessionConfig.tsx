@@ -17,7 +17,7 @@ export const SessionConfig: FC<{
   return (
     <div className="d-flex mt-3">
       {sessionConfigs.map((c) => (
-        <ConfigDetailsModal config={c} gameId={gameId} />
+        <ConfigDetailsModal config={c} gameId={gameId} key={c.id} />
       ))}
       <div className="card my-auto">
         <AddSessionConfigModal gameId={gameId} />
