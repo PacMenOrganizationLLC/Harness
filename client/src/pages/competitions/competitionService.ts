@@ -15,8 +15,13 @@ export const competitionService = {
     return response.data;
   },
   async updateCompetition(competition: Competition) {
-    const url = `${apiUrlBase}/${competition.id}`;
+    const url = `${apiUrlBase}`;
     const response = await axios.put(url, competition);
+    return response.data;
+  },
+  async deleteCompetition(id: number) {
+    const url = `${apiUrlBase}/${id}`;
+    const response = await axios.delete(url);
     return response.data;
   }
 }

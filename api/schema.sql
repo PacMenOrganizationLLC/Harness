@@ -31,8 +31,8 @@ create table Competition (
   id serial primary key,
   game_id int not null references Game(id) ON DELETE CASCADE,
   event_id int not null references Event(id) ON DELETE CASCADE,
-  start_at timestamp not null,
-  end_at timestamp not null,
+  start_at timestamptz not null,
+  end_at timestamptz not null,
   location text not null
 );
 
