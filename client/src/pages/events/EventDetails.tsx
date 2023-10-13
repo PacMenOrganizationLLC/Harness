@@ -3,14 +3,14 @@ import { Event } from "../../models/Event"
 import { EventEditorModal } from "./EventEditorModal"
 import { useDeleteEventMutation } from "./eventHooks"
 
-export const GameDetails: FC<{
-  selectedGame: Event,
+export const EventDetails: FC<{
+  selectedEvent: Event,
   setSelectedEvent: (e?: Event) => void
-}> = ({ selectedGame: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
-  const deleteGameMutation = useDeleteEventMutation();
+}> = ({ selectedEvent: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
+  const deleteEventMutation = useDeleteEventMutation();
 
   const deleteHandler = () => {
-    deleteGameMutation.mutate(selectedEvent.id)
+    deleteEventMutation.mutate(selectedEvent.id)
     setSelectedEvent(undefined)
   }
   return (
@@ -31,7 +31,7 @@ export const GameDetails: FC<{
       </div>
       <div>Event Name: {selectedEvent.name}</div>
       <div>Details: {selectedEvent.description}</div>
-      {/* <div>Day: {selectedEvent.day}</div> */}
+      <div>Day: {selectedEvent.day.toString()}</div> 
       <div>Location: {selectedEvent.location}</div>
     </div>
   )

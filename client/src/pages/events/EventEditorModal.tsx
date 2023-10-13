@@ -14,7 +14,7 @@ export const EventEditorModal: FC<{
   const nameControl = useTextInput(existingEvent?.name ?? "")
   const descriptionControl = useTextInput(existingEvent?.description ?? "")
   const imageFilenameControl = useTextInput(existingEvent?.imageFilename ?? "")
- // const dayControl = useTextInput(existingEvent?.day ?? "") //I don't know what's going on with date yet
+  const dayControl = existingEvent?.day;
   const locationControl = useTextInput(existingEvent?.location ?? "")
 
   const eventEditorControls = useModal("Event Editor")
@@ -43,7 +43,7 @@ export const EventEditorModal: FC<{
       name: nameControl.value,
       imageFilename: imageFilenameControl.value,
       description: descriptionControl.value,
-      day: new Date(),//dayControl.value
+      day: new Date(),
       location: locationControl.value,
     }
     if (existingEvent) {

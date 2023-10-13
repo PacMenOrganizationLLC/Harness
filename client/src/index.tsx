@@ -24,8 +24,8 @@ root.render(
         <NavBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/events" element={<Events />} />
           <Route path="/games" element={<Games />} />
+          <Route path="/events" element={<Events />} />
         </Routes>
       </Router>
     </QueryClientProvider>
