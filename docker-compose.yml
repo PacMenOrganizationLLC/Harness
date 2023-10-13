@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  api:
+    container_name: pacmen_api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/app
+    ports:
+      - 8000:8000
+      - 8001:8001
+    
+  client:
+    container_name: pacmen_client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/app
+    command: ["npm", "run", "start"]
+
+  db:
+    container_name: pacmen_db
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=Pacmen
+      - POSTGRES_USER=PacmenUser
+      - POSTGRES_PASSWORD=securepassword
+    ports:
+      - 5432:5432
+    volumes:
+      - ./api/data:/var/lib/postgresql/data
+      - ./api/schema.sql:/docker-entrypoint-initdb.d/init.sql
