@@ -12,7 +12,10 @@ import {
   ModalButton,
   useModal,
 } from "../../components/CustomModal";
-import { SelectInput, useSelectInput } from "../../components/forms/SelectInput";
+import {
+  SelectInput,
+  useSelectInput,
+} from "../../components/forms/SelectInput";
 
 interface CompetitionEditorModalProps {
   eventId: number;
@@ -31,8 +34,8 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const gameControl = useSelectInput(
     props.existingCompetition?.gameId ?? games[0]?.id ?? 0,
     games,
-    (game) => game.id, 
-    (game) => game.name 
+    (game) => game.id,
+    (game) => game.name
   );
 
   const [startAt, setStartAt] = useState(
@@ -79,27 +82,31 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   };
 
   const closeHandler = () => {
-    gameControl.setValue(0)
-    setStartAt(new Date())
-    setEndAt(new Date())
-    locationControl.setValue("")
+    gameControl.setValue(0);
+    setStartAt(new Date());
+    setEndAt(new Date());
+    locationControl.setValue("");
     competitionEditorControls.hide();
-  }
+  };
 
-  const handleTimeChange = (e : ChangeEvent<HTMLInputElement>, setDate: (date: Date) => void ) => {
+  const handleTimeChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    setDate: (date: Date) => void
+  ) => {
     const timeValue = e.target.value;
-    const [hours, minutes] = timeValue.split(':');
+    const [hours, minutes] = timeValue.split(":");
     const newDate = new Date();
     newDate.setHours(Number(hours));
     newDate.setMinutes(Number(minutes));
     setDate(newDate);
   };
 
-  if (getGamesQuery.isLoading) return <Spinner />
-  if (getGamesQuery.isError) return <div>Error getting games</div>
-  if (!games) return <div>No games found</div>
+  if (getGamesQuery.isLoading) return <Spinner />;
+  if (getGamesQuery.isError) return <div>Error getting games</div>;
+  if (!games) return <div>No games found</div>;
 
-  const canSubmit = gameControl.value !== 0 && locationControl.value !== "" && startAt < endAt;
+  const canSubmit =
+    gameControl.value !== 0 && locationControl.value !== "" && startAt < endAt;
 
   return (
     <CustomModal ModalButton={ModalButton} controls={competitionEditorControls}>
@@ -115,24 +122,40 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
             <div className="row mt-2">
               <label className="form-label col">
                 Start At:
-                <input type="time" className="form-control" onChange={(e) => handleTimeChange(e, setStartAt)} />
+                <input
+                  type="time"
+                  className="form-control"
+                  onChange={(e) => handleTimeChange(e, setStartAt)}
+                />
               </label>
               <label className="form-label col">
                 End At:
-                <input type="time" className="form-control" onChange={(e) => handleTimeChange(e, setEndAt)}/>
+                <input
+                  type="time"
+                  className="form-control"
+                  onChange={(e) => handleTimeChange(e, setEndAt)}
+                />
               </label>
             </div>
-            <TextInput control={locationControl} label="Location"/>
+            <TextInput control={locationControl} label="Location" />
             <div className="row text-center my-2">
               <div className="col">
-                <button className="btn btn-secondary"
+                <button
+                  className="btn btn-secondary"
                   type="button"
-                  onClick={closeHandler}>Close</button>
+                  onClick={closeHandler}
+                >
+                  Close
+                </button>
               </div>
               <div className="col">
-                <button className="btn btn-primary"
+                <button
+                  className="btn btn-primary"
                   disabled={!canSubmit}
-                  type="submit">Save</button>
+                  type="submit"
+                >
+                  Save
+                </button>
               </div>
             </div>
           </form>
