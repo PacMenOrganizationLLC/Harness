@@ -8,7 +8,7 @@ export interface TextInputControl {
 export const useTextInput = (
   initialValue: string,
 ): TextInputControl => {
-  const [value, setValue] = useState<string>(initialValue);
+  const [value, setValue] = useState(initialValue);
   return { value, setValue };
 };
 
@@ -19,6 +19,7 @@ interface Props {
   inputClassName?: string;
   placeholder?: string;
   isTextArea?: boolean;
+  isEditing?: boolean;
 }
 
 export const TextInput: FC<Props> = ({
@@ -28,12 +29,13 @@ export const TextInput: FC<Props> = ({
   inputClassName = "col-md",
   placeholder = "",
   isTextArea = false,
+  isEditing = true,
 }) => {
   const computedLabel = label?.toLowerCase().replace(" ", "");
   const labelClasses = `${labelClassName} my-auto`;
   const inputClasses = `${inputClassName} my-auto`;
 
-  return (
+  if (isEditing) return (
     <div className="form-group row">
       {label && (
         <div className={labelClasses}>
@@ -66,4 +68,8 @@ export const TextInput: FC<Props> = ({
       </div>
     </div>
   );
+
+  return (
+    <div>Not editing</div>
+  )
 };

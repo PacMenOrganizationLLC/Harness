@@ -1,7 +1,6 @@
 using api.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -89,6 +88,7 @@ namespace api.Controllers
             }
 
             _context.Event.Remove(Event);
+
             await _context.SaveChangesAsync();
 
             return Ok("Deleted Event");

@@ -7,16 +7,18 @@ using Microsoft.EntityFrameworkCore;
 public class SessionConfigController : ControllerBase
 {
   private readonly HarnessContext _context;
+  private readonly HttpClient gameApi;
 
-  public SessionConfigController(HarnessContext context)
+  public SessionConfigController(HarnessContext context, HttpClient gameApi)
   {
     _context = context;
+    this.gameApi = gameApi;
   }
 
-  [HttpGet]
-  public async Task<ActionResult<IEnumerable<SessionConfig>>> GetSessionConfigs()
+  [HttpGet("{gameId}")]
+  public async Task<ActionResult<IEnumerable<SessionConfig>>> GetSessionConfigs(int gameId)
   {
-    List<SessionConfig> sessionConfig = await _context.SessionConfig.ToListAsync();
+    List<SessionConfig> sessionConfig = await _context.SessionConfig.Where(c => c.GameId == gameId).OrderBy(c => c.Name).ToListAsync();
     return sessionConfig;
   }
 
@@ -49,7 +51,6 @@ public class SessionConfigController : ControllerBase
       existingSessionConfig.Name = sessionConfig.Name;
       existingSessionConfig.JsonConfig = sessionConfig.JsonConfig;
 
-      _context.Entry(existingSessionConfig).State = EntityState.Modified;
       await _context.SaveChangesAsync();
       return Ok("Updated Session Config Successfully");
     }
@@ -71,5 +72,19 @@ public class SessionConfigController : ControllerBase
     await _context.SaveChangesAsync();
 
     return Ok("Session Config Deleted Successfully");
+  }
+
+  [HttpGet("template/{gameId}")]
+  public async Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
+  {
+    string url = _context.Game.Where(g => g.Id == gameId).Select(g => g.HostUrl).FirstOrDefault();
+    // HttpResponseMessage response = await gameApi.GetAsync(url);
+    // Console.WriteLine(response.Content);
+    var sampleData = new List<GameConfigTemplate>
+    {
+      new("test", "data"),
+      new("more", "data")
+    };
+    return await Task.FromResult(sampleData);
   }
 }
