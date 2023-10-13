@@ -1,0 +1,17 @@
+{
+  "name": "pacmen_api",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "api",
+  "shutdownAction": "none",
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
+        "irongeek.vscode-env",
+        "ms-dotnettools.csharp",
+        "humao.rest-client"
+      ]
+    }
+  },
+  "workspaceFolder": "/app/"
+}
