@@ -22,7 +22,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const games = getGamesQuery.data ?? [];
 
   const gameControl = useSelectInput(
-    existingCompetition ? existingCompetition.gameId : games[0].id,
+    existingCompetition ? existingCompetition.gameId : games[0]?.id,
     games,
     (game) => game.id,
     (game) => game.name

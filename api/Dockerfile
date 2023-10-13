@@ -3,6 +3,5 @@ WORKDIR /app
 
 COPY *.csproj .
 RUN dotnet restore
-COPY . .
 
 ENTRYPOINT ["dotnet", "watch", "run", "--AlwaysRestartOnRudeEdit"]

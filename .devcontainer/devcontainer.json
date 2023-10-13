@@ -11,12 +11,12 @@
     "vscode": {
       "settings": {},
       "extensions": [
-        "irongeek.vscode-env",
-        "esbenp.prettier-vscode",
-        "dsznajder.es7-react-js-snippets",
-        "ms-dotnettools.csharp",
-        "humao.rest-client"
-      ],
+		"irongeek.vscode-env",
+		"esbenp.prettier-vscode",
+		"dsznajder.es7-react-js-snippets",
+		"ms-dotnettools.csharp",
+		"humao.rest-client",
+	],
     }
   },
   "forwardPorts": [],
