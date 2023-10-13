@@ -47,16 +47,19 @@ namespace api.Controllers
             {
                 return BadRequest();
             }
-            Event? existingEvent = await _context.Event.FindAsync(id);
+
+            Event existingEvent = await _context.Event.FindAsync(id);
 
             if (existingEvent != null)
             {
                 existingEvent.Name = updatedEvent.Name;
                 existingEvent.Description = updatedEvent.Description;
+
                 if (!string.IsNullOrEmpty(updatedEvent.ImageFilename))
                 {
                     existingEvent.ImageFilename = updatedEvent.ImageFilename;
                 }
+
                 await _context.SaveChangesAsync();
                 return Ok("Updated Event Successfully");
             }
@@ -64,11 +67,12 @@ namespace api.Controllers
             return NotFound();
         }
 
+
         // POST: api/Event
         [HttpPost]
-        public async Task<IActionResult> AddEvent(Event newEvent)
+        public async Task<IActionResult> AddEvent(Event Event)
         {
-            _context.Event.Add(newEvent);
+            _context.Event.Add(Event);
             await _context.SaveChangesAsync();
             return Ok("Added Event");
         }
@@ -77,13 +81,14 @@ namespace api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            var existingEvent = await _context.Event.FindAsync(id);
-            if (existingEvent == null)
+            var Event = await _context.Event.FindAsync(id);
+            if (Event == null)
             {
                 return NotFound();
             }
 
-            _context.Event.Remove(existingEvent);
+            _context.Event.Remove(Event);
+
             await _context.SaveChangesAsync();
 
             return Ok("Deleted Event");
