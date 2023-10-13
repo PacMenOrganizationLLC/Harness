@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Event } from "../../models/Event"
+import Event from "../../models/Event"
 import { EventEditorModal } from "./EventEditorModal"
 import { useDeleteEventMutation } from "./eventHooks"
 

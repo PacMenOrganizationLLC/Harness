@@ -1,6 +1,5 @@
 import axios from "axios"
-import { Event } from "../../models/Event";
-
+import Event  from "../../models/Event";
 export const eventService = {
   async getEvents(): Promise<Event[]> {
     const url = 'http://localhost:8000/api/Event';

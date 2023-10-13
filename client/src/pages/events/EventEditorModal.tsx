@@ -1,5 +1,5 @@
 import { FC, FormEvent } from "react"
-import { Event } from "../../models/Event"
+import Event from "../../models/Event"
 import { CustomModal, ModalButton, useModal } from "../../components/CustomModal"
 import { TextInput, useTextInput } from "../../components/forms/TextInput"
 import { useAddEventMutation, useUpdateEventMutation } from "./eventHooks"
