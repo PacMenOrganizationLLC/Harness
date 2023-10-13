@@ -1,0 +1,20 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+*.bin
+/api/.vs/api/FileContentIndex
+/api/.vs/api/v17
+/.vs/PacMenCodingChallenge/v17
+/.devcontainer/data/pg_multixact
+/.devcontainer/data/pg_stat
+/.devcontainer/data/pg_subtrans
+/.devcontainer/data/base
+/.devcontainer/data/global
+/.devcontainer/data/pg_logical
+/.devcontainer/data/pg_wal
+/.devcontainer/data/pg_xact
+/.devcontainer/data
+*.sqlite
+/.vs/VSWorkspaceState.json
+/.vs/PacMenCodingChallenge/FileContentIndex
