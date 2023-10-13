@@ -4,6 +4,7 @@ import { Spinner } from "../../components/Spinner";
 import { EventList } from "./EventList";
 import { useGetEventsQuery } from "./eventHooks";
 import Event from "../../models/Event";
+import { EventEditorModal } from "./EventEditorModal";
 export const Events = () => {
   const eventsQuery = useGetEventsQuery();
   const [selectedEvent, setSelectedEvent] = useState<Event>()
@@ -15,6 +16,7 @@ export const Events = () => {
           {eventsQuery.data &&
           <div><EventList events={eventsQuery.data} selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent}/></div>
           }
+          <EventEditorModal setSelectedEvent={setSelectedEvent}/>
         </div>
         <div className="col border-start border-end border">
           <div className="text-center fs-4">Competitions</div>

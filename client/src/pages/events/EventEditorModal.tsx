@@ -3,6 +3,7 @@ import Event from "../../models/Event"
 import { CustomModal, ModalButton, useModal } from "../../components/CustomModal"
 import { TextInput, useTextInput } from "../../components/forms/TextInput"
 import { useAddEventMutation, useUpdateEventMutation } from "./eventHooks"
+import { DateInput, useDateInput } from "../../components/forms/DateInput"
 
 
 export const EventEditorModal: FC<{
@@ -14,7 +15,8 @@ export const EventEditorModal: FC<{
   const nameControl = useTextInput(existingEvent?.name ?? "")
   const descriptionControl = useTextInput(existingEvent?.description ?? "")
   const imageFilenameControl = useTextInput(existingEvent?.imageFilename ?? "")
-  const dayControl = existingEvent?.day;
+  const dayControl = useDateInput(existingEvent?.day ?? new Date())
+  //TODO: make a useDateInput or take what 
   const locationControl = useTextInput(existingEvent?.location ?? "")
 
   const eventEditorControls = useModal("Event Editor")
@@ -68,7 +70,7 @@ export const EventEditorModal: FC<{
     eventEditorControls.hide()
   }
 
-  const canSubmit = nameControl.value !== "" && descriptionControl.value !== "" && locationControl.value !== ""
+  const canSubmit = nameControl.value !== "" && locationControl.value !== "" && dayControl.value !== new Date()
   return (
     <CustomModal ModalButton={ModalButton} controls={eventEditorControls}>
       <div className="modal-content">
@@ -86,17 +88,16 @@ export const EventEditorModal: FC<{
               label="*Name"
               labelClassName="col-12" />
             <TextInput control={descriptionControl}
-              label="*Host URL"
+              label="Description"
               labelClassName="col-12" />
             <TextInput control={imageFilenameControl}
-              label="Repo Link"
+              label="Image Filename"
               labelClassName="col-12" />
-            {/* <TextInput control={detailsControl}
-              label="Details"
-              isTextArea={true}
-              labelClassName="col-12" /> */}
+            <DateInput control={dayControl}
+              label="*Day"
+              labelClassName="col-12" />
             <TextInput control={locationControl}
-              label="*Created By"
+              label="*Location"
               labelClassName="col-12" />
             <div className="small">*Required</div>
             <div className="row text-center my-2">
