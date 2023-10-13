@@ -1,7 +1,9 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import { GameConfigTemplate, SessionConfig } from "../../../models/SessionConfig"
 import { CustomModal, ModalButton, useModal } from "../../../components/CustomModal"
-import { useDeleteSessionConfigMutation } from "./sessionConfigHooks"
+import { useDeleteSessionConfigMutation, useUpdateSessionConfigMutation } from "./sessionConfigHooks"
+import { TextInput } from "../../../components/forms/TextInput"
+import { EditConfig } from "./EditConfig"
 
 export const ConfigDetailsModal: FC<{
   config: SessionConfig,
@@ -9,6 +11,7 @@ export const ConfigDetailsModal: FC<{
 }> = ({ config, gameId }) => {
   const displayConfig: GameConfigTemplate[] = JSON.parse(config.jsonConfig)
   const deleteConfigMutation = useDeleteSessionConfigMutation(gameId);
+  const updateSessionConfigMutation = useUpdateSessionConfigMutation(gameId);
   const controls = useModal("Session Config Details")
 
   const deleteHandler = () => {
@@ -29,6 +32,20 @@ export const ConfigDetailsModal: FC<{
       </button>
     </div>
   )
+
+  const editConfigHandler = (updatedConfig: GameConfigTemplate) => {
+    const displayConfig: GameConfigTemplate[] = JSON.parse(config.jsonConfig)
+    const newJsonConfig = displayConfig.map(item =>
+      item.key === updatedConfig.key ? updatedConfig : item
+    )
+    const updatedSessionConfig: SessionConfig = {
+      id: config.id,
+      name: config.name,
+      jsonConfig: JSON.stringify(newJsonConfig),
+      gameId
+    }
+    updateSessionConfigMutation.mutate(updatedSessionConfig)
+  }
   return (
     <CustomModal ModalButton={ModalButton} controls={controls}>
       <div className="modal-content">
@@ -41,23 +58,8 @@ export const ConfigDetailsModal: FC<{
           </button>
         </div>
         <div className="modal-body">
-          <div className="row">
-            <div className="col">
-              <div>Keys:</div>
-            </div>
-            <div className="col">
-              <div>Values:</div>
-            </div>
-          </div>
           {displayConfig.map((c) => (
-            <div className="row">
-              <div className="col">
-                <div>{c.key}</div>
-              </div>
-              <div className="col">
-                <div>{c.value}</div>
-              </div>
-            </div>
+            <EditConfig config={c} key={c.key} editHandler={editConfigHandler} />
           ))}
         </div>
         <div className="row my-2 text-center">
