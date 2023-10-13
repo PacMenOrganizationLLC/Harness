@@ -25,32 +25,41 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
   }
 
   return (
-    <div className="col-2 card m-1">
-      <div>
-        ID: {competition.id}
-      </div>
-      <div>
-        Game: {getGameName(competition.gameId)}
-      </div>
-      <div>
-        Start: {new Date(competition.startAt).toLocaleTimeString()}
-      </div>
-      <div>
-        End: {new Date(competition.endAt).toLocaleTimeString()}
-      </div>
-      <div>
-        Location: {competition.location}
-      </div>
-      <div className="row text-center">
-        <div className="col">
-          <CompetitionEditorModal existingCompetition={competition} eventId={competition.id} />
+    <div className='card'>
+      <div className='card-body'>
+        <div className='card-title fs-5'>{getGameName(competition.gameId)}</div>
+        <div>
+          Start: {getTimeNoSeconds(competition.startAt)}
         </div>
-        <div className="col">
-          <button className="btn btn-outline-danger" onClick={deleteHandler}>
-            <i className="bi bi-trash" />
-          </button>
+        <div>
+          End: {getTimeNoSeconds(competition.endAt)}
+        </div>
+        <div>
+          Location: {competition.location}
+        </div>
+        <div className="row text-center my-1">
+          <div className="col">
+            <CompetitionEditorModal existingCompetition={competition} eventId={competition.id} />
+          </div>
+          <div className="col">
+            <button className="btn btn-outline-danger" onClick={deleteHandler}>
+              <i className="bi bi-trash" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   )
+}
+
+function getTimeNoSeconds(input: Date | string | undefined) {
+  if (!input) return ""
+  const date = new Date(input);
+  const formattedTime = date.toLocaleString('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  return formattedTime;
 }

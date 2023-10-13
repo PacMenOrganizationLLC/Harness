@@ -89,6 +89,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
           <div className="modal-title fw-bold fs-4">
             {existingCompetition ? "Edit Competition" : "New Competition"}
           </div>
+          <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
           <form onSubmit={submitHandler}>
