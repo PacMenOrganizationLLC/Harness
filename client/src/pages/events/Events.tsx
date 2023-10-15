@@ -5,6 +5,7 @@ import { EventList } from "./EventList";
 import { useGetEventsQuery } from "./eventHooks";
 import Event from "../../models/Event";
 import { EventEditorModal } from "./EventEditorModal";
+import { EventDetails } from "./EventDetails";
 export const Events = () => {
   const eventsQuery = useGetEventsQuery();
   const [selectedEvent, setSelectedEvent] = useState<Event>()
@@ -17,13 +18,12 @@ export const Events = () => {
           <div><EventList events={eventsQuery.data} selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent}/></div>
           }
           <EventEditorModal setSelectedEvent={setSelectedEvent}/>
+           {selectedEvent && (
+          <EventDetails selectedEvent={selectedEvent}
+            setSelectedEvent={setSelectedEvent} />
+        )}
         </div>
-        <div className="col border-start border-end border">
-          <div className="text-center fs-4">Competitions</div>
-        </div>
-        <div className="col border-start border-end border">
-          <div className="text-center fs-4">Sessions</div>
-        </div>
+       
       </div>
     </div>
   );

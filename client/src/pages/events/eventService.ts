@@ -13,7 +13,7 @@ export const eventService = {
   },
   async updateEvent(event: Event) {
     const url = `http://localhost:8000/api/Event/${event.id}`;
-    const response = await axios.put(url, Event);
+    const response = await axios.put(url, event);
     return response.data
   },
   async deleteEvent(id: number) {
