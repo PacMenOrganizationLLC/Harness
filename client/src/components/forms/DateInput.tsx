@@ -45,7 +45,7 @@ export const DateInput: FC<Props> = ({
           type="date"
           name={computedLabel}
           id={computedLabel}
-          value={control.value.toISOString().split('T')[0]}
+          value={control.value instanceof Date ? control.value.toISOString().split('T')[0] : ''}
           className="form-control"
           onChange={(e) => control.setValue(new Date(e.target.value))}
           placeholder={placeholder}
