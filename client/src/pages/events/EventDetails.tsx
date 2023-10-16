@@ -6,7 +6,7 @@ import { useDeleteEventMutation } from "./eventHooks"
 export const EventDetails: FC<{
   selectedEvent: Event,
   setSelectedEvent: (e?: Event) => void
-}> = ({ selectedEvent: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
+}> = ({ selectedEvent, setSelectedEvent }) => {
   const deleteEventMutation = useDeleteEventMutation();
   console.log(selectedEvent.day)
   const deleteHandler = () => {
@@ -29,10 +29,9 @@ export const EventDetails: FC<{
           </button>
         </div>
       </div>
-      <div>Event Name: {selectedEvent.name}</div>
-      <div>Details: {selectedEvent.description}</div>
-      <div>Day: {new Date(selectedEvent.day).toString()}</div> 
-      <div>Location: {selectedEvent.location}</div>
+      <div>{selectedEvent.description}</div>
+      <div><i className="bi-calendar-date me-1" />{new Date(selectedEvent.day).toDateString()}</div>
+      <div><i className="bi-pin-map me-1" />{selectedEvent.location}</div>
 
     </div>
   )

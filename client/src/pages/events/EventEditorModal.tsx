@@ -50,8 +50,8 @@ export const EventEditorModal: FC<{
     }
     if (existingEvent) {
       updateEventMutation.mutateAsync(newEvent).then(() => {
-         console.log(existingEvent)
-         console.log("success")
+        console.log(existingEvent)
+        console.log("success")
       }
       )
     }

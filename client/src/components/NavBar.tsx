@@ -6,17 +6,17 @@ export const NavBar = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-auto">
-            <Link to="/" className="text-reset text-decoration-none">
+            <Link to="/" className="text-reset text-decoration-none fs-5">
               Home
             </Link>
           </div>
           <div className="col-auto">
-            <Link to="/events" className="text-reset text-decoration-none">
+            <Link to="/events" className="text-reset text-decoration-none fs-5">
               Events
             </Link>
           </div>
           <div className="col-auto">
-            <Link to="/games" className="text-reset text-decoration-none">
+            <Link to="/games" className="text-reset text-decoration-none fs-5">
               Games
             </Link>
           </div>

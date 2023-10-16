@@ -4,11 +4,11 @@ export const EventList: FC<{
   events: Event[],
   selectedEvent?: Event,
   setSelectedEvent: (e: Event) => void
-}> = ({ events: events, selectedEvent: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
+}> = ({ events, selectedEvent, setSelectedEvent }) => {
   return (
     <div className="list-group shadow-sm">
       {events.map((e) => (
-        <div className={`list-group-item list-group-item-action 
+        <div className={`list-group-item list-group-item-action text-truncate
           ${e.id === selectedEvent?.id && "active"}`}
           onClick={() => setSelectedEvent(e)}
           key={e.id}>
