@@ -28,7 +28,7 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
   return (
     <div className='card'>
       <button className='btn text-reset p-0'
-        onClick={() => navigate("/")}>
+        onClick={() => navigate(`/competition/${competition.id}`)}>
         <div className='card-body'>
           <div className='card-title fs-5'>{getGameName(competition.gameId)}</div>
           <div>

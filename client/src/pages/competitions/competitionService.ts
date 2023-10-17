@@ -9,6 +9,11 @@ export const competitionService = {
     const response = await axios.get(url);
     return response.data;
   },
+  async getCompetition(id: number): Promise<Competition> {
+    const url = `${apiUrlBase}/${id}`;
+    const response = await axios.get(url);
+    return response.data;
+  },
   async addCompetition(competition: Competition) {
     const url = `${apiUrlBase}`;
     const response = await axios.post(url, competition);

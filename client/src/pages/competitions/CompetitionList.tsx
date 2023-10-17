@@ -2,7 +2,6 @@ import { FC } from 'react'
 import { useGetCompetitionsQuery } from './competitionHooks';
 import { Spinner } from '../../components/Spinner';
 import { CompetitionItem } from './CompetitionItem';
-import { CompetitionEditorModal } from './CompetitionEditorModal';
 
 interface CompetitionListProps {
   eventId: number;
