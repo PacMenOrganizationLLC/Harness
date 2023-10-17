@@ -2,9 +2,10 @@ import { FC } from 'react'
 import { useGetCompetitionsQuery } from './competitionHooks';
 import { Spinner } from '../../components/Spinner';
 import { CompetitionItem } from './CompetitionItem';
+import { CompetitionEditorModal } from './CompetitionEditorModal';
 
 interface CompetitionListProps {
-  eventId?: number;
+  eventId: number;
 }
 
 export const CompetitionList: FC<CompetitionListProps> = ({ eventId }) => {
@@ -17,9 +18,9 @@ export const CompetitionList: FC<CompetitionListProps> = ({ eventId }) => {
   if (!getCompetitionsQuery.data) return <div>No competitions</div>
 
   return (
-    <div className="row mt-2">
+    <div className="row">
       {filteredCompetitions.map((c) => (
-        <div className='col-2' key={c.id}>
+        <div className='col-auto' key={c.id}>
           <CompetitionItem competition={c} />
         </div>
       ))}
