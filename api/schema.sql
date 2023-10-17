@@ -39,7 +39,9 @@ create table Competition (
 create table Session (
   id serial primary key,
   competition_id int not null references Competition(id) ON DELETE CASCADE,
-  play_id text not null
+  play_id text not null,
+  name text not null,
+  creation_date timestamptz not null default NOW()
 );
 
 create table Session_Client (

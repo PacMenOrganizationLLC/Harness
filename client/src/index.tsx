@@ -10,7 +10,7 @@ import { Events } from "./pages/events/Events";
 import { Games } from "./pages/games/Games";
 import { getQueryClient } from "./queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { SessionManagement } from "./pages/sessions/Session";
+import { Session } from "./pages/sessions/Session";
 
 const queryClient = getQueryClient();
 
@@ -29,7 +29,7 @@ root.render(
 
           <Route path="/events" element={<Events />} />
 
-          <Route path="/session" element={<SessionManagement />} />
+          {/* <Route path="/session" element={<Session />} /> */}
         </Routes>
       </Router>
     </QueryClientProvider>
