@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { EventList } from "./EventList";
 import { useGetEventsQuery } from "./eventHooks";
 import Event from "../../models/Event";
@@ -8,6 +8,12 @@ export const Events = () => {
   const eventsQuery = useGetEventsQuery();
   const [selectedEvent, setSelectedEvent] = useState<Event>()
 
+  useEffect(()=>{
+    if (eventsQuery.data && eventsQuery.data.length > 0){
+      setSelectedEvent(eventsQuery.data[0])
+    }
+  }, [eventsQuery.data])
+  
   return (
     <div className="container">
       <div className="row">
