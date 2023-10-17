@@ -78,13 +78,7 @@ public class SessionConfigController : ControllerBase
   public async Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
   {
     string? url = _context.Game.Where(g => g.Id == gameId).Select(g => g.ApiUrl).FirstOrDefault();
-    HttpResponseMessage response = await gameApi.GetAsync(url);
-    Console.WriteLine(response.Content);
-    var sampleData = new List<GameConfigTemplate>
-    {
-      new("test", "data"),
-      new("more", "data")
-    };
-    return await Task.FromResult(sampleData);
+    var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url + "/config");
+    return await Task.FromResult(response);
   }
 }
