@@ -15,6 +15,7 @@ export const GameEditorModal: FC<{
   const repoLinkControl = useTextInput(existingGame?.repoLink ?? "")
   const detailsControl = useTextInput(existingGame?.details ?? "")
   const createdByControl = useTextInput(existingGame?.createdBy ?? "")
+  const apiUrlControl = useTextInput(existingGame?.apiUrl ?? "")
 
   const gameEditorControls = useModal("Game Editor")
 
@@ -44,7 +45,8 @@ export const GameEditorModal: FC<{
       hostUrl: hostUrlControl.value,
       details: detailsControl.value,
       createdBy: createdByControl.value,
-      createdAt: new Date()
+      createdAt: new Date(),
+      apiUrl: apiUrlControl.value
     }
     if (existingGame) {
       updateGameMutation.mutate(newGame)
@@ -66,7 +68,10 @@ export const GameEditorModal: FC<{
     gameEditorControls.hide()
   }
 
-  const canSubmit = nameControl.value !== "" && hostUrlControl.value !== "" && createdByControl.value !== ""
+  const canSubmit = nameControl.value !== ""
+    && hostUrlControl.value !== ""
+    && createdByControl.value !== ""
+    && apiUrlControl.value !== ""
   return (
     <CustomModal ModalButton={ModalButton} controls={gameEditorControls}>
       <div className="modal-content">
@@ -86,6 +91,10 @@ export const GameEditorModal: FC<{
             <TextInput control={hostUrlControl}
               label="*Host URL"
               placeholder="https://your_server.xxx"
+              labelClassName="col-12" />
+            <TextInput control={apiUrlControl}
+              label="*API URL"
+              placeholder="https://your_server.xxx/your_controller"
               labelClassName="col-12" />
             <TextInput control={repoLinkControl}
               label="Repo Link"

@@ -12,7 +12,7 @@ services:
       - 8000:8000
       - 8001:8001
     restart: unless-stopped
-    
+
   client:
     container_name: pacmen_client
     build:
@@ -22,7 +22,7 @@ services:
       - "3000:3000"
     volumes:
       - ./client:/app
-    command: ["npm", "run", "start"]
+    command: [ "npm", "run", "start" ]
     restart: unless-stopped
 
   db:
@@ -35,5 +35,4 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ./api/data:/var/lib/postgresql/data
       - ./api/schema.sql:/docker-entrypoint-initdb.d/init.sql
