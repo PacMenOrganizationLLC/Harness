@@ -2,13 +2,14 @@ import { FC } from "react"
 import Event from "../../models/Event"
 import { EventEditorModal } from "./EventEditorModal"
 import { useDeleteEventMutation } from "./eventHooks"
+import { CompetitionEditorModal } from "../competitions/CompetitionEditorModal"
+import { CompetitionList } from "../competitions/CompetitionList"
 
 export const EventDetails: FC<{
   selectedEvent: Event,
   setSelectedEvent: (e?: Event) => void
-}> = ({ selectedEvent: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
+}> = ({ selectedEvent, setSelectedEvent }) => {
   const deleteEventMutation = useDeleteEventMutation();
-  console.log(selectedEvent.day)
   const deleteHandler = () => {
     deleteEventMutation.mutate(selectedEvent.id)
     setSelectedEvent(undefined)
@@ -29,11 +30,18 @@ export const EventDetails: FC<{
           </button>
         </div>
       </div>
-      <div>Event Name: {selectedEvent.name}</div>
-      <div>Details: {selectedEvent.description}</div>
-      <div>Day: {new Date(selectedEvent.day).toString()}</div> 
-      <div>Location: {selectedEvent.location}</div>
-
+      <div>{selectedEvent.description}</div>
+      <div><i className="bi-calendar-date me-1" />{new Date(selectedEvent.day).toDateString()}</div>
+      <div><i className="bi-pin-map me-1" />{selectedEvent.location}</div>
+      <div className="row border-top mt-3 pt-2">
+        <div className="col my-auto">
+          <div className="fs-5">Competitions:</div>
+        </div>
+        <div className="col-auto">
+          <CompetitionEditorModal eventId={selectedEvent.id} />
+        </div>
+      </div>
+      <CompetitionList eventId={selectedEvent.id} />
     </div>
   )
 }

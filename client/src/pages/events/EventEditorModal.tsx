@@ -49,11 +49,7 @@ export const EventEditorModal: FC<{
       location: locationControl.value,
     }
     if (existingEvent) {
-      updateEventMutation.mutateAsync(newEvent).then(() => {
-         console.log(existingEvent)
-         console.log("success")
-      }
-      )
+      updateEventMutation.mutateAsync(newEvent)
     }
     else {
       addEventMutation.mutate(newEvent)

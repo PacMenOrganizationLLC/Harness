@@ -4,17 +4,21 @@ export const EventList: FC<{
   events: Event[],
   selectedEvent?: Event,
   setSelectedEvent: (e: Event) => void
-}> = ({ events: events, selectedEvent: selectedEvent, setSelectedEvent: setSelectedEvent }) => {
+}> = ({ events, selectedEvent, setSelectedEvent }) => {
   return (
-    <div className="list-group shadow-sm">
-      {events.map((e) => (
-        <div className={`list-group-item list-group-item-action 
-          ${e.id === selectedEvent?.id && "active"}`}
-          onClick={() => setSelectedEvent(e)}
-          key={e.id}>
-          {e.name}
-        </div>
-      ))}
+    <div style={{ maxHeight: "50ex" }} className="overflow-auto border rounded mb-2">
+      <div className="list-group shadow-sm"
+        style={{ borderRadius: "0" }}>
+        {events.map((e, index) => (
+          <button className={`list-group-item list-group-item-action text-truncate border-0
+            ${index !== events.length - 1 && "border-bottom"}
+            ${e.id === selectedEvent?.id && "active"}`}
+            onClick={() => setSelectedEvent(e)}
+            key={e.id}>
+            {e.name}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }

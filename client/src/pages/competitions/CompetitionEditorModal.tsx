@@ -36,12 +36,15 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const ModalButton: ModalButton = ({ showModal }) => (
     <div>
       {existingCompetition ? (
-        <button className="btn btn-outline-secondary" onClick={showModal}>
+        <button className="btn btn-outline-secondary" onClick={(e) => {
+          e.stopPropagation();
+          showModal();
+        }}>
           <i className="bi bi-pencil" />
         </button>
       ) : (
-        <button className="btn btn-outline-info" onClick={showModal}>
-          New
+        <button className="btn btn-outline-info px-2 py-1" onClick={showModal}>
+          <i className="bi-plus-lg" />
         </button>
       )}
     </div>

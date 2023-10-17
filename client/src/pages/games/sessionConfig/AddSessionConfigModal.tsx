@@ -1,6 +1,5 @@
 import { FC } from "react"
 import { useGetGameTemplateConfigurationQuery } from "./sessionConfigHooks";
-import { Spinner } from "../../../components/Spinner";
 import { CustomModal, ModalButton, useModal } from "../../../components/CustomModal";
 import { NewConfigForm } from "./NewConfigForm";
 
@@ -11,13 +10,6 @@ export const AddSessionConfigModal: FC<{
   const gameTemplate = gameTemplateQuery.data ?? [];
 
   const controls = useModal("Add Session Config")
-
-  if (gameTemplateQuery.isLoading) return (
-    <div className="text-center">
-      <h3>Loading starting config template...</h3>
-      <Spinner />
-    </div>
-  )
 
   const ModalButton: ModalButton = ({ showModal }) => (
     <button className="btn btn-outline-secondary px-2 py-1"
@@ -33,7 +25,6 @@ export const AddSessionConfigModal: FC<{
   const closeHandler = () => {
     controls.hide();
   }
-
 
   return (
     <CustomModal ModalButton={ModalButton} controls={controls}>
