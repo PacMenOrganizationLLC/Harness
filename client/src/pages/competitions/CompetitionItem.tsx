@@ -1,8 +1,6 @@
 import { FC } from 'react';
 import { Competition } from '../../models/Competition';
 import { useGetGamesQuery } from '../games/gameHooks';
-import { CompetitionEditorModal } from './CompetitionEditorModal';
-import { useDeleteCompetitionMutation } from './competitionHooks';
 import { useNavigate } from 'react-router-dom';
 
 interface CompetitionItemProps {
@@ -15,12 +13,12 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
   const games = getGamesQuery.data ?? [];
 
 
-  const deleteCompetitionMutation = useDeleteCompetitionMutation();
+  // const deleteCompetitionMutation = useDeleteCompetitionMutation();
 
-  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    deleteCompetitionMutation.mutate(competition.id);
-  }
+  // const deleteHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  //   e.stopPropagation();
+  //   deleteCompetitionMutation.mutate(competition.id);
+  // }
 
   const getGameName = (gameId: number) => {
     const game = games.find((g) => g.id === gameId)
@@ -29,7 +27,7 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
 
   return (
     <div className='card'>
-      <button className='border-0 bg-transparent'
+      <button className='btn text-reset p-0'
         onClick={() => navigate("/")}>
         <div className='card-body'>
           <div className='card-title fs-5'>{getGameName(competition.gameId)}</div>
@@ -42,16 +40,13 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
           <div>
             Location: {competition.location}
           </div>
-          <div className="row text-center mt-2">
-            <div className="col">
-              <CompetitionEditorModal existingCompetition={competition} eventId={competition.id} />
-            </div>
+          {/* <div className="row text-center mt-2">
             <div className="col">
               <button className="btn btn-outline-danger" onClick={deleteHandler}>
                 <i className="bi bi-trash" />
               </button>
             </div>
-          </div>
+          </div> */}
         </div>
       </button>
     </div>

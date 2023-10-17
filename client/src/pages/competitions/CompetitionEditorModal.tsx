@@ -43,10 +43,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
           <i className="bi bi-pencil" />
         </button>
       ) : (
-        <button className="btn btn-outline-info px-2 py-1" onClick={(e) => {
-          e.stopPropagation();
-          showModal();
-        }}>
+        <button className="btn btn-outline-info px-2 py-1" onClick={showModal}>
           <i className="bi-plus-lg" />
         </button>
       )}

@@ -11,6 +11,7 @@ import { Games } from "./pages/games/Games";
 import { getQueryClient } from "./queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { SessionManagement } from "./pages/sessions/Session";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = getQueryClient();
 
@@ -21,6 +22,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <Router>
         <NavBar />
         <Routes>
