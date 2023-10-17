@@ -8,7 +8,6 @@ export const EventDetails: FC<{
   setSelectedEvent: (e?: Event) => void
 }> = ({ selectedEvent, setSelectedEvent }) => {
   const deleteEventMutation = useDeleteEventMutation();
-  console.log(selectedEvent.day)
   const deleteHandler = () => {
     deleteEventMutation.mutate(selectedEvent.id)
     setSelectedEvent(undefined)

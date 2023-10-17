@@ -15,10 +15,13 @@ export const Events = () => {
           <h1 className="text-center">Events</h1>
           <div className="row">
             <div className="col-md-4">
+              <div className="text-end mb-2 d-md-none">
+                <EventEditorModal setSelectedEvent={setSelectedEvent} />
+              </div>
               {eventsQuery.data && (
                 <EventList events={eventsQuery.data} selectedEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />
               )}
-              <div className="my-2 text-center">
+              <div className="text-center d-none d-md-block">
                 <EventEditorModal setSelectedEvent={setSelectedEvent} />
               </div>
             </div>
