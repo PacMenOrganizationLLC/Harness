@@ -32,10 +32,7 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
         <div className='card-body'>
           <div className='card-title fs-5'>{getGameName(competition.gameId)}</div>
           <div>
-            Start: {getTimeNoSeconds(competition.startAt)}
-          </div>
-          <div>
-            End: {getTimeNoSeconds(competition.endAt)}
+            {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
           </div>
           <div>
             Location: {competition.location}

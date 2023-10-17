@@ -34,6 +34,7 @@ export const GameDetails: FC<{
       <div>Created By: {selectedGame.createdBy}</div>
       <div>Details: {selectedGame.details}</div>
       <div>Host Url: {selectedGame.hostUrl}</div>
+      <div>API Url: {selectedGame.apiUrl}</div>
       <div>Repo Link: {selectedGame.repoLink}</div>
       <SessionConfig gameId={selectedGame.id} />
     </div>

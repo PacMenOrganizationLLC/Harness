@@ -3,6 +3,7 @@ export interface Game {
   name: string;
   repoLink?: string;
   hostUrl: string;
+  apiUrl: string;
   details?: string;
   createdBy: string;
   createdAt: Date;
