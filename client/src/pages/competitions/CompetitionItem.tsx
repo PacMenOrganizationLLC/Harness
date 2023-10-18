@@ -26,16 +26,16 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
   }
 
   return (
-    <div className='card'>
+    <div className='card h-100'>
       <button className='btn text-reset p-0'
         onClick={() => navigate(`/competition/${competition.id}`)}>
         <div className='card-body'>
-          <div className='card-title fs-5'>{getGameName(competition.gameId)}</div>
+          <div className='card-title fs-5 text-truncate'>{getGameName(competition.gameId)}</div>
           <div>
             {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
           </div>
           <div>
-            Location: {competition.location}
+            <i className='bi-pin-map me-1' />{competition.location}
           </div>
           {/* <div className="row text-center mt-2">
             <div className="col">

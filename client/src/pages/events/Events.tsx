@@ -8,12 +8,12 @@ export const Events = () => {
   const eventsQuery = useGetEventsQuery();
   const [selectedEvent, setSelectedEvent] = useState<Event>()
 
-  useEffect(()=>{
-    if (eventsQuery.data && eventsQuery.data.length > 0){
+  useEffect(() => {
+    if (eventsQuery.data && eventsQuery.data.length > 0) {
       setSelectedEvent(eventsQuery.data[0])
     }
   }, [eventsQuery.data])
-  
+
   return (
     <div className="container">
       <div className="row">
@@ -31,7 +31,7 @@ export const Events = () => {
                 <EventEditorModal setSelectedEvent={setSelectedEvent} />
               </div>
             </div>
-            <div className="col-md">
+            <div className="col-md-8">
               {selectedEvent && (
                 <EventDetails selectedEvent={selectedEvent}
                   setSelectedEvent={setSelectedEvent} />
