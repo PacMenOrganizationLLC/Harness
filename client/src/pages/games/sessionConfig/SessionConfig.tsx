@@ -17,7 +17,7 @@ export const SessionConfig: FC<{
   return (
     <div className="row mt-3">
       {sessionConfigs.map((c) => (
-        <div className="col-3 my-1 px-1">
+        <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
           <ConfigDetailsModal config={c} gameId={gameId} key={c.id} />
         </div>
       ))}

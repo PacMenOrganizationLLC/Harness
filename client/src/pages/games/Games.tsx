@@ -24,11 +24,16 @@ export const Games = () => {
     <div className="container">
       <h1 className="text-center">Games</h1>
       <div className="row">
-        <div className="col-4">
-          <GameList games={games}
-            selectedGame={selectedGame}
-            setSelectedGame={setSelectedGame} />
-          <div className="text-center my-2">
+        <div className="col-md-4 col-12">
+          <div className="text-end mb-2 d-md-none">
+            <GameEditorModal setSelectedGame={setSelectedGame} />
+          </div>
+          <div className="mb-2 mb-md-0">
+            <GameList games={games}
+              selectedGame={selectedGame}
+              setSelectedGame={setSelectedGame} />
+          </div>
+          <div className="text-center my-2 d-none d-md-block">
             <GameEditorModal setSelectedGame={setSelectedGame} />
           </div>
         </div>

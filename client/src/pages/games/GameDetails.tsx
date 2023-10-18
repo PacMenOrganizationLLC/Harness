@@ -16,9 +16,9 @@ export const GameDetails: FC<{
   }
 
   return (
-    <div className="col-8 border rounded shadow-sm p-3" key={selectedGame.id}>
+    <div className="col-md-8 col border rounded shadow-sm p-3" key={selectedGame.id}>
       <div className="row">
-        <div className="col my-auto">
+        <div className="col-lg-10 col-md-8 my-auto">
           <div className="fs-4 fw-bold text-truncate">{selectedGame.name}</div>
         </div>
         <div className="col-auto">
@@ -33,9 +33,9 @@ export const GameDetails: FC<{
       </div>
       <div>Created By: {selectedGame.createdBy}</div>
       <div>Details: {selectedGame.details}</div>
-      <div>Host Url: {selectedGame.hostUrl}</div>
-      <div>API Url: {selectedGame.apiUrl}</div>
-      <div>Repo Link: {selectedGame.repoLink}</div>
+      <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
+      <div className="text-break">API Url: {selectedGame.apiUrl}</div>
+      <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
       <SessionConfig gameId={selectedGame.id} />
     </div>
   )
