@@ -6,82 +6,82 @@ using Microsoft.EntityFrameworkCore;
 [ApiController]
 public class SessionController : ControllerBase
 {
-    private readonly HarnessContext _context;
+  private readonly HarnessContext _context;
 
-    public SessionController(HarnessContext context)
-    {
-        _context = context;
-    }
+  public SessionController(HarnessContext context)
+  {
+    _context = context;
+  }
 
-    [HttpPost]
-    public async Task<IActionResult> AddSession(Session session)
-    {
-        _context.Session.Add(session);
+  [HttpPost]
+  public async Task<IActionResult> AddSessionAsync(Session session)
+  {
+    _context.Session.Add(session);
 
-        await _context.SaveChangesAsync();
-    
-        return Ok("Added Session Successfully");
-    }
+    await _context.SaveChangesAsync();
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Session>>> GetSessions()
-    {
-        List<Session> sessions = await _context.Session.ToListAsync();
-        return sessions;
-    }
+    return Ok("Added Session Successfully");
+  }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Session>> GetSession(int id)
-    {
-        Session? session = await _context.Session.FindAsync(id);
+  [HttpGet]
+  public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync()
+  {
+    List<Session> sessions = await _context.Session.ToListAsync();
+    return sessions;
+  }
 
-        if (session == null)
-            return NotFound();
+  [HttpGet("{id}")]
+  public async Task<ActionResult<Session>> GetSessionAsync(int id)
+  {
+    Session? session = await _context.Session.Where((s) => s.Id == id).FirstOrDefaultAsync();
 
-        return session;
-    }
+    if (session == null)
+      return NotFound();
 
-    [HttpPut("{startSessionId}")]
-    public async Task<IActionResult> StartSession(int id)
-    {
-        Session? session = await _context.Session.FindAsync(id);
+    return session;
+  }
 
-        if (session == null)
-            return NotFound();
+  [HttpPut("{startSessionId}")]
+  public async Task<IActionResult> StartSessionAsync(int id)
+  {
+    Session? session = await _context.Session.FindAsync(id);
 
-        //TODO: Call game API to start game. Pass in config
+    if (session == null)
+      return NotFound();
 
-        await _context.SaveChangesAsync();
+    //TODO: Call game API to start game. Pass in config
 
-        return Ok("Session has been started");
-    }
+    await _context.SaveChangesAsync();
 
-    [HttpPut("{stopSessionId}")]
-    public async Task<IActionResult> StopSession(int id)
-    {
-        Session? session = await _context.Session.FindAsync(id);
+    return Ok("Session has been started");
+  }
 
-        if (session == null)
-            return NotFound();
-        
-        //TODO: Call game API to stop game.
+  [HttpPut("{stopSessionId}")]
+  public async Task<IActionResult> StopSessionAsync(int id)
+  {
+    Session? session = await _context.Session.FindAsync(id);
 
-        await _context.SaveChangesAsync();
+    if (session == null)
+      return NotFound();
 
-        return Ok("Session has been stopped");
-    }
+    //TODO: Call game API to stop game.
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteSession(int id)
-    {
-        Session? session = await _context.Session.FindAsync(id);
+    await _context.SaveChangesAsync();
 
-        if (session == null)
-            return NotFound();
-        
-        _context.Session.Remove(session);
-        await _context.SaveChangesAsync();
+    return Ok("Session has been stopped");
+  }
 
-        return Ok("Session Deleted Successfully");
-    }
+  [HttpDelete("{id}")]
+  public async Task<IActionResult> DeleteSessionAsync(int id)
+  {
+    Session? session = await _context.Session.FindAsync(id);
+
+    if (session == null)
+      return NotFound();
+
+    _context.Session.Remove(session);
+    await _context.SaveChangesAsync();
+
+    return Ok("Session Deleted Successfully");
+  }
 }
