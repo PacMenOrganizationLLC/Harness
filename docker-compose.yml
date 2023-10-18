@@ -24,15 +24,3 @@ services:
       - ./client:/app
     command: [ "npm", "run", "start" ]
     restart: unless-stopped
-
-  db:
-    container_name: pacmen_db
-    image: postgres:13
-    environment:
-      - POSTGRES_DB=Pacmen
-      - POSTGRES_USER=PacmenUser
-      - POSTGRES_PASSWORD=securepassword
-    ports:
-      - 5432:5432
-    volumes:
-      - ./api/schema.sql:/docker-entrypoint-initdb.d/init.sql
