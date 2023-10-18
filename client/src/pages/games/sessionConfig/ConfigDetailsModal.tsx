@@ -24,7 +24,7 @@ export const ConfigDetailsModal: FC<{
       <button className="btn"
         onClick={showModal}>
         <div className="card-body">
-          <div className="card-title my-auto">
+          <div className="card-title my-auto text-truncate">
             {config.name}
           </div>
         </div>

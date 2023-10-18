@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { useDeleteSessionConfigMutation, useGetSessionConfigsQuery } from "./sessionConfigHooks";
+import { useGetSessionConfigsQuery } from "./sessionConfigHooks";
 import { Spinner } from "../../../components/Spinner";
 import { AddSessionConfigModal } from "./AddSessionConfigModal";
 import { ConfigDetailsModal } from "./ConfigDetailsModal";
@@ -15,12 +15,16 @@ export const SessionConfig: FC<{
   if (!sessionConfigsQuery.data) return <div>Unable to get session configurations</div>
 
   return (
-    <div className="d-flex mt-3">
+    <div className="row mt-3">
       {sessionConfigs.map((c) => (
-        <ConfigDetailsModal config={c} gameId={gameId} key={c.id} />
+        <div className="col-3 my-1 px-1">
+          <ConfigDetailsModal config={c} gameId={gameId} key={c.id} />
+        </div>
       ))}
-      <div className="card my-auto">
-        <AddSessionConfigModal gameId={gameId} />
+      <div className="col-auto my-auto px-1">
+        <div className="card">
+          <AddSessionConfigModal gameId={gameId} />
+        </div>
       </div>
     </div>
   )

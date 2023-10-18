@@ -16,10 +16,10 @@ export const GameDetails: FC<{
   }
 
   return (
-    <div className="col border rounded shadow-sm p-3" key={selectedGame.id}>
+    <div className="col-8 border rounded shadow-sm p-3" key={selectedGame.id}>
       <div className="row">
         <div className="col my-auto">
-          <div className="fs-4 fw-bold">{selectedGame.name}</div>
+          <div className="fs-4 fw-bold text-truncate">{selectedGame.name}</div>
         </div>
         <div className="col-auto">
           <GameEditorModal existingGame={selectedGame} setSelectedGame={setSelectedGame} />
