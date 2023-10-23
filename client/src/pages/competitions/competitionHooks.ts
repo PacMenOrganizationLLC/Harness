@@ -40,8 +40,9 @@ export const useUpdateCompetitionMutation = () => {
     mutationFn: async (newCompetition: Competition) => {
       return await competitionService.updateCompetition(newCompetition);
     },
-    onSuccess: () => {
+    onSuccess: (_, newCompetition: Competition) => {
       queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(newCompetition.id));
     },
   });
 };
@@ -51,8 +52,9 @@ export const useDeleteCompetitionMutation = () => {
     mutationFn: async (id: number) => {
       return await competitionService.deleteCompetition(id);
     },
-    onSuccess: () => {
+    onSuccess: (_, id: number) => {
       queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(id));
     },
   });
 }

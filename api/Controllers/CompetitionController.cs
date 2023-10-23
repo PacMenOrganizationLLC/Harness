@@ -43,6 +43,7 @@ public class CompetitionController : ControllerBase
         .Include(c => c.Game)
         .Include(c => c.Event)
         .Include(c => c.CompetitionPrizes)
+        .Include(c => c.Sessions)
         .FirstOrDefaultAsync(c => c.Id == id);
 
         if (competition == null)

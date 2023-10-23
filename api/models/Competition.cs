@@ -10,7 +10,8 @@ public class Competition
     public string Location { get; set; }
 
 
-    public Game Game { get; set; }
-    public Event Event { get; set; }
-    public ICollection<CompetitionPrize> CompetitionPrizes { get; set; }
+    public Game? Game { get; set; }
+    public Event? Event { get; set; }
+    public ICollection<CompetitionPrize>? CompetitionPrizes { get; set; }
+    public ICollection<Session>? Sessions { get; set; }
 }

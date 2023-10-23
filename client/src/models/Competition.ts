@@ -1,5 +1,6 @@
 import { Game } from "./Games";
 import Event from "./Event"
+import { Session } from "./Session";
 
 export interface CompetitionPrize {
   id: number;
@@ -19,5 +20,6 @@ export interface Competition {
   location: string;
   game?: Game
   event?: Event
-  prizes?: CompetitionPrize[];
+  competitionPrizes?: CompetitionPrize[];
+  sessions?: Session[];
 }
