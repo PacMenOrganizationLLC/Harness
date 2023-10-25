@@ -138,9 +138,10 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
 function extractTime(date: Date): string {
   const actualDate = new Date(date);
   const hours = actualDate.getHours();
-  const minutes = actualDate.getMinutes();
+  const minutes = actualDate.getMinutes().toString().padStart(2, '0');
   return `${hours}:${minutes}`;
 }
+
 
 function timeToDate(time: string): Date {
   const [hours, minutes] = time.split(':');
