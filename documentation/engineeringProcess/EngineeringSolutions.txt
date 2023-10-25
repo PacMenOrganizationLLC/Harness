@@ -1,0 +1,23 @@
+Problem: How will our API communicate with the game to start, stop, etc
+
+Options:
+- Force Game to provide a specific controller with certain endpoints, and we're given a base address
+    - Pros: 
+        - Consistency in results
+    - Cons:
+        - Dictates the structure of their controllers
+- Force Games to support certain endpoints, we're given the base address and the controller
+    - Pros: 
+        - Allows User flexibility in designing the endpoints
+    - Cons:
+        - Requires concatinating the API call
+- Admin specifies endpoints when they add the game
+    - Pros: 
+        - Less chance for error
+    - Cons:
+        - The admin may not have that information when adding the game
+- Get Endpoints at runtime
+    - Pros: 
+        - Don't have to store the endpoints
+    - Cons:
+        - Can't check beforehand if the game is compatible
