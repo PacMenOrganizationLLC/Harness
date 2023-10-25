@@ -2,16 +2,15 @@ import { FC, useState } from "react";
 import { TextInput, useTextInput } from "../../components/forms/TextInput";
 import { useGetSessionQuery } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
+import { useParams } from "react-router-dom";
 
-interface SessionProps {
-  sessionId: number;
-}
+export const Session = () => {
+  const sessionId = useParams<{ id: string }>().id;
 
-export const Session: FC<SessionProps> = ({ sessionId }) => {
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const passwordControl = useTextInput("");
 
-  const getSessionQuery = useGetSessionQuery(sessionId);
+  const getSessionQuery = useGetSessionQuery(1, Number(sessionId));
   const session = getSessionQuery.data;
 
   if (getSessionQuery.isLoading) return <Spinner />
@@ -21,7 +20,7 @@ export const Session: FC<SessionProps> = ({ sessionId }) => {
   return (
     <div className="container">
       <h1 className="my-3">{session.name}</h1>
-      <p className="fs-2">Created: {new Date(session.creationDate).toDateString()}</p>
+      <p className="fs-2">Created: {new Date(session.creationDate!).toDateString()}</p>
       <div className="row justify-content-center">
         <div className="col col-4 border border-3 rounded p-5">
           <div className="row justify-content-center">
