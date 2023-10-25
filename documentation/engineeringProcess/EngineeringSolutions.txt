@@ -21,3 +21,22 @@ Options:
         - Don't have to store the endpoints
     - Cons:
         - Can't check beforehand if the game is compatible
+
+Problem: How do we develop our program?
+
+Options:
+    - Use Dev Containers
+        - Pros:
+            - The entire environment is consistent from one computer to another
+        - Cons:
+            - In practice, it was difficult to work with
+    - Dockerize the entire project
+        - Pros:
+            - Relatively easy to work with, we each have a local database copy
+        - Cons:
+            - Issues arose with connecting to the database
+    - Dockerize the project, but host an external database on Azure
+        - Pros:
+            - Resolves previously noted connection issues
+        - Cons:
+            - We're all running on one database now, which may create its own issues later on
