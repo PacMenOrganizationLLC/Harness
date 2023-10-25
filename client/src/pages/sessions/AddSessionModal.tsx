@@ -1,4 +1,4 @@
-import { FormEvent } from "react";
+import { FC, FormEvent } from "react";
 import { TextInput, useTextInput } from "../../components/forms/TextInput";
 import {
   CustomModal,
@@ -8,8 +8,10 @@ import {
 import { useAddSessionMutation } from "./sessionHooks";
 import { Session } from "../../models/Session";
 
-export const AddSessionModal = () => {
-  const addSessionMutation = useAddSessionMutation(1);
+export const AddSessionModal: FC<{
+  competitionId: number
+}> = ({ competitionId }) => {
+  const addSessionMutation = useAddSessionMutation(competitionId);
 
   const nameControl = useTextInput("");
 
@@ -26,18 +28,20 @@ export const AddSessionModal = () => {
     e.preventDefault();
 
     const newSession: Session = {
-      id: 1,
-      competitionId: 1,
+      id: 0,
+      competitionId,
       name: nameControl.value,
       playId: 'test_play_id',
       creationDate: new Date()
     };
 
-    addSessionMutation.mutate(newSession);
-    closeHandler();
+    addSessionMutation.mutateAsync(newSession).then(() => {
+      closeHandler();
+    });
   };
 
   const closeHandler = () => {
+    nameControl.setValue("");
     AddSessionControl.hide();
   };
 
