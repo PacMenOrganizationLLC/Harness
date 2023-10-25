@@ -3,5 +3,5 @@ export interface Session {
   competitionId: number;
   playId: string;
   name: string;
-  creationDate: Date;
+  creationDate?: Date;
 }

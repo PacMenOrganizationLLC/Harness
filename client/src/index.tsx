@@ -33,6 +33,7 @@ root.render(
           <Route path="/events" element={<Events />} />
 
           <Route path="/competition/:id" element={<CompetitionDetails/>} />
+          <Route path="/session/:id" element={<Session />} />
         </Routes>
       </Router>
     </QueryClientProvider>
