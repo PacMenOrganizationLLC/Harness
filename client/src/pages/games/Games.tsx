@@ -20,6 +20,7 @@ export const Games = () => {
   if (gamesQuery.isLoading) return <Spinner />
   if (gamesQuery.isError) return <h3 className="text-center">Error getting games</h3>
   if (!gamesQuery.data) return <h3 className="text-center">Unable to get games</h3>
+  
   return (
     <div className="container">
       <h1 className="text-center">Games</h1>

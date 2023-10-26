@@ -3,9 +3,14 @@ import { useDeleteCompetitionMutation, useGetCompetitionQuery } from "./competit
 import { Spinner } from "../../components/Spinner"
 import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers"
 import { CompetitionEditorModal } from "./CompetitionEditorModal"
+import { AddSessionModal } from "../sessions/AddSessionModal"
+import { useGetSessionsQuery } from "../sessions/sessionHooks"
+import { SessionItem } from "../sessions/SessionItem"
 
 export const CompetitionDetails = () => {
   const competitionId = useParams<{ id: string }>().id
+  const getSessionsQuery = useGetSessionsQuery(Number(competitionId));
+  const sessions = getSessionsQuery.data ?? []
   const competitionQuery = useGetCompetitionQuery(Number(competitionId))
   const competition = competitionQuery.data
   const navigate = useNavigate();
@@ -17,6 +22,7 @@ export const CompetitionDetails = () => {
     deleteCompetitionMutation.mutate(Number(competitionId));
     navigate('/events');
   }
+
 
   if (competitionQuery.isLoading) return <Spinner />
   if (competitionQuery.isError) return <div>Error getting competition</div>
@@ -36,30 +42,26 @@ export const CompetitionDetails = () => {
             </div>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-6">
-            <div className="text-truncate">
-              <i className="bi-joystick" /> {competition.game?.name}
-            </div>
-            <div>
-              <i className="bi-pin-map" /> {competition.event?.location} - {competition.location}
-            </div>
-          </div>
-          <div className="col-md-6 text-center">
-            <div>
-              {competition.event ? new Date(competition.event.day).toDateString() : ''}
-            </div>
-            <div>
-              {competition.startAt && getTimeNoSeconds(competition.startAt)} - {competition.endAt && getTimeNoSeconds(competition.endAt)}
-            </div>
-          </div>
+        <div>
+          <i className="bi-joystick" /> {competition.game?.name}
         </div>
-        <hr/>
+        <div>
+          <i className="bi-pin-map" /> {competition.event?.location} - {competition.location}
+        </div>
+        <div>
+          <i className="bi-calendar-event" /> {competition.event ? new Date(competition.event.day).toDateString() : ''}
+          <span className="ms-1">
+            @ {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
+          </span>
+        </div>
+        <hr />
         <div className="row">
           <div className="col">
             <h3>Prizes:</h3>
           </div>
-          <div className="col text-end"><button className="btn btn-outline-secondary bi-plus" /></div>
+          <div className="col-auto my-auto">
+            <button className="btn btn-outline-info bi-plus-lg px-2 py-1" />
+          </div>
         </div>
         <div className="row">
           {competition.competitionPrizes && competition.competitionPrizes.length > 0 ?
@@ -72,29 +74,29 @@ export const CompetitionDetails = () => {
               </div>
             ))
             :
-            <div className="col text-center">No prizes</div>
+            <div className="col">No prizes</div>
           }
         </div>
+        <hr />
         <div className="row">
           <div className="col">
             <h3>Sessions:</h3>
           </div>
-          <div className="col text-end"><button className="btn btn-outline-secondary bi-plus" /></div>
+          <div className="col-auto my-auto">
+            <AddSessionModal competitionId={competition.id} />
+          </div>
         </div>
         <div className="row">
-          {competition.sessions && competition.sessions.length > 0 ?
-            competition.sessions.map(s => (
-              <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
-                <div className="text-center border rounded my-1" key={s.id}>
-                  <div className="text-truncate">{s.name}</div>
-                </div>
-              </div>
-            ))
-            :
-            <div className="col text-center">No sessions</div>
-          }
+          {sessions.length === 0 && (
+            <div>No Sessions</div>
+          )}
+          {sessions.map((s) => (
+            <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id}>
+              <SessionItem session={s} />
+            </div>
+          ))}
         </div>
       </div>
-    </div>
+    </div >
   );
 }

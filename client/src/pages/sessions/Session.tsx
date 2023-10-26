@@ -10,7 +10,7 @@ export const Session = () => {
   const [hasStarted, setHasStarted] = useState<boolean>(false);
   const passwordControl = useTextInput("");
 
-  const getSessionQuery = useGetSessionQuery(1, Number(sessionId));
+  const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
 
   if (getSessionQuery.isLoading) return <Spinner />

@@ -6,27 +6,20 @@ import { Session } from "../../models/Session";
 const queryClient = getQueryClient();
 
 export const sessionKeys = {
-  all: ["sessions"] as const,
-  competition: (competitionId: number) =>
-    [...sessionKeys.all, competitionId] as const,
-  session: (competitionId: number, sessionId: number) =>
-    [
-      ...sessionKeys.all,
-      ...sessionKeys.competition(competitionId),
-      sessionId,
-    ] as const,
+  sessionsKey: (competitionId: number) => ["sessionsKey", competitionId] as const,
+  sessionKey: (sessionId: number) => ["sessionKey", sessionId] as const,
 };
 
-export const useGetSessionsQuery = (id: number) => {
+export const useGetSessionsQuery = (competitionId: number) => {
   return useQuery({
-    queryKey: sessionKeys.competition(id),
+    queryKey: sessionKeys.sessionsKey(competitionId),
     queryFn: sessionService.getSessions,
   });
 };
 
-export const useGetSessionQuery = (competitionId: number, sessionId: number) => {
+export const useGetSessionQuery = (sessionId: number) => {
   return useQuery({
-    queryKey: sessionKeys.session(competitionId, sessionId),
+    queryKey: sessionKeys.sessionKey(sessionId),
     queryFn: async () => await sessionService.getSession(sessionId),
   });
 };
@@ -37,7 +30,7 @@ export const useAddSessionMutation = (competitionId: number) => {
       return await sessionService.addSession(newSession);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(sessionKeys.competition(competitionId));
+      queryClient.invalidateQueries(sessionKeys.sessionsKey(competitionId));
     },
   });
 };
@@ -48,7 +41,7 @@ export const useDeleteSessionMutation = (competitionId: number) => {
       return await sessionService.deleteSession(sessionId);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries(sessionKeys.competition(competitionId));
+      queryClient.invalidateQueries(sessionKeys.sessionsKey(competitionId));
     },
   });
 };

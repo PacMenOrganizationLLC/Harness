@@ -15,10 +15,10 @@ export const EventDetails: FC<{
     setSelectedEvent(undefined)
   }
   return (
-    <div className="col border rounded shadow-sm p-3" key={selectedEvent.id}>
+    <div className="col-md-8 col border rounded shadow-sm p-3" key={selectedEvent.id}>
       <div className="row">
-        <div className="col my-auto">
-          <div className="fs-4 fw-bold">{selectedEvent.name}</div>
+        <div className="col-lg-10 col-md-8 my-auto">
+          <div className="fs-4 fw-bold text-truncate">{selectedEvent.name}</div>
         </div>
         <div className="col-auto">
           <EventEditorModal existingEvent={selectedEvent} setSelectedEvent={setSelectedEvent} />

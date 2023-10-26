@@ -2,7 +2,8 @@ import { FC } from "react"
 import { Game } from "../../models/Games"
 import { GameEditorModal } from "./GameEditorModal"
 import { useDeleteGameMutation } from "./gameHooks"
-import { SessionConfig } from "./sessionConfig/SessionConfig"
+import { SessionConfigList } from "./sessionConfig/SessionConfigList"
+import { AddSessionConfigModal } from "./sessionConfig/AddSessionConfigModal"
 
 export const GameDetails: FC<{
   selectedGame: Game,
@@ -36,7 +37,15 @@ export const GameDetails: FC<{
       <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
       <div className="text-break">API Url: {selectedGame.apiUrl}</div>
       <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
-      <SessionConfig gameId={selectedGame.id} />
+      <div className="row border-top mt-3 pt-2">
+        <div className="col my-auto">
+          <div className="fs-5">Configurations:</div>
+        </div>
+        <div className="col-auto">
+          <AddSessionConfigModal gameId={selectedGame.id} />
+        </div>
+      </div>
+      <SessionConfigList gameId={selectedGame.id} />
     </div>
   )
 }

@@ -12,13 +12,9 @@ export const AddSessionConfigModal: FC<{
   const controls = useModal("Add Session Config")
 
   const ModalButton: ModalButton = ({ showModal }) => (
-    <button className="btn btn-outline-secondary px-2 py-1"
+    <button className="btn btn-outline-info px-2 py-1"
       onClick={showModal}>
-      <div className="card-body p-0">
-        <div className="card-title my-auto">
-          <i className="bi bi-plus-lg" />
-        </div>
-      </div>
+      <i className="bi bi-plus-lg" />
     </button>
   )
 
