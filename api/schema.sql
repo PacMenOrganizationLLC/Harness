@@ -28,6 +28,18 @@ create table Game (
   created_at timestamp not null default NOW()
 );
 
+create table Endpoint_Type (
+  id serial primary key,
+  name text not null,
+  required bool not null
+);
+
+create table Game_Endpoint (
+  id serial primary key,
+  endpoint text not null,
+  endpoint_type_id int not null references Endpoint_Type(id)
+);
+
 create table Competition (
   id serial primary key,
   game_id int not null references Game(id) ON DELETE CASCADE,
