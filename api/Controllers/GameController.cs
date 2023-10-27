@@ -58,7 +58,6 @@ namespace api.Controllers
         existingGame.Name = game.Name;
         existingGame.RepoLink = game.RepoLink;
         existingGame.CreatedAt = game.CreatedAt;
-        existingGame.ApiUrl = game.ApiUrl;
         await _context.SaveChangesAsync();
         return Ok("Updated Game Successfully");
       }

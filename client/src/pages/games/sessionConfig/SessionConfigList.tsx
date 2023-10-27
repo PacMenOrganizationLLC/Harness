@@ -16,7 +16,7 @@ export const SessionConfigList: FC<{
   return (
     <div className="row">
       {sessionConfigs.map((c) => (
-        <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
+        <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={c.id}>
           <ConfigDetailsModal config={c} gameId={gameId} key={c.id} />
         </div>
       ))}

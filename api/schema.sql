@@ -22,7 +22,6 @@ create table Event (
 create table Game (
   id serial primary key,
   host_url text not null,
-  api_url text not null,
   name text not null,
   repo_link text,
   details text,

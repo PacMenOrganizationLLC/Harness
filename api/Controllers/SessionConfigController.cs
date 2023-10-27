@@ -75,10 +75,14 @@ public class SessionConfigController : ControllerBase
   }
 
   [HttpGet("template/{gameId}")]
-  public async Task<List<GameConfigTemplate>> GetGameTemplateConfiguration(int gameId)
+  public async Task<ActionResult<List<GameConfigTemplate>>> GetGameTemplateConfiguration(int gameId)
   {
-    string? url = _context.Game.Where(g => g.Id == gameId).Select(g => g.ApiUrl).FirstOrDefault();
-    var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url + "/config");
-    return await Task.FromResult(response);
+    string? url = _context.GameEndpoint.Where(g => g.GameId == gameId && g.EndpointTypeId == 3).Select(g => g.Endpoint).FirstOrDefault();
+    if (url != null && url != "")
+    {
+      var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url);
+      return Ok(response);
+    }
+    return BadRequest("Error getting game configuration template. Please make sure you've provided the endpoint.");
   }
 }

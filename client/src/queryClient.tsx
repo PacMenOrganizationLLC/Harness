@@ -3,13 +3,13 @@ import toast, { ErrorIcon } from "react-hot-toast";
 
 const addErrorAsToast = async (error: any) => {
   console.log(error);
-  const message = error.response?.data.detail
-    ? error.response?.data.detail
-      ? `${error.response?.data.detail}`
+  const message = error.response?.data
+    ? error.response?.data
+      ? `${error.response?.data}`
       : `Error With Request`
     : typeof error === "string"
-    ? error
-    : JSON.stringify(error);
+      ? error
+      : JSON.stringify(error);
 
   toast(
     (t: any) => (
