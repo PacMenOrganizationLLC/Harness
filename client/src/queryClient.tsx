@@ -21,7 +21,7 @@ const addErrorAsToast = async (error: any) => {
         <div className="col-auto my-auto">
           <button
             onClick={() => toast.dismiss(t.id)}
-            className="btn btn-outline-secondary py-1"
+            className="btn btn-outline-secondary py-1 px-2"
           >
             <i className="bi bi-x"></i>
           </button>

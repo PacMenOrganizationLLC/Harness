@@ -80,8 +80,16 @@ public class SessionConfigController : ControllerBase
     string? url = _context.GameEndpoint.Where(g => g.GameId == gameId && g.EndpointTypeId == 3).Select(g => g.Endpoint).FirstOrDefault();
     if (url != null && url != "")
     {
-      var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url);
-      return Ok(response);
+      try
+      {
+        var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url);
+        return Ok(response);
+      }
+      catch (Exception e)
+      {
+        Console.WriteLine(e);
+        return BadRequest("Error getting game configuration template from game api.");
+      }
     }
     return BadRequest("Error getting game configuration template. Please make sure you've provided the endpoint.");
   }

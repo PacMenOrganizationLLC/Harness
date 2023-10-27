@@ -24,7 +24,8 @@ export const Endpoints: FC<{
   if (gameEndpointsQuery.isError) return <h3 className="text-center">Error getting your game endpoints</h3>
   if (!gameEndpointsQuery.data || !gameEndpoints) return <h3 className="text-center">Unable to get game endpoints</h3>
 
-  const saveHandler = () => {
+  const saveHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     saveEndpointsMutation.mutate(gameEndpoints)
   }
 
@@ -52,22 +53,24 @@ export const Endpoints: FC<{
   return (
     <div className="row border-top mt-3 pt-2">
       <div className="fs-5">Endpoints:</div>
-      {endpointTypes.map((t) => (
-        <GameEndpointRow endpointType={t}
-          endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
-          gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
-          updateHandler={updateHandler}
-          key={t.id} />
-      ))}
-      <div className="row">
-        <div className="col my-auto">
-          <div className="small">*Required</div>
+      <form onSubmit={saveHandler}>
+        {endpointTypes.map((t) => (
+          <GameEndpointRow endpointType={t}
+            endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
+            gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
+            updateHandler={updateHandler}
+            key={t.id} />
+        ))}
+        <div className="row">
+          <div className="col my-auto">
+            <div className="small">*Required</div>
+          </div>
+          <div className="col-auto">
+            <button className="btn btn-success"
+              type="submit">Save</button>
+          </div>
         </div>
-        <div className="col-auto">
-          <button className="btn btn-success"
-            onClick={saveHandler}>Save</button>
-        </div>
-      </div>
+      </form>
     </div>
   )
 }
