@@ -6,6 +6,8 @@ drop table if exists Session_Client;
 drop table if exists Session;
 drop table if exists Competition;
 drop table if exists Game;
+drop table if exists Game_Endpoint;
+drop table if exists Endpoint_Type;
 drop table if exists Event;
 
 create table Event (
@@ -31,12 +33,16 @@ create table Game (
 create table Endpoint_Type (
   id serial primary key,
   name text not null,
-  required bool not null
+  method text not null,
+  required bool not null,
+  query_param_name text
+
 );
 
 create table Game_Endpoint (
   id serial primary key,
   endpoint text not null,
+  game_id int not null references Game(id),
   endpoint_type_id int not null references Endpoint_Type(id)
 );
 
