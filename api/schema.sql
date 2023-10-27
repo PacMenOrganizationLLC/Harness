@@ -36,8 +36,10 @@ create table Endpoint_Type (
   method text not null,
   required bool not null,
   query_param_name text
-
 );
+
+insert into endpoint_type(name, method, required, query_param_name) values('Stop Session', 'POST', true, 'session_id');
+insert into endpoint_type(name, method, required, query_param_name) values('Start Session', 'POST', true, 'session_id');
 
 create table Game_Endpoint (
   id serial primary key,
