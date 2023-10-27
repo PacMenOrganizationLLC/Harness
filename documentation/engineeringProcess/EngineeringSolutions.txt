@@ -40,3 +40,12 @@ Options:
             - Resolves previously noted connection issues
         - Cons:
             - We're all running on one database now, which may create its own issues later on
+
+Problem: How to deal with query parameters in the user-provided endpoints:
+Notes:
+    - Need to constrain data types
+Options:
+    - User provides URL, we say it needs to support a query parameter appropriately
+    - We lock it into a url parameter
+
+Solution: Lock them into using a query parameter because it goes at the end and there's less problems for us
