@@ -4,6 +4,7 @@ import { GameEditorModal } from "./GameEditorModal"
 import { useDeleteGameMutation } from "./gameHooks"
 import { SessionConfigList } from "./sessionConfig/SessionConfigList"
 import { AddSessionConfigModal } from "./sessionConfig/AddSessionConfigModal"
+import { Endpoints } from "./endpoints/Endpoints"
 
 export const GameDetails: FC<{
   selectedGame: Game,
@@ -35,8 +36,8 @@ export const GameDetails: FC<{
       <div>Created By: {selectedGame.createdBy}</div>
       <div>Details: {selectedGame.details}</div>
       <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
-      <div className="text-break">API Url: {selectedGame.apiUrl}</div>
       <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
+      <Endpoints gameId={selectedGame.id} />
       <div className="row border-top mt-3 pt-2">
         <div className="col my-auto">
           <div className="fs-5">Configurations:</div>
