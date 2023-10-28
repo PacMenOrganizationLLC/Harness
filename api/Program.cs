@@ -54,3 +54,4 @@ app.UseCors("AllowAll");
 app.MapControllers();
 
 app.Run();
+//Make a function that increases a variable named hi to be one more than its current value

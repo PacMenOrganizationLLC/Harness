@@ -41,7 +41,19 @@ public class SessionController : ControllerBase
     return session;
   }
 
-  [HttpPut("{startSessionId}")]
+
+   // [HttpPut("createSession/{gameId}")]
+   // public async Task<string> CreateSessionAsync(int gameId)
+   // {
+        //TODO: 
+        //1. set it up to make a session for mars rover
+        //2. figure out how the whole endpoints thing works
+        //3. Make it work for any game provided it has the endpoint
+   // }
+
+
+
+    [HttpPut("{startSessionId}")]
   public async Task<IActionResult> StartSessionAsync(int id)
   {
     Session? session = await _context.Session.FindAsync(id);
@@ -55,6 +67,10 @@ public class SessionController : ControllerBase
 
     return Ok("Session has been started");
   }
+
+
+
+
 
   [HttpPut("{stopSessionId}")]
   public async Task<IActionResult> StopSessionAsync(int id)
