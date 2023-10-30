@@ -18,12 +18,30 @@ public class SessionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddSessionAsync(Session session)
     {
+        Competition competition = await _context.Competition
+            .Where(c => c.Id == session.CompetitionId)
+            .FirstOrDefaultAsync();
+
+        // Assuming EndpointType is a navigation property in GameEndpoint
+        GameEndpoint gameEndpoint = await _context.GameEndpoint
+            .Where(t => t.Endpoint == "Create Session" && t.GameId == competition.GameId)
+            .FirstOrDefaultAsync();
+
+        if (gameEndpoint == null)
+        {
+            // Handle the case where the game endpoint is not found
+            return NotFound("Game endpoint not found");
+        }
+        // Make the API call and get the response
+        string myResponse = await _httpClient.GetFromJsonAsync<string>(gameEndpoint.Endpoint);
+        session.PlayId = myResponse;
         _context.Session.Add(session);
 
         await _context.SaveChangesAsync();
 
         return Ok("Added Session Successfully");
     }
+
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync()
@@ -41,27 +59,6 @@ public class SessionController : ControllerBase
             return NotFound();
 
         return session;
-    }
-    [HttpPut("createSession/{gameId}")]
-    public async Task<string> CreateSessionAsync(int gameId)
-    {
-        // Replace with your actual API endpoint
-        string apiUrl = "https://marswebpacmen.azurewebsites.net/Admin/createSession";
-
-        // Make the API call and get the response
-        string myResponse = await _httpClient.GetFromJsonAsync<string>(apiUrl);
-
-        // Check if the call was successful
-        if (myResponse == null || myResponse == "")
-        {
-            // Read and return the response content as a string
-            return await "error: something's wrong";
-        }
-        else
-        {
-            // Handle the error case (you can throw an exception or return an error message)
-            return myResponse;
-        }
     }
 
 
