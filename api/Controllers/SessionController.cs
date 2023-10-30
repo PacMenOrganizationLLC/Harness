@@ -49,10 +49,10 @@ public class SessionController : ControllerBase
     }
 
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync()
+    [HttpGet("competition/{competitionId}")]
+    public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync(int competitionId)
     {
-        List<Session> sessions = await _context.Session.ToListAsync();
+        List<Session> sessions = await _context.Session.Where(s => s.CompetitionId == competitionId).ToListAsync();
         return sessions;
     }
 

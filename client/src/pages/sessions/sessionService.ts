@@ -4,8 +4,9 @@ import { Session } from "../../models/Session";
 const apiUrlBase = "http://localhost:8000/api/session";
 
 export const sessionService = {
-  async getSessions(): Promise<Session[]> {
-    const response = await axios.get(apiUrlBase);
+  async getSessions(competitionId: number): Promise<Session[]> {
+    const url = `http://localhost:8000/api/session/competition/${competitionId}`
+    const response = await axios.get(url);
 
     return response.data;
   },

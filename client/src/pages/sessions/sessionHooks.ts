@@ -13,7 +13,7 @@ export const sessionKeys = {
 export const useGetSessionsQuery = (competitionId: number) => {
   return useQuery({
     queryKey: sessionKeys.sessionsKey(competitionId),
-    queryFn: sessionService.getSessions,
+    queryFn: async () => await sessionService.getSessions(competitionId),
   });
 };
 
