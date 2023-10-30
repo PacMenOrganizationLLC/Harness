@@ -23,10 +23,10 @@ export const SessionItem: FC<SessionItemProps> = ({ session }) => {
       >
         <div className="card-body">
           <div className="row">
-            <div className="col-6 offset-3 fs-5">
+            <div className="col fs-5">
               {session.name}
             </div>
-            <div className="col-3 my-auto">
+            <div className="col-auto my-auto">
               <button className="btn btn-outline-danger px-1 py-0"
                 onClick={deleteSessionHandler}>
                 <i className="bi-x" />

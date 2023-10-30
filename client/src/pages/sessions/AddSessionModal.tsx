@@ -7,6 +7,7 @@ import {
 } from "../../components/CustomModal";
 import { useAddSessionMutation } from "./sessionHooks";
 import { Session } from "../../models/Session";
+import { Spinner } from "../../components/Spinner";
 
 export const AddSessionModal: FC<{
   competitionId: number
@@ -44,6 +45,7 @@ export const AddSessionModal: FC<{
     AddSessionControl.hide();
   };
 
+
   const canSubmit = nameControl.value !== "";
 
   return (
@@ -54,29 +56,33 @@ export const AddSessionModal: FC<{
           <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
-          <form onSubmit={submitHandler}>
-            <TextInput control={nameControl} label="Name" />
-            <div className="row text-center my-2">
-              <div className="col">
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  onClick={closeHandler}
-                >
-                  Close
-                </button>
+          {addSessionMutation.isLoading ? (
+            <Spinner />
+          ) : (
+            <form onSubmit={submitHandler}>
+              <TextInput control={nameControl} label="Name" />
+              <div className="row text-center my-2">
+                <div className="col">
+                  <button
+                    className="btn btn-secondary"
+                    type="button"
+                    onClick={closeHandler}
+                  >
+                    Close
+                  </button>
+                </div>
+                <div className="col">
+                  <button
+                    className="btn btn-primary"
+                    disabled={!canSubmit}
+                    type="submit"
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
-              <div className="col">
-                <button
-                  className="btn btn-primary"
-                  disabled={!canSubmit}
-                  type="submit"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          )}
         </div>
       </div>
     </CustomModal>

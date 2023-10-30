@@ -52,25 +52,41 @@ export const Endpoints: FC<{
 
   return (
     <div className="row border-top mt-3 pt-2">
-      <div className="fs-5">Endpoints:</div>
-      <form onSubmit={saveHandler}>
-        {endpointTypes.map((t) => (
-          <GameEndpointRow endpointType={t}
-            endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
-            gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
-            updateHandler={updateHandler}
-            key={t.id} />
-        ))}
-        <div className="row">
-          <div className="col my-auto">
-            <div className="small">*Required</div>
-          </div>
-          <div className="col-auto">
-            <button className="btn btn-success"
-              type="submit">Save</button>
-          </div>
+      <div className="row">
+        <div className="col-auto">
+          <div className="fs-5">Endpoints:</div>
         </div>
-      </form>
+        <div className="col">
+          <button className="btn btn-outline-secondary py-1"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target={`#endpointsCollapse${gameId}`}
+            aria-expanded="true"
+            aria-controls="collapseExample">
+            Show
+          </button>
+        </div>
+      </div>
+      <div className="collapse" id={`endpointsCollapse${gameId}`}>
+        <form onSubmit={saveHandler}>
+          {endpointTypes.map((t) => (
+            <GameEndpointRow endpointType={t}
+              endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
+              gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
+              updateHandler={updateHandler}
+              key={t.id} />
+          ))}
+          <div className="row">
+            <div className="col my-auto">
+              <div className="small">*Required</div>
+            </div>
+            <div className="col-auto">
+              <button className="btn btn-success"
+                type="submit">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   )
 }
