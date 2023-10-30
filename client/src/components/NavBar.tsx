@@ -7,17 +7,17 @@ export const NavBar = () => {
         <div className="row">
           <div className="col-auto">
             <Link to="/" className="text-reset text-decoration-none fs-5">
-              Home
+              <i className="bi-house pe-1" />Home
             </Link>
           </div>
           <div className="col-auto">
             <Link to="/events" className="text-reset text-decoration-none fs-5">
-              Events
+              <i className="bi-calendar-event pe-1" />Events
             </Link>
           </div>
           <div className="col-auto">
             <Link to="/games" className="text-reset text-decoration-none fs-5">
-              Games
+              <i className="bi-joystick pe-1" />Games
             </Link>
           </div>
         </div>
