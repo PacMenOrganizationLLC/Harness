@@ -6,4 +6,6 @@ public class GameEndpoint
     public string Endpoint { get; set; }
     public int GameId { get; set; }
     public int EndpointTypeId { get; set; }
+
+    public EndpointType? EndpointType { get; set; }
 }

@@ -10,7 +10,6 @@ interface SessionItemProps {
 export const SessionItem: FC<SessionItemProps> = ({ session }) => {
   const navigate = useNavigate();
   const deleteSessionMutation = useDeleteSessionMutation(session.competitionId);
-  console.log(session.competitionId)
 
   const deleteSessionHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.stopPropagation();

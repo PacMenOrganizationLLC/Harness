@@ -31,7 +31,6 @@ export const AddSessionModal: FC<{
       id: 0,
       competitionId,
       name: nameControl.value,
-      playId: 'test_play_id',
       creationDate: new Date()
     };
 

@@ -18,28 +18,34 @@ public class SessionController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddSessionAsync(Session session)
     {
-        Competition competition = await _context.Competition
-            .Where(c => c.Id == session.CompetitionId)
-            .FirstOrDefaultAsync();
-
-        // Assuming EndpointType is a navigation property in GameEndpoint
-        GameEndpoint gameEndpoint = await _context.GameEndpoint
-            .Where(t => t.Endpoint == "Create Session" && t.GameId == competition.GameId)
-            .FirstOrDefaultAsync();
-
-        if (gameEndpoint == null)
+        try
         {
-            // Handle the case where the game endpoint is not found
-            return NotFound("Game endpoint not found");
+            Competition competition = await _context.Competition
+                .Where(c => c.Id == session.CompetitionId)
+                .FirstOrDefaultAsync();
+
+            GameEndpoint gameEndpoint = await _context.GameEndpoint
+                .Include(e => e.EndpointType)
+                .Where(e => e.EndpointType.Name == "Create Session")
+                .Where(t => t.GameId == competition.GameId)
+                .FirstOrDefaultAsync();
+            // Make the API call and get the response
+            HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
+            CreateSessionResponse data = await myResponse.Content.ReadFromJsonAsync<CreateSessionResponse>();
+            session.PlayId = data.GameId;
+            session.PlayUrl = data.GameUrl;
+            _context.Session.Add(session);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Added Session Successfully");
         }
-        // Make the API call and get the response
-        string myResponse = await _httpClient.GetFromJsonAsync<string>(gameEndpoint.Endpoint);
-        session.PlayId = myResponse;
-        _context.Session.Add(session);
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest("Error creating session");
+        }
 
-        await _context.SaveChangesAsync();
-
-        return Ok("Added Session Successfully");
     }
 
 
