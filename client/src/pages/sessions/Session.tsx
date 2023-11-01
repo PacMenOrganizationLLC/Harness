@@ -22,6 +22,7 @@ export const Session = () => {
             onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
+          <button className="btn">HERE'S WHERE TO START THE GAME</button>
         </div>
         <div className="col-10">
           <h1 className="text-center">{session.name}</h1>
