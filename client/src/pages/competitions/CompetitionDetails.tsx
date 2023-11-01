@@ -28,6 +28,7 @@ export const CompetitionDetails = () => {
   if (competitionQuery.isError) return <div>Error getting competition</div>
   if (!competition) return <div>Could not get competition</div>
 
+  console.log(competition.game)
   return (
     <div className="container">
       <div className="row">
@@ -89,13 +90,15 @@ export const CompetitionDetails = () => {
         <div className="col">
           <h3>Sessions:</h3>
         </div>
-        <div className="col-auto my-auto">
-          <AddSessionModal competitionId={competition.id} />
-        </div>
+        {competition.game?.supportsMultiSessions && (
+          <div className="col-auto my-auto">
+            <AddSessionModal competitionId={competition.id} />
+          </div>
+        )}
       </div>
       <div className="row">
-        {sessions.length === 0 && (
-          <div>No Sessions</div>
+        {!competition.game?.supportsMultiSessions && (
+          <div className="card">Single session here</div>
         )}
         {sessions.map((s) => (
           <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id}>

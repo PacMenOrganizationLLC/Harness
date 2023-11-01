@@ -1,4 +1,4 @@
-import { FC, FormEvent } from "react"
+import { FC, FormEvent, useState } from "react"
 import { Game } from "../../models/Games"
 import { CustomModal, ModalButton, useModal } from "../../components/CustomModal"
 import { TextInput, useTextInput } from "../../components/forms/TextInput"
@@ -15,8 +15,9 @@ export const GameEditorModal: FC<{
   const repoLinkControl = useTextInput(existingGame?.repoLink ?? "")
   const detailsControl = useTextInput(existingGame?.details ?? "")
   const createdByControl = useTextInput(existingGame?.createdBy ?? "")
+  const [supportsMultiSessions, setSupportsMultiSessions] = useState(existingGame?.supportsMultiSessions ?? true)
 
-  const gameEditorControls = useModal("Game Editor")
+  const gameEditorControls = useModal("Game Editor", "lg")
 
   const ModalButton: ModalButton = ({ showModal }) => (
     <div>
@@ -35,6 +36,8 @@ export const GameEditorModal: FC<{
     </div>
   )
 
+  console.log(supportsMultiSessions)
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newGame: Game = {
@@ -45,6 +48,7 @@ export const GameEditorModal: FC<{
       details: detailsControl.value,
       createdBy: createdByControl.value,
       createdAt: new Date(),
+      supportsMultiSessions,
     }
     if (existingGame) {
       updateGameMutation.mutate(newGame)
@@ -67,7 +71,7 @@ export const GameEditorModal: FC<{
   }
 
   const canSubmit = nameControl.value !== ""
-    && hostUrlControl.value !== ""
+    && ((!supportsMultiSessions && hostUrlControl.value !== "") || supportsMultiSessions)
     && createdByControl.value !== ""
   return (
     <CustomModal ModalButton={ModalButton} controls={gameEditorControls}>
@@ -85,10 +89,23 @@ export const GameEditorModal: FC<{
             <TextInput control={nameControl}
               label="*Name"
               labelClassName="col-12" />
-            <TextInput control={hostUrlControl}
-              label="*Host URL"
-              placeholder="https://your_server.xxx"
-              labelClassName="col-12" />
+            <div className="form-check form-switch mt-2">
+              <input className="form-check-input"
+                type="checkbox"
+                id="supportsMultiSessionsSwitch"
+                onChange={() => setSupportsMultiSessions(s => !s)}
+                checked={supportsMultiSessions} />
+              <label className="form-check-label"
+                htmlFor="supportsMultiSessionsSwitch">
+                Game Supports Multiple Sessions
+              </label>
+            </div>
+            {!supportsMultiSessions && (
+              <TextInput control={hostUrlControl}
+                label="*Host URL"
+                placeholder="https://your_server"
+                labelClassName="col-12" />
+            )}
             <TextInput control={repoLinkControl}
               label="Repo Link"
               placeholder="https://github.com/your_repo"

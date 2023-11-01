@@ -5,5 +5,6 @@ export interface Game {
   hostUrl: string;
   details?: string;
   createdBy: string;
+  supportsMultiSessions: boolean;
   createdAt: Date;
 }

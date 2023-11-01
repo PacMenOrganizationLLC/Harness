@@ -10,5 +10,6 @@ public class Game
   public string? RepoLink { get; set; }
   public string? Details { get; set; }
   public string CreatedBy { get; set; }
+  public bool SupportsMultiSessions { get; set; }
   public DateTime CreatedAt { get; set; }
 }
