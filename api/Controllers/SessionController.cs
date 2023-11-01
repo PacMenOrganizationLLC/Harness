@@ -76,7 +76,27 @@ public class SessionController : ControllerBase
         if (session == null)
             return NotFound();
 
-        //TODO: Call game API to start game. Pass in config
+        try
+        {
+            Competition competition = await _context.Competition
+                .Where(c => c.Id == session.CompetitionId)
+                .FirstOrDefaultAsync();
+            //get session config, maybe ID from url? discuss in class
+            GameEndpoint gameEndpoint = await _context.GameEndpoint
+                .Include(e => e.EndpointType)
+                .Where(e => e.EndpointType.Name == "Start Session")
+                .Where(t => t.GameId == competition.GameId)
+                .FirstOrDefaultAsync();
+            // Make the API call and get the response
+            HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
+
+            return Ok("Started Session Successfully");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return BadRequest("Error starting session");
+        }
 
         await _context.SaveChangesAsync();
 
