@@ -30,72 +30,78 @@ export const CompetitionDetails = () => {
 
   return (
     <div className="container">
-      <div className="border rounded p-3">
-        <div className="row">
-          <div className="col text-start"><h1>{competition.event?.name}</h1></div>
-          <div className="col-auto text-end my-auto">
-            <div className="d-flex">
-              <CompetitionEditorModal existingCompetition={competition} eventId={competition.eventId} />
-              <button className="btn btn-outline-danger ms-2" onClick={deleteHandler}>
-                <i className="bi bi-trash" />
-              </button>
-            </div>
-          </div>
+      <div className="row">
+        <div className="col-3 my-auto">
+          <button className="btn"
+            onClick={() => navigate(-1)}>
+            <i className="bi-arrow-left fs-3" />
+          </button>
         </div>
-        <div>
-          <i className="bi-joystick" /> {competition.game?.name}
+        <div className="col-6 text-center">
+          <h1>{competition.event?.name}</h1>
         </div>
-        <div>
-          <i className="bi-pin-map" /> {competition.event?.location} - {competition.location}
+        <div className="col-2 text-end my-auto">
+          <CompetitionEditorModal existingCompetition={competition} eventId={competition.eventId} />
         </div>
-        <div>
-          <i className="bi-calendar-event" /> {competition.event ? new Date(competition.event.day).toDateString() : ''}
-          <span className="ms-1">
-            @ {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
-          </span>
+        <div className="col-1 my-auto">
+          <button className="btn btn-outline-danger" onClick={deleteHandler}>
+            <i className="bi bi-trash" />
+          </button>
         </div>
-        <hr />
-        <div className="row">
-          <div className="col">
-            <h3>Prizes:</h3>
-          </div>
-          <div className="col-auto my-auto">
-            <button className="btn btn-outline-info bi-plus-lg px-2 py-1" />
-          </div>
+      </div>
+      <div>
+        <i className="bi-joystick" /> {competition.game?.name}
+      </div>
+      <div>
+        <i className="bi-pin-map" /> {competition.event?.location} - {competition.location}
+      </div>
+      <div>
+        <i className="bi-calendar-event" /> {competition.event ? new Date(competition.event.day).toDateString() : ''}
+        <span className="ms-1">
+          @ {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
+        </span>
+      </div>
+      <hr />
+      <div className="row">
+        <div className="col">
+          <h3>Prizes:</h3>
         </div>
-        <div className="row">
-          {competition.competitionPrizes && competition.competitionPrizes.length > 0 ?
-            competition.competitionPrizes.map(p => (
-              <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
-                <div className="text-center border rounded my-1" key={p.id}>
-                  <div>#{p.placement}</div>
-                  <div className="text-truncate">{p.prize}</div>
-                </div>
+        <div className="col-auto my-auto">
+          <button className="btn btn-outline-info bi-plus-lg px-2 py-1" />
+        </div>
+      </div>
+      <div className="row">
+        {competition.competitionPrizes && competition.competitionPrizes.length > 0 ?
+          competition.competitionPrizes.map(p => (
+            <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
+              <div className="text-center border rounded my-1" key={p.id}>
+                <div>#{p.placement}</div>
+                <div className="text-truncate">{p.prize}</div>
               </div>
-            ))
-            :
-            <div className="col">No prizes</div>
-          }
-        </div>
-        <hr />
-        <div className="row">
-          <div className="col">
-            <h3>Sessions:</h3>
-          </div>
-          <div className="col-auto my-auto">
-            <AddSessionModal competitionId={competition.id} />
-          </div>
-        </div>
-        <div className="row">
-          {sessions.length === 0 && (
-            <div>No Sessions</div>
-          )}
-          {sessions.map((s) => (
-            <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id}>
-              <SessionItem session={s} />
             </div>
-          ))}
+          ))
+          :
+          <div className="col">No prizes</div>
+        }
+      </div>
+      <hr />
+      <div className="row">
+        <div className="col">
+          <h3>Sessions:</h3>
         </div>
+        <div className="col-auto my-auto">
+          <AddSessionModal competitionId={competition.id} />
+        </div>
+      </div>
+      <div className="row">
+        {sessions.length === 0 && (
+          <div>No Sessions</div>
+        )}
+        {sessions.map((s) => (
+          <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id}>
+            <SessionItem session={s} />
+          </div>
+        ))}
       </div>
     </div >
   );
