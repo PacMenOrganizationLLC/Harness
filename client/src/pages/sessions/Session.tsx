@@ -2,6 +2,7 @@ import { useGetSessionQuery } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss"
+import { StartGameModal } from "./StartGameModal";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -22,6 +23,10 @@ export const Session = () => {
             onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
+          {sessionId && (
+          <StartGameModal sessionId={sessionId}></StartGameModal>
+          )}
+          
           <button className="btn">HERE'S WHERE TO START THE GAME</button>
         </div>
         <div className="col-10">

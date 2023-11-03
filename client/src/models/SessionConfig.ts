@@ -8,5 +8,4 @@ export interface SessionConfig {
 export interface GameConfigTemplate {
   key: string;
   value: string;
-  // options: 
 }

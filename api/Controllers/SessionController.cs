@@ -67,9 +67,21 @@ public class SessionController : ControllerBase
         return session;
     }
 
+    [HttpGet("getConfigs/{sessionId}")]
+    public async Task<List<SessionConfig>> GetSessionConfigs(int sessionId)
+    {
+        Session session = await _context.Session.Where(s => s.Id == sessionId).FirstOrDefaultAsync();
+        Competition competition = await _context.Competition
+               .Where(c => c.Id == session.CompetitionId)
+               .FirstOrDefaultAsync();
 
-    [HttpPut("{startSessionId}")]
-    public async Task<IActionResult> StartSessionAsync(int id)
+        List<SessionConfig> configs = await _context.SessionConfig.Where(sc => sc.GameId == competition.GameId).ToListAsync();
+        return configs;
+    }
+
+
+    [HttpPut("startGame/{startSessionId}")]
+    public async Task<IActionResult> StartSessionAsync(int id, SessionConfig config)
     {
         Session? session = await _context.Session.FindAsync(id);
 
@@ -78,17 +90,17 @@ public class SessionController : ControllerBase
 
         try
         {
-            Competition competition = await _context.Competition
-                .Where(c => c.Id == session.CompetitionId)
-                .FirstOrDefaultAsync();
-            //get session config, maybe ID from url? discuss in class
             GameEndpoint gameEndpoint = await _context.GameEndpoint
                 .Include(e => e.EndpointType)
                 .Where(e => e.EndpointType.Name == "Start Session")
-                .Where(t => t.GameId == competition.GameId)
+                .Where(t => t.GameId == config.GameId)
                 .FirstOrDefaultAsync();
+
+            // Convert the JSON string to HttpContent
+           
+
             // Make the API call and get the response
-            HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
+            await _httpClient.PostAsJsonAsync<string>(gameEndpoint.Endpoint + "/" + session.PlayId, config.JsonConfig);
 
             return Ok("Started Session Successfully");
         }
@@ -97,11 +109,8 @@ public class SessionController : ControllerBase
             Console.WriteLine(e);
             return BadRequest("Error starting session");
         }
-
-        await _context.SaveChangesAsync();
-
-        return Ok("Session has been started");
     }
+
 
 
 
