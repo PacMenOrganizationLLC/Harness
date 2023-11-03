@@ -52,7 +52,7 @@ public class EndpointController : ControllerBase
             else
             {
                 existingEndpoint.Endpoint = endpoint.Endpoint;
-                existingEndpoint.EndpointTypeId = endpoint.Id;
+                existingEndpoint.EndpointTypeId = endpoint.EndpointTypeId;
                 existingEndpoint.GameId = endpoint.GameId;
             }
 
