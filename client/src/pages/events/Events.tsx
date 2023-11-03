@@ -1,19 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EventList } from "./EventList";
 import { useGetEventsQuery } from "./eventHooks";
 import Event from "../../models/Event";
 import { EventEditorModal } from "./EventEditorModal";
 import { EventDetails } from "./EventDetails";
 import { Spinner } from "../../components/Spinner";
+import { useSearchParams } from "react-router-dom";
+
 export const Events = () => {
   const eventsQuery = useGetEventsQuery();
+  const events = useMemo(() => eventsQuery.data ?? [], [eventsQuery.data])
   const [selectedEvent, setSelectedEvent] = useState<Event>()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const item = searchParams.get("item");
+  const selectedEventId = item ? item : events.length > 0 ? events[0].id : "";
 
   useEffect(() => {
-    if (eventsQuery.data && eventsQuery.data.length > 0) {
-      setSelectedEvent(eventsQuery.data[0])
+    if (selectedEvent) {
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("item", selectedEvent.id.toString());
+      setSearchParams(newSearchParams)
     }
-  }, [eventsQuery.data])
+  }, [selectedEvent, setSearchParams, searchParams])
+
+  useEffect(() => {
+    const event = events.find(e => e.id === Number(selectedEventId))
+    setSelectedEvent(event)
+  }, [selectedEventId, item, events])
 
   if (eventsQuery.isLoading) return <Spinner />
   if (eventsQuery.isError) return <h3 className="text-center">Error getting events</h3>

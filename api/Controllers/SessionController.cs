@@ -21,6 +21,7 @@ public class SessionController : ControllerBase
         try
         {
             Competition competition = await _context.Competition
+                .Include(c => c.Game)
                 .Where(c => c.Id == session.CompetitionId)
                 .FirstOrDefaultAsync();
 
@@ -30,10 +31,18 @@ public class SessionController : ControllerBase
                 .Where(t => t.GameId == competition.GameId)
                 .FirstOrDefaultAsync();
             // Make the API call and get the response
-            HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
-            CreateSessionResponse data = await myResponse.Content.ReadFromJsonAsync<CreateSessionResponse>();
-            session.PlayId = data.GameId;
-            session.PlayUrl = data.GameUrl;
+            if (competition.Game.SupportsMultiSessions == true)
+            {
+                HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
+                CreateSessionResponse data = await myResponse.Content.ReadFromJsonAsync<CreateSessionResponse>();
+                session.PlayId = data.GameId;
+                session.PlayUrl = data.GameUrl;
+            }
+            else
+            {
+                session.PlayUrl = competition.Game.HostUrl;
+                session.PlayId = "Single";
+            }
             _context.Session.Add(session);
 
             await _context.SaveChangesAsync();

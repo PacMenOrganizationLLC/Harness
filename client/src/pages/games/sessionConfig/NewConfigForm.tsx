@@ -12,6 +12,8 @@ export const NewConfigForm: FC<{
   const [configs, setConfigs] = useState(template)
   const nameControl = useTextInput("")
 
+  console.log(template, configs)
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const newConfig: SessionConfig = {
@@ -27,6 +29,7 @@ export const NewConfigForm: FC<{
   }
 
   const handleInputChange = (index: number, value: string) => {
+    console.log(index, value, configs);
     const updatedArray = [...configs];
     updatedArray[index].value = value;
     setConfigs(updatedArray);
