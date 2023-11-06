@@ -55,7 +55,7 @@ export const StartGameModal: FC<{
             // startGame(keyList)
             if(config){
                 startGame.mutate(config)
-                closeHandler
+                closeHandler()
             }
           }
 

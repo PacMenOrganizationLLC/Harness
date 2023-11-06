@@ -1,6 +1,7 @@
 using api.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -89,10 +90,11 @@ public class SessionController : ControllerBase
     }
 
 
-    [HttpPut("startGame/{startSessionId}")]
+    [HttpPost("startGame/{id}")]
     public async Task<IActionResult> StartSessionAsync(int id, SessionConfig config)
     {
-        Session? session = await _context.Session.FindAsync(id);
+
+        Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();
 
         if (session == null)
             return NotFound();
@@ -106,10 +108,10 @@ public class SessionController : ControllerBase
                 .FirstOrDefaultAsync();
 
             // Convert the JSON string to HttpContent
-           
 
+            List<GameConfigTemplate> configList = JsonSerializer.Deserialize<List<GameConfigTemplate>>(config.JsonConfig);
             // Make the API call and get the response
-            await _httpClient.PostAsJsonAsync<string>(gameEndpoint.Endpoint + "/" + session.PlayId, config.JsonConfig);
+            await _httpClient.PostAsJsonAsync<List<GameConfigTemplate>>(gameEndpoint.Endpoint + "/" + session.PlayId, configList);
 
             return Ok("Started Session Successfully");
         }

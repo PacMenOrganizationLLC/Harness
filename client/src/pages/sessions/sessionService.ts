@@ -28,8 +28,11 @@ export const sessionService = {
     return response.data;
   },
   async startSession(id: number, config: SessionConfig) {
-    const url = `${apiUrlBase}//${id}`
+    const url = `http://localhost:8000/api/session/startGame/${id}`
+    console.log(url)
     const response = await axios.post(url, config)
+    console.log(response)
+    return response
   },
   async stopSession(id: number) {
     // TODO
