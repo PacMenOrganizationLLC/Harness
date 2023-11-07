@@ -6,7 +6,7 @@ const apiUrlBase = "http://localhost:8000/api/session";
 
 export const sessionService = {
   async getSessions(competitionId: number): Promise<Session[]> {
-    const url = `http://localhost:8000/api/session/competition/${competitionId}`
+    const url = `http://localhost:8000/api/session/competition/${competitionId}`;
     const response = await axios.get(url);
 
     return response.data;
@@ -35,7 +35,10 @@ export const sessionService = {
     return response
   },
   async stopSession(id: number) {
-    // TODO
+    const url = `${apiUrlBase}/stop?id=${id}`;
+    const response = await axios.put(url);
+
+    return response.data;
   },
   async getGameConfigs(id: string): Promise<SessionConfig[]> {
     const url = `http://localhost:8000/api/session/getConfigs/${id}`
@@ -45,5 +48,5 @@ export const sessionService = {
   },
   async addSessionConfig() {
     // TODO
-  }
+  },
 };

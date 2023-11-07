@@ -1,7 +1,8 @@
 import { useGetSessionQuery } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
-import classes from "../../assets/WideContainer.module.scss"
+import classes from "../../assets/WideContainer.module.scss";
+import { sessionService } from "./sessionService";
 import { StartGameModal } from "./StartGameModal";
 
 export const Session = () => {
@@ -30,6 +31,14 @@ export const Session = () => {
         </div>
         <div className="col-10">
           <h1 className="text-center">{session.name}</h1>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-1 my-auto">
+          <button className="btn btn-outline-danger"
+            onClick={() => sessionService.stopSession(parseInt(String(sessionId)))}>
+            Stop Game
+          </button>
         </div>
       </div>
       <div className="row vh-100">
