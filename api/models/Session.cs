@@ -8,4 +8,5 @@ public class Session
     public string? PlayUrl { get; set; }
     public string Name { get; set; }
     public DateTime CreationDate { get; set; }
+    // public Competition Competition {get; set;}
 }

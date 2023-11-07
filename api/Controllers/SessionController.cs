@@ -103,21 +103,29 @@ public class SessionController : ControllerBase
         return Ok("Session has been started");
     }
 
-
-
-
-
-    [HttpPut("{stopSessionId}")]
+    [HttpPut("stop")]
     public async Task<IActionResult> StopSessionAsync(int id)
     {
-        Session? session = await _context.Session.FindAsync(id);
+        Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();
+        Competition? competition = await _context.Competition.Where(c => c.Id == session.CompetitionId).FirstOrDefaultAsync();
 
         if (session == null)
             return NotFound();
 
-        //TODO: Call game API to stop game.
+        var url = await _context.GameEndpoint
+            .Include(e => e.Game)
+            .Where(g => g.GameId == competition.GameId
+                && g.EndpointType.Name == "Stop Session")
+            .Select(e => e.Endpoint)
+            .FirstOrDefaultAsync();
 
-        await _context.SaveChangesAsync();
+        if (url != null)
+        {
+            var response = await _httpClient.PostAsync(url, null);
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest("Could not stop session.");
+        }
 
         return Ok("Session has been stopped");
     }

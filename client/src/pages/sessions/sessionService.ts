@@ -5,7 +5,7 @@ const apiUrlBase = "http://localhost:8000/api/session";
 
 export const sessionService = {
   async getSessions(competitionId: number): Promise<Session[]> {
-    const url = `http://localhost:8000/api/session/competition/${competitionId}`
+    const url = `http://localhost:8000/api/session/competition/${competitionId}`;
     const response = await axios.get(url);
 
     return response.data;
@@ -30,12 +30,15 @@ export const sessionService = {
     // TODO
   },
   async stopSession(id: number) {
-    // TODO
+    const url = `${apiUrlBase}/stop?id=${id}`;
+    const response = await axios.put(url);
+
+    return response.data;
   },
   async getSessionConfigs() {
     // TODO
   },
   async addSessionConfig() {
     // TODO
-  }
+  },
 };

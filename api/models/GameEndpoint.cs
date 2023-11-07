@@ -8,4 +8,5 @@ public class GameEndpoint
     public int EndpointTypeId { get; set; }
 
     public EndpointType? EndpointType { get; set; }
+    public Game? Game {get; set;}
 }
