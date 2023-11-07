@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Session } from "../../models/Session";
+import { SessionConfig } from "../../models/SessionConfig";
 
 const apiUrlBase = "http://localhost:8000/api/session";
 
@@ -26,8 +27,12 @@ export const sessionService = {
 
     return response.data;
   },
-  async startSession(id: number) {
-    // TODO
+  async startSession(id: number, config: SessionConfig) {
+    const url = `http://localhost:8000/api/session/startGame/${id}`
+    console.log(url)
+    const response = await axios.post(url, config)
+    console.log(response)
+    return response
   },
   async stopSession(id: number) {
     const url = `${apiUrlBase}/stop?id=${id}`;
@@ -35,8 +40,11 @@ export const sessionService = {
 
     return response.data;
   },
-  async getSessionConfigs() {
-    // TODO
+  async getGameConfigs(id: string): Promise<SessionConfig[]> {
+    const url = `http://localhost:8000/api/session/getConfigs/${id}`
+    const response = await axios.get(url);
+
+    return response.data;
   },
   async addSessionConfig() {
     // TODO
