@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { sessionService } from "./sessionService";
 import { getQueryClient } from "../../queryClient";
 import { Session } from "../../models/Session";
-import { GameConfigTemplate, SessionConfig } from "../../models/SessionConfig";
+import { SessionConfig } from "../../models/SessionConfig";
 
 const queryClient = getQueryClient();
 

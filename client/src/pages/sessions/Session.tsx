@@ -27,7 +27,6 @@ export const Session = () => {
           <StartGameModal sessionId={sessionId}></StartGameModal>
           )}
           
-          <button className="btn">HERE'S WHERE TO START THE GAME</button>
         </div>
         <div className="col-10">
           <h1 className="text-center">{session.name}</h1>

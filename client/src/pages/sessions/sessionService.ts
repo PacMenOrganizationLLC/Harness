@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Session } from "../../models/Session";
-import { GameConfigTemplate, SessionConfig } from "../../models/SessionConfig";
+import { SessionConfig } from "../../models/SessionConfig";
 
 const apiUrlBase = "http://localhost:8000/api/session";
 
