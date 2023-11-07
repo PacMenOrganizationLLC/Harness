@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   CustomModal,
   ModalButton,
@@ -9,15 +9,15 @@ import {
   useGetGameConfigsQuery,
 } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
-import { SessionConfig } from "../../models/SessionConfig";
+import { GameConfigTemplate, SessionConfig } from "../../models/SessionConfig";
 
 export const StartGameModal: FC<{
   sessionId: string;
 }> = ({ sessionId }) => {
   const [config, setConfig] = useState<SessionConfig>();
+  const [displayConfig, setDisplayConfig] = useState<GameConfigTemplate[]>();
   const configList = useGetGameConfigsQuery(sessionId);
   const startGame = useStartSessionMutation(Number.parseInt(sessionId));
-
 
   const StartSessionControl = useModal("Add Session");
   const ModalButton: ModalButton = ({ showModal }) => (
@@ -27,6 +27,12 @@ export const StartGameModal: FC<{
       </button>
     </div>
   );
+
+  useEffect(() => {
+    if (config) {
+      setDisplayConfig(JSON.parse(config.jsonConfig));
+    }
+  }, [config]);
 
   const closeHandler = () => {
     setConfig(undefined);
@@ -49,12 +55,6 @@ export const StartGameModal: FC<{
           <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
-          {config && (
-            <>
-              <p>{config.name}</p>
-              <p>{config.jsonConfig}</p>
-              </>
-          )}
           <select
             className="form-select"
             onChange={(e) => {
@@ -70,7 +70,16 @@ export const StartGameModal: FC<{
               </option>
             ))}
           </select>
-
+          {config && (
+            <>
+              <p>{config.name}</p>
+              {displayConfig?.map((item) => (
+                <p>
+                  {item.key}: {item.value}
+                </p>
+              ))}
+            </>
+          )}
           <div className="text-end">
             <button
               className="btn btn-primary"
