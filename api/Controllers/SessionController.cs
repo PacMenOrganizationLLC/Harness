@@ -110,8 +110,16 @@ public class SessionController : ControllerBase
             // Convert the JSON string to HttpContent
 
             List<GameConfigTemplate> configList = JsonSerializer.Deserialize<List<GameConfigTemplate>>(config.JsonConfig);
+            Dictionary<string, string> configs = new Dictionary<string, string>();
+
+            foreach (var configKV in configList)
+            {
+                configs[configKV.Key] = configKV.Value;
+            }
+
+
             // Make the API call and get the response
-            await _httpClient.PostAsJsonAsync<List<GameConfigTemplate>>(gameEndpoint.Endpoint + "/" + session.PlayId, configList);
+            var response = await _httpClient.PostAsJsonAsync<Dictionary<string, string>>(gameEndpoint.Endpoint + "?sessionId=" + session.PlayId, configs);
 
             return Ok("Started Session Successfully");
         }
