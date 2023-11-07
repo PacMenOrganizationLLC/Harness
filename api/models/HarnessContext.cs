@@ -20,6 +20,7 @@ public class HarnessContext : DbContext
     public DbSet<SessionConfig> SessionConfig { get; set; } = null!;
     public DbSet<EndpointType> EndpointType { get; set; } = null!;
     public DbSet<GameEndpoint> GameEndpoint { get; set; } = null!;
+    public DbSet<SessionScoreboard> SessionScoreboard { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -6,3 +6,11 @@ export interface Session {
   name: string;
   creationDate?: Date;
 }
+
+export interface SessionScoreboard {
+  id: number;
+  sessionId: number;
+  playerName: string;
+  rank: number;
+  score?: number;
+}

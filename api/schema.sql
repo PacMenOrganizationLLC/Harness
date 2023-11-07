@@ -64,6 +64,14 @@ create table Session (
   creation_date timestamptz not null default NOW()
 );
 
+create table Session_Scoreboard (
+  id serial primary key,
+  session_id int not null references Session(id),
+  player_name text not null,
+  rank int not null,
+  score int 
+);
+
 create table Session_Client (
   id serial primary key,
   session_id int not null references Session(id) ON DELETE CASCADE,

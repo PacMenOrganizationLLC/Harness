@@ -130,7 +130,7 @@ public class SessionController : ControllerBase
         }
     }
 
-    [HttpPut("stopGame")]
+    [HttpPost("stopGame")]
     public async Task<IActionResult> StopSessionAsync(int id)
     {
         Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();
@@ -170,4 +170,12 @@ public class SessionController : ControllerBase
 
         return Ok("Session Deleted Successfully");
     }
+
+    [HttpGet("sessionScoreboard/{sessionId}")]
+    public async Task<ActionResult<IEnumerable<SessionScoreboard>>> GetSessionScoreboard(int sessionId)
+    {
+        var scoreboard = await _context.SessionScoreboard.Where(s => s.SessionId == sessionId).ToListAsync();
+        return Ok(scoreboard);
+    }
+
 }

@@ -35,9 +35,9 @@ export const sessionService = {
     return response
   },
   async stopSession(id: number) {
-    const url = `${apiUrlBase}/stop?id=${id}`;
-    const response = await axios.put(url);
-
+    const url = `${apiUrlBase}/stopGame?id=${id}`;
+    const response = await axios.post(url);
+    console.log(response)
     return response.data;
   },
   async getGameConfigs(id: string): Promise<SessionConfig[]> {
