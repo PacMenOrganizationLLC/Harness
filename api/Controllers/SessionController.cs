@@ -130,7 +130,7 @@ public class SessionController : ControllerBase
         }
     }
 
-    [HttpPut("stopGame")]
+    [HttpPost("stopGame")]
     public async Task<IActionResult> StopSessionAsync(int id)
     {
         Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();

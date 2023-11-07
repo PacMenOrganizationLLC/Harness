@@ -63,3 +63,11 @@ export const useStartSessionMutation = (sessionId: number) => {
     },
   });
 };
+
+export const useStopSessionMutation = (sessionId: number) => {
+  return useMutation({
+    mutationFn: async () => {
+      return await sessionService.stopSession(sessionId);
+    }
+  })
+}
