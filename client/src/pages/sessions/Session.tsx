@@ -1,8 +1,7 @@
-import { useGetSessionQuery } from "./sessionHooks";
+import { useGetSessionQuery, useStopSessionMutation } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
-import { sessionService } from "./sessionService";
 import { StartGameModal } from "./StartGameModal";
 
 export const Session = () => {
@@ -11,6 +10,8 @@ export const Session = () => {
 
   const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
+
+  const stopSessionMutation = useStopSessionMutation(parseInt(String(sessionId)));
 
   if (getSessionQuery.isLoading) return <Spinner />
   if (getSessionQuery.isError) return <h1>Error getting session</h1>
@@ -36,7 +37,7 @@ export const Session = () => {
       <div className="row">
         <div className="col-1 my-auto">
           <button className="btn btn-outline-danger"
-            onClick={() => sessionService.stopSession(parseInt(String(sessionId)))}>
+            onClick={() => stopSessionMutation.mutate()}>
             Stop Game
           </button>
         </div>
