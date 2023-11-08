@@ -22,7 +22,13 @@ namespace api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Event>>> GetEvents()
         {
-            return await _context.Event.OrderByDescending(g => g.Day).ToListAsync();
+            return await _context.Event.Where(e => e.Day >= DateTime.Today).OrderByDescending(g => g.Day).ToListAsync();
+        }
+
+        [HttpGet("past")]
+        public async Task<ActionResult<IEnumerable<Event>>> GetPastEvents()
+        {
+            return await _context.Event.Where(e => e.Day < DateTime.Today).OrderByDescending(g => g.Day).ToListAsync();
         }
 
         // GET: api/Event/5

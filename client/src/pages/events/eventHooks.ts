@@ -7,12 +7,20 @@ const queryClient = getQueryClient();
 
 export const EventKeys = {
   eventsKey: ["eventsKey"] as const,
+  pastEventsKey: ["eventsKey", "pastEvents"] as const,
 };
 
 export const useGetEventsQuery = () => {
   return useQuery({
     queryKey: EventKeys.eventsKey,
     queryFn: async () => await eventService.getEvents(),
+  });
+};
+
+export const useGetPastEventsQuery = () => {
+  return useQuery({
+    queryKey: EventKeys.pastEventsKey,
+    queryFn: async () => await eventService.getPastEvents(),
   });
 };
 
