@@ -1,12 +1,14 @@
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useGetEndpointTypesQuery, useGetGameEndpointsQuery, useSaveGameEndpointMutation } from "./endpointHooks";
 import { Spinner } from "../../../components/Spinner";
 import { GameEndpoint } from "../../../models/GameEndpoint";
 import { GameEndpointRow } from "./GameEndpointRow";
+import { useNavigate, useParams } from "react-router-dom";
 
-export const Endpoints: FC<{
-  gameId: number
-}> = ({ gameId }) => {
+export const Endpoints = () => {
+  const gameId = Number(useParams<{ gameId: string }>().gameId);
+  const navigate = useNavigate();
+
   const saveEndpointsMutation = useSaveGameEndpointMutation(gameId);
   const endpointTypesQuery = useGetEndpointTypesQuery();
   const endpointTypes = endpointTypesQuery.data ?? []
@@ -50,43 +52,44 @@ export const Endpoints: FC<{
     }
   }
 
+  const requiredEndpoints = endpointTypes.filter(t => t.required)
+  const optionalEndpoints = endpointTypes.filter(t => !t.required)
+
   return (
-    <div className="row border-top mt-3 pt-2">
+    <div className="container">
       <div className="row">
-        <div className="col-auto">
-          <div className="fs-5">Endpoints:</div>
-        </div>
-        <div className="col">
-          <button className="btn btn-outline-secondary py-1"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target={`#endpointsCollapse${gameId}`}
-            aria-expanded="true"
-            aria-controls="collapseExample">
-            Show
+        <div className="col-3 my-auto">
+          <button className="btn"
+            onClick={() => navigate("/games")}>
+            <i className="bi-arrow-left fs-3" />
           </button>
         </div>
+        <div className="col-6">
+          <h1 className="text-center">Endpoints</h1>
+        </div>
       </div>
-      <div className="collapse" id={`endpointsCollapse${gameId}`}>
-        <form onSubmit={saveHandler}>
-          {endpointTypes.map((t) => (
-            <GameEndpointRow endpointType={t}
-              endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
-              gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
-              updateHandler={updateHandler}
-              key={t.id} />
-          ))}
-          <div className="row">
-            <div className="col my-auto">
-              <div className="small">*Required</div>
-            </div>
-            <div className="col-auto">
-              <button className="btn btn-success"
-                type="submit">Save</button>
-            </div>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={saveHandler}>
+        <div className="fw-bold fs-5">Required Endpoints:</div>
+        {requiredEndpoints.map((t) => (
+          <GameEndpointRow endpointType={t}
+            endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
+            gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
+            updateHandler={updateHandler}
+            key={t.id} />
+        ))}
+        <div className="fw-bold fs-5">Optional Endpoints</div>
+        {optionalEndpoints.map((t) => (
+          <GameEndpointRow endpointType={t}
+            endpoint={gameEndpoints.find(g => g.endpointTypeId === t.id)?.endpoint ?? ""}
+            gameEndpointId={gameEndpoints.find(g => g.endpointTypeId === t.id)?.id ?? 0}
+            updateHandler={updateHandler}
+            key={t.id} />
+        ))}
+        <div className="text-center">
+          <button className="btn btn-success w-50"
+            type="submit">Save</button>
+        </div>
+      </form>
     </div>
   )
 }

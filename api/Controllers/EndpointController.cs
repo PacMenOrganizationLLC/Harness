@@ -27,7 +27,7 @@ public class EndpointController : ControllerBase
     [HttpGet("{gameId}")]
     public async Task<ActionResult<IEnumerable<GameEndpoint>>> GetGameEndpointAsync(int gameId)
     {
-        var endpoints = await context.GameEndpoint.Where(ge => ge.GameId == gameId).ToListAsync();
+        var endpoints = await context.GameEndpoint.Include(e => e.EndpointType).Where(ge => ge.GameId == gameId).ToListAsync();
         return Ok(endpoints);
     }
 

@@ -36,7 +36,6 @@ export const GameEditorModal: FC<{
     </div>
   )
 
-  console.log(supportsMultiSessions)
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

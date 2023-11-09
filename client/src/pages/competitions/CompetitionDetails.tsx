@@ -28,7 +28,6 @@ export const CompetitionDetails = () => {
   if (competitionQuery.isError) return <div>Error getting competition</div>
   if (!competition) return <div>Could not get competition</div>
 
-  console.log(competition.game)
   return (
     <div className="container">
       <div className="row">

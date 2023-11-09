@@ -11,4 +11,5 @@ export interface GameEndpoint {
   endpoint: string,
   gameId: number,
   endpointTypeId: number,
+  endpointType?: EndpointType
 }

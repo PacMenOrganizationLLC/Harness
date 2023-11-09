@@ -1,5 +1,6 @@
-import { FC } from "react"
+import { FC, useEffect, useRef } from "react"
 import { EndpointType } from "../../../models/GameEndpoint"
+import { Popover } from "bootstrap";
 
 export const GameEndpointRow: FC<{
   endpointType: EndpointType,
@@ -7,11 +8,25 @@ export const GameEndpointRow: FC<{
   gameEndpointId: number;
   updateHandler: (endpointId: number, newEndpoint: string, endpointTypeId: number) => void
 }> = ({ endpointType, endpoint, gameEndpointId, updateHandler }) => {
+  const popoverRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (popoverRef.current) {
+      new Popover(popoverRef.current, {
+        content: "This endpoint provides a query parameter for use in the game's API",
+        trigger: "hover",
+        placement: "top"
+      })
+    }
+  }, [])
   return (
     <>
       <label className="form-label"
         htmlFor={"endpoint" + endpointType.id}>
-        {endpointType.required && "*"}{endpointType.name} {endpointType.queryParamName && "(includes query parameter)"}
+        {endpointType.name} {endpointType.queryParamName && (
+          <i className="bi-question-circle"
+            ref={popoverRef} />
+        )}
       </label>
       <div className="input-group mb-3">
         <span className="input-group-text" id={"endpointMethod" + endpointType.id}>{endpointType.method}</span>
