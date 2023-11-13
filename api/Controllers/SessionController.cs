@@ -171,6 +171,26 @@ public class SessionController : ControllerBase
         return Ok("Session Deleted Successfully");
     }
 
+
+    [HttpGet("sessionScoreboard/game/{sessionId}")]
+    public async Task<ActionResult<IEnumerable<SessionScoreboard>>> QueryGameForEndOfGameScoreboard(int sessionId)
+    {
+        var session = await _context.Session.FirstOrDefaultAsync(s => s.Id == sessionId);
+        var competiton = await _context.Competition.FirstOrDefaultAsync(c => c.Id == session.CompetitionId);
+        var url = await _context.GameEndpoint.Where(ge => ge.GameId == competiton.GameId && ge.EndpointType.Name == "Scoreboard").Select(e => e.Endpoint).FirstOrDefaultAsync();
+
+        try
+        {
+            var scoreboard = await _httpClient.GetFromJsonAsync<SessionScoreboard>(url + $"?game_id={session.PlayId}");
+            return Ok(scoreboard);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(HttpContext.Request);
+            return BadRequest(ex.Message);
+        }
+    }
+
     [HttpGet("sessionScoreboard/{sessionId}")]
     public async Task<ActionResult<IEnumerable<SessionScoreboard>>> GetSessionScoreboard(int sessionId)
     {
