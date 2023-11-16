@@ -60,6 +60,7 @@ namespace api.Controllers
             {
                 existingEvent.Name = updatedEvent.Name;
                 existingEvent.Description = updatedEvent.Description;
+                existingEvent.Day = updatedEvent.Day;
 
                 if (!string.IsNullOrEmpty(updatedEvent.ImageFilename))
                 {

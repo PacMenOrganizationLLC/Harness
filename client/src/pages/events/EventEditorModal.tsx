@@ -40,20 +40,23 @@ export const EventEditorModal: FC<{
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     const newEvent: Event = {
       id: existingEvent?.id ?? 0,
       name: nameControl.value,
       imageFilename: imageFilenameControl.value,
       description: descriptionControl.value,
-      day: new Date(),
+      day: dayControl.value,
       location: locationControl.value,
     }
+
     if (existingEvent) {
       updateEventMutation.mutateAsync(newEvent)
     }
     else {
       addEventMutation.mutate(newEvent)
     }
+
     setSelectedEvent(undefined)
 
     closeHandler();
@@ -63,7 +66,7 @@ export const EventEditorModal: FC<{
     nameControl.setValue("")
     imageFilenameControl.setValue("")
     descriptionControl.setValue("")
-    //dayControl.setValue("")
+    dayControl.setValue(new Date())
     locationControl.setValue("")
     eventEditorControls.hide()
   }
