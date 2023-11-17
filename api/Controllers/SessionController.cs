@@ -139,19 +139,49 @@ public class SessionController : ControllerBase
         if (session == null)
             return NotFound();
 
-        var url = await _context.GameEndpoint
+        var stopUrl = await _context.GameEndpoint
             .Include(e => e.Game)
             .Where(g => g.GameId == competition.GameId
                 && g.EndpointType.Name == "Stop Session")
             .Select(e => e.Endpoint)
             .FirstOrDefaultAsync();
 
-        if (url != null)
+        if (stopUrl != null && stopUrl != "")
         {
-            var response = await _httpClient.PostAsync(url, null);
+            await _httpClient.PostAsync(stopUrl, null);
+        }
 
-            if (!response.IsSuccessStatusCode)
-                return BadRequest("Could not stop session.");
+        var scoreboardUrl = await _context.GameEndpoint
+            .Include(e => e.Game)
+            .Where(g => g.GameId == competition.GameId
+                && g.EndpointType.Name == "Scoreboard")
+            .Select(e => e.Endpoint)
+            .FirstOrDefaultAsync();
+
+        if (scoreboardUrl != null)
+        {
+            try
+            {
+                var scores = await _httpClient.GetFromJsonAsync<IEnumerable<PlayerScore>>(scoreboardUrl + "?game_id=" + id);
+
+                foreach (var score in scores)
+                {
+                    SessionScoreboard s = new()
+                    {
+                        Id = 0,
+                        SessionId = id,
+                        PlayerName = score.PlayerName,
+                        Rank = score.Rank,
+                        Score = score.Score
+                    };
+                    _context.SessionScoreboard.Add(s);
+                }
+                _context.SaveChanges();
+            }
+            catch
+            {
+                return BadRequest("Error storing scores");
+            }
         }
 
         return Ok("Session has been stopped");
