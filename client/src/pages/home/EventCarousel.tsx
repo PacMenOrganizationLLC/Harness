@@ -3,66 +3,45 @@ import Event from "../../models/Event";
 
 interface EventCarouselProps {
   events: Event[];
-  name: string;
   carouselId: string;
 }
 
-const EventCarousel: React.FC<EventCarouselProps> = ({
+export const EventCarousel: React.FC<EventCarouselProps> = ({
   events,
-  name,
   carouselId,
 }) => {
   return (
-    <div className="row my-5">
-      <h1 className="text-center my-3">{name}</h1>
-      <div className="col-2 text-end">
-        <button
-          className="btn btn-primary"
-          type="button"
-          data-bs-target={`#${carouselId}`}
-          data-bs-slide="prev"
-        >
-          <span
-            className="carousel-control-prev-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Previous</span>
-        </button>
-      </div>
-      <div className="col-8">
-        <div id={carouselId} className="carousel slide">
-          <div className="carousel-inner">
-            {events.map((e, index) => (
-              <div
-                className={`text-center carousel-item ${
-                  index === 0 ? "active" : ""
-                }`}
-                key={index}
-              >
-                <h2>{e.name}</h2>
-                <h1>{new Date(e.day).toDateString()}</h1>
-                <h1>{e.location}</h1>
-              </div>
-            ))}
+    <div id={`carouselExampleControls${carouselId}`}
+      className="carousel slide"
+      data-bs-ride="carousel">
+      <div className="carousel-inner">
+        {events.map((e, index) => (
+          <div key={index}
+            className={`text-center carousel-item ${index === 0 && "active"}`}>
+            <div className="fw-bold fs-4">{e.name}</div>
+            <div className="fs-5">{new Date(e.day).toDateString()}</div>
+            <div>{e.location}</div>
           </div>
-        </div>
+        ))}
       </div>
-      <div className="col-2 text-start">
-        <button
-          className="btn btn-primary"
-          type="button"
-          data-bs-target={`#${carouselId}`}
-          data-bs-slide="next"
-        >
-          <span
-            className="carousel-control-next-icon"
-            aria-hidden="true"
-          ></span>
-          <span className="visually-hidden">Next</span>
-        </button>
-      </div>
+      {events.length > -1 && (
+        <>
+          <button className="carousel-control-prev"
+            type="button"
+            data-bs-target={`#carouselExampleControls${carouselId}`}
+            data-bs-slide="prev">
+            <i className="bi-chevron-compact-left fs-1 text-secondary" />
+            <span className="visually-hidden">Previous</span>
+          </button>
+          <button className="carousel-control-next"
+            type="button"
+            data-bs-target={`#carouselExampleControls${carouselId}`}
+            data-bs-slide="next">
+            <i className="bi-chevron-compact-right fs-1 text-secondary" />
+            <span className="visually-hidden">Next</span>
+          </button>
+        </>
+      )}
     </div>
-  );
+  )
 };
-
-export default EventCarousel;
