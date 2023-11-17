@@ -20,30 +20,29 @@ export const Session = () => {
   return (
     <div className={classes.customContainer}>
       <div className="row">
-        <div className="col-1 my-auto">
+        <div className="col-lg-2 col-md-4 col-1 my-auto">
           <button className="btn"
             onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
-          {sessionId && (
-          <StartGameModal sessionId={sessionId}></StartGameModal>
-          )}
-          
         </div>
-        <div className="col-10">
+        <div className="col-md col-10">
           <h1 className="text-center">{session.name}</h1>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-1 my-auto">
+        {sessionId && (
+          <div className="col-lg-1 col-md-2 col-6 px-0 text-center my-auto">
+            <StartGameModal sessionId={sessionId}></StartGameModal>
+          </div>
+        )}
+        <div className="col-lg-1 col-md-2 col-6 px-0 text-center my-auto">
           <button className="btn btn-outline-danger"
             onClick={() => stopSessionMutation.mutate()}>
             Stop Game
           </button>
         </div>
       </div>
-      <div className="row vh-100">
-        <div className="col-10 vh-100 border rounded px-0">
+      <div className="row vh-100 mt-1">
+        <div className="col-lg-10 vh-100 border rounded px-0">
           {(!session.playUrl || !session.playUrl.includes("http")) ? (
             <div className="text-center">
               <div className="fs-1">Unable to show game</div>
@@ -55,7 +54,7 @@ export const Session = () => {
               title={`Session${session.playId}`}></iframe>
           )}
         </div>
-        <div className="col text-center">
+        <div className="col-lg text-center">
           <div className="border rounded"
             style={{ height: "20em" }}>
             Scoreboard coming soon
