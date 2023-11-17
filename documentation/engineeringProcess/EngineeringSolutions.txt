@@ -49,3 +49,9 @@ Options:
     - We lock it into a url parameter
 
 Solution: Lock them into using a query parameter because it goes at the end and there's less problems for us
+
+Problem: How to render the Start and Stop buttons in the Session page
+Options:
+- Receive the state of the game to dynamically render the buttons based on the state
+- Leave the buttons as they are.
+Solution: Option 2
