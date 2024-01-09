@@ -14,6 +14,9 @@ import { GameConfigTemplate, SessionConfig } from "../../models/SessionConfig";
 export const StartGameModal: FC<{
   sessionId: string;
 }> = ({ sessionId }) => {
+  const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
+    undefined
+  );
   const [config, setConfig] = useState<SessionConfig>();
   const [displayConfig, setDisplayConfig] = useState<GameConfigTemplate[]>();
   const configList = useGetGameConfigsQuery(sessionId);
@@ -27,6 +30,12 @@ export const StartGameModal: FC<{
       </button>
     </div>
   );
+
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
+    setSelectedIndex(index);
+    setConfig(JSON.parse(e.target.value));
+  };
 
   useEffect(() => {
     if (config) {
@@ -57,9 +66,8 @@ export const StartGameModal: FC<{
         <div className="modal-body">
           <select
             className="form-select"
-            onChange={(e) => {
-              setConfig(JSON.parse(e.target.value));
-            }}
+            onChange={handleSelectChange}
+            value={selectedIndex !== undefined ? selectedIndex : ""}
           >
             <option value="" disabled selected>
               Select Configuration
@@ -72,22 +80,24 @@ export const StartGameModal: FC<{
           </select>
           {config && (
             <>
-              <p>{config.name}</p>
-              {displayConfig?.map((item) => (
-                <p>
-                  {item.key}: {item.value}
-                </p>
-              ))}
+              <div className="my-2">
+                {displayConfig?.map((item) => (
+                  <p>
+                    {item.key}: {item.value}
+                  </p>
+                ))}
+              </div>
             </>
           )}
           <div className="text-end">
             <button
-              className="btn btn-primary"
+              className="btn btn-primary my-3"
               disabled={!config}
               onClick={() => {
                 if (config) {
                   startGame.mutate(config);
                   closeHandler();
+                  setSelectedIndex(undefined);
                 }
               }}
             >
