@@ -76,6 +76,24 @@ namespace api.Controllers
 
 
         // POST: api/Event
+
+        //TODO For AddEvent and UpdateEvent
+        /*
+        FRONTEND:
+        replace filename adding/editing thing in event management with an upload image thing
+        use hobby page stuff to covert it into dataUrl
+        Accept png, jpg/jpeg (determine if there's a significant difference)
+        Attach to event to update
+        API:
+        convert the dataUrl into an image 
+        Give it a random name & the correct extension
+        Store that file in a folder
+        Store that URL in the event
+        Set the dataUrl to null, but don't store it in the database however you do it.
+
+        Note: 2 different events may be required.
+         Don't default to it, but it may be the case.
+        */
         [HttpPost]
         public async Task<IActionResult> AddEvent(Event Event)
         {
