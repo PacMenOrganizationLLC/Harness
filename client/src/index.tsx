@@ -15,9 +15,9 @@ import { Toaster } from "react-hot-toast";
 import { CompetitionDetails } from "./pages/competitions/CompetitionDetails";
 import { Events } from "./pages/events/Events";
 import { Endpoints } from "./pages/games/endpoints/Endpoints";
-// import { AuthRequired } from "./AuthRequired";
-// import { WebStorageStateStore } from 'oidc-client-ts';
-// import { AuthProvider } from 'react-oidc-context';
+import { AuthRequired } from "./AuthRequired";
+import { WebStorageStateStore } from 'oidc-client-ts';
+import { AuthProvider } from 'react-oidc-context';
 
 const queryClient = getQueryClient();
 
@@ -25,36 +25,36 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-// const oidcConfig = {
-//   userStore: new WebStorageStateStore({ store: window.localStorage }),
-//   // authority: "https://harnesskc.duckdns.org:1234/realms/harness",
-//   authority: "https://<tailscale_ip>:1234/realms/harness",
-//   client_id: "harness",
-//   redirect_uri: window.location.origin,
-//   response_type: 'code',
-//   scope: "openid profile email",
-//   loadUserInfo: true,
-// };
+const oidcConfig = {
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
+  // authority: "https://harnesskc.duckdns.org:1234/realms/harness",
+  authority: "https://100.90.251.1:25651/realms/harness",
+  client_id: "harness",
+  redirect_uri: window.location.origin,
+  response_type: 'code',
+  scope: "openid profile email",
+  loadUserInfo: true,
+};
 
 root.render(
   <React.StrictMode>
-    {/* <AuthProvider {...oidcConfig}> */}
-    <QueryClientProvider client={queryClient}>
-      <Toaster />
-      {/* <AuthRequired> */}
-      <Router>
-        <NavBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/games" element={<Games />} />
-          <Route path="/endpoints/:gameId" element={<Endpoints />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/competition/:id" element={<CompetitionDetails />} />
-          <Route path="/session/:id" element={<Session />} />
-        </Routes>
-      </Router>
-      {/* </AuthRequired> */}
-    </QueryClientProvider>
-    {/* </AuthProvider> */}
+    <AuthProvider {...oidcConfig}>
+      <QueryClientProvider client={queryClient}>
+        <Toaster />
+        <AuthRequired>
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/games" element={<Games />} />
+              <Route path="/endpoints/:gameId" element={<Endpoints />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/competition/:id" element={<CompetitionDetails />} />
+              <Route path="/session/:id" element={<Session />} />
+            </Routes>
+          </Router>
+        </AuthRequired>
+      </QueryClientProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
