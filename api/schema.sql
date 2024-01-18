@@ -10,15 +10,6 @@ drop table if exists Game_Endpoint;
 drop table if exists Endpoint_Type;
 drop table if exists Event;
 
-create table Event (
-  id serial primary key,
-  name text not null,
-  day timestamp not null,
-  location text not null,
-  description text,
-  image_filename text
-);
-
 create table Game (
   id serial primary key,
   host_url text not null,
@@ -50,15 +41,16 @@ create table Game_Endpoint (
 create table Competition (
   id serial primary key,
   game_id int not null references Game(id) ON DELETE CASCADE,
-  event_id int not null references Event(id) ON DELETE CASCADE,
+  description text,
   start_at timestamptz not null,
   end_at timestamptz not null,
-  location text not null
+  location text not null,
+  image_filename text
 );
 
 create table Session (
   id serial primary key,
-  competition_id int not null references Competition(id) ON DELETE CASCADE,
+  competition_id int references Competition(id) ON DELETE CASCADE,
   play_id text not null,
   name text not null,
   creation_date timestamptz not null default NOW()
