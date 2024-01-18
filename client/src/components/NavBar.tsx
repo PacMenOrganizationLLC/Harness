@@ -11,8 +11,8 @@ export const NavBar = () => {
             </Link>
           </div>
           <div className="col-auto">
-            <Link to="/events" className="text-reset text-decoration-none fs-5">
-              <i className="bi-calendar-event pe-1" />Events
+            <Link to="/competitions" className="text-reset text-decoration-none fs-5">
+              <i className="bi-calendar-event pe-1" />Competitions
             </Link>
           </div>
           <div className="col-auto">

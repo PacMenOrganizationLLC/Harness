@@ -10,6 +10,7 @@ export const CompetitionKeys = {
 
 const queryClient = getQueryClient();
 
+
 export const useGetCompetitionsQuery = () => {
   return useQuery({
     queryKey: CompetitionKeys.competitionsKey,

@@ -1,5 +1,4 @@
 import { Game } from "./Games";
-import Event from "./Event"
 import { Session } from "./Session";
 
 export interface CompetitionPrize {
@@ -14,12 +13,13 @@ export interface CompetitionPrize {
 export interface Competition {
   id: number;
   gameId: number;
-  eventId: number;
+  name: string;
+  description?: string;
   startAt: Date;
   endAt: Date;
   location: string;
   game?: Game
-  event?: Event
+  imageFilename?: string;
   competitionPrizes?: CompetitionPrize[];
   sessions?: Session[];
 }

@@ -1,30 +1,30 @@
 import React from "react";
-import Event from "../../models/Event";
+import { Competition } from "../../models/Competition";
 
-interface EventCarouselProps {
-  events: Event[];
+interface ComptitionCarouselProps {
+  competitions: Competition[];
   carouselId: string;
 }
 
-export const EventCarousel: React.FC<EventCarouselProps> = ({
-  events,
+export const CompetitionCarousel: React.FC<ComptitionCarouselProps> = ({
+  competitions,
   carouselId,
 }) => {
   return (
     <div id={`carouselExampleControls${carouselId}`}
-      className="carousel slide"
+      className="carousel slide h-100"
       data-bs-ride="carousel">
       <div className="carousel-inner">
-        {events.map((e, index) => (
+        {competitions.map((e, index) => (
           <div key={index}
             className={`text-center carousel-item ${index === 0 && "active"}`}>
             <div className="fw-bold fs-4">{e.name}</div>
-            <div className="fs-5">{new Date(e.day).toDateString()}</div>
+            <div className="fs-5">{new Date(e.startAt).toDateString()} - {new Date(e.endAt).toDateString()}</div>
             <div>{e.location}</div>
           </div>
         ))}
       </div>
-      {events.length > -1 && (
+      {competitions.length > -1 && (
         <>
           <button className="carousel-control-prev"
             type="button"

@@ -6,14 +6,15 @@ import { TextInput, useTextInput } from "../../components/forms/TextInput";
 import { Spinner } from "../../components/Spinner";
 import { CustomModal, ModalButton, useModal } from "../../components/CustomModal";
 import { SelectInput, useSelectInput } from "../../components/forms/SelectInput";
+import toast from "react-hot-toast";
+import { FormatDatetimeLocalInput } from "../../helpers/dateAndTimeHelpers";
 
 interface CompetitionEditorModalProps {
-  eventId: number;
   existingCompetition?: Competition;
 }
 
 export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
-  { eventId, existingCompetition }
+  { existingCompetition }
 ) => {
   const addCompetitionMutation = useAddCompetitionMutation();
   const updateCompetitionMutation = useUpdateCompetitionMutation();
@@ -28,9 +29,10 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
     (game) => game.name
   );
 
-  const [startAt, setStartAt] = useState(existingCompetition ? extractTime(existingCompetition.startAt) : "");
-  const [endAt, setEndAt] = useState(existingCompetition ? extractTime(existingCompetition.endAt) : "");
+  const [startAt, setStartAt] = useState(existingCompetition?.startAt ?? new Date());
+  const [endAt, setEndAt] = useState(existingCompetition?.endAt ?? new Date());
   const locationControl = useTextInput(existingCompetition?.location ?? "");
+  const nameControl = useTextInput(existingCompetition?.name ?? "");
 
   const competitionEditorControls = useModal("Competition Editor");
   const ModalButton: ModalButton = ({ showModal }) => (
@@ -52,27 +54,32 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newCompetition: Competition = {
-      id: existingCompetition?.id ?? 0,
-      gameId: gameControl.value as number,
-      eventId: eventId,
-      startAt: timeToDate(startAt),
-      endAt: timeToDate(endAt),
-      location: locationControl.value,
-    };
-    if (existingCompetition) {
-      updateCompetitionMutation.mutate(newCompetition);
-    } else {
-      addCompetitionMutation.mutate(newCompetition);
+    if (startAt && endAt) {
+      const newCompetition: Competition = {
+        id: existingCompetition?.id ?? 0,
+        gameId: gameControl.value as number,
+        startAt: startAt,
+        endAt: endAt,
+        location: locationControl.value,
+        name: nameControl.value,
+      };
+      if (existingCompetition) {
+        updateCompetitionMutation.mutate(newCompetition);
+      } else {
+        addCompetitionMutation.mutate(newCompetition);
+      }
+      closeHandler();
     }
-    closeHandler();
+    else {
+      toast.error("Invalid Dates")
+    }
   };
 
   const closeHandler = () => {
     if (!existingCompetition) {
       gameControl.setValue(0)
-      setStartAt("")
-      setEndAt("")
+      setStartAt(new Date())
+      setEndAt(new Date())
       locationControl.setValue("")
     }
     competitionEditorControls.hide();
@@ -83,7 +90,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   if (!games) return <div>No games found</div>;
 
   const canSubmit =
-    gameControl.value !== 0 && locationControl.value !== "" && startAt < endAt;
+    gameControl.value !== 0 && locationControl.value !== "" && startAt && endAt && startAt < endAt;
 
   return (
     <CustomModal ModalButton={ModalButton} controls={competitionEditorControls}>
@@ -96,15 +103,16 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
         </div>
         <div className="modal-body">
           <form onSubmit={submitHandler}>
+            <TextInput control={nameControl} label="Name" />
             <SelectInput control={gameControl} label="Game" />
             <div className="row mt-2">
               <label className="form-label col">
                 Start At:
-                <input type="time" value={startAt} className="form-control" onChange={(e) => setStartAt(e.target.value)} />
+                <input type="datetime-local" value={FormatDatetimeLocalInput(startAt)} className="form-control" onChange={(e) => setStartAt(new Date(e.target.value))} />
               </label>
               <label className="form-label col">
                 End At:
-                <input type="time" value={endAt} className="form-control" onChange={(e) => setEndAt(e.target.value)} />
+                <input type="datetime-local" value={FormatDatetimeLocalInput(endAt)} className="form-control" onChange={(e) => setEndAt(new Date(e.target.value))} />
               </label>
             </div>
             <TextInput control={locationControl} label="Location" />
@@ -134,19 +142,3 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
     </CustomModal>
   );
 };
-
-function extractTime(date: Date): string {
-  const actualDate = new Date(date);
-  const hours = actualDate.getHours();
-  const minutes = actualDate.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-}
-
-
-function timeToDate(time: string): Date {
-  const [hours, minutes] = time.split(':');
-  const newDate = new Date();
-  newDate.setHours(Number(hours));
-  newDate.setMinutes(Number(minutes));
-  return newDate;
-}
