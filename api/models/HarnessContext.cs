@@ -10,7 +10,6 @@ public class HarnessContext : DbContext
     {
     }
 
-    public DbSet<Event> Event { get; set; } = null!;
     public DbSet<Game> Game { get; set; } = null!;
     public DbSet<Competition> Competition { get; set; } = null!;
     public DbSet<Session> Session { get; set; } = null!;

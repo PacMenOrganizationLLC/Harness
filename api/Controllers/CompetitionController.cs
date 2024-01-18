@@ -41,7 +41,6 @@ public class CompetitionController : ControllerBase
     {
         var competition = await context.Competition
         .Include(c => c.Game)
-        .Include(c => c.Event)
         .Include(c => c.CompetitionPrizes)
         .Include(c => c.Sessions)
         .FirstOrDefaultAsync(c => c.Id == id);

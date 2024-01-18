@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useDeleteCompetitionMutation, useGetCompetitionQuery } from "./competitionHooks"
 import { Spinner } from "../../components/Spinner"
-import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers"
 import { CompetitionEditorModal } from "./CompetitionEditorModal"
 import { AddSessionModal } from "../sessions/AddSessionModal"
 import { useGetSessionsQuery } from "../sessions/sessionHooks"
@@ -38,10 +37,10 @@ export const CompetitionDetails = () => {
           </button>
         </div>
         <div className="col-6 text-center">
-          <h1>{competition.event?.name}</h1>
+          <h1>Nothing</h1>
         </div>
         <div className="col-2 text-end my-auto">
-          <CompetitionEditorModal existingCompetition={competition} eventId={competition.eventId} />
+          <CompetitionEditorModal existingCompetition={competition} />
         </div>
         <div className="col-1 my-auto">
           <button className="btn btn-outline-danger" onClick={deleteHandler}>
@@ -53,13 +52,10 @@ export const CompetitionDetails = () => {
         <i className="bi-joystick" /> {competition.game?.name}
       </div>
       <div>
-        <i className="bi-pin-map" /> {competition.event?.location} - {competition.location}
+        <i className="bi-pin-map" /> {competition.location}
       </div>
       <div>
-        <i className="bi-calendar-event" /> {competition.event ? new Date(competition.event.day).toDateString() : ''}
-        <span className="ms-1">
-          @ {getTimeNoSeconds(competition.startAt)} - {getTimeNoSeconds(competition.endAt)}
-        </span>
+        <i className="bi-calendar-event" /> {new Date(competition.startAt).toString()} - {new Date(competition.startAt).toString()}
       </div>
       <hr />
       <div className="row">

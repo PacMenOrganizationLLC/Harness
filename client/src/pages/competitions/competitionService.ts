@@ -15,6 +15,7 @@ export const competitionService = {
     return response.data;
   },
   async addCompetition(competition: Competition) {
+    console.log(competition)
     const url = `${apiUrlBase}`;
     const response = await axios.post(url, competition);
     return response.data;

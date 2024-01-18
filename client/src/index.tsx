@@ -13,11 +13,11 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Session } from "./pages/sessions/Session";
 import { Toaster } from "react-hot-toast";
 import { CompetitionDetails } from "./pages/competitions/CompetitionDetails";
-import { Events } from "./pages/events/Events";
 import { Endpoints } from "./pages/games/endpoints/Endpoints";
 import { AuthRequired } from "./AuthRequired";
 import { WebStorageStateStore } from 'oidc-client-ts';
 import { AuthProvider } from 'react-oidc-context';
+import { CompetitionList } from "./pages/competitions/CompetitionList";
 
 const queryClient = getQueryClient();
 
@@ -48,7 +48,7 @@ root.render(
               <Route path="/" element={<Home />} />
               <Route path="/games" element={<Games />} />
               <Route path="/endpoints/:gameId" element={<Endpoints />} />
-              <Route path="/events" element={<Events />} />
+              <Route path="/competitions" element={<CompetitionList />} />
               <Route path="/competition/:id" element={<CompetitionDetails />} />
               <Route path="/session/:id" element={<Session />} />
             </Routes>
