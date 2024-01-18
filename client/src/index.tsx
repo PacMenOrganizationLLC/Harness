@@ -1,4 +1,3 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./assets/custom.scss";
@@ -16,8 +15,8 @@ import { CompetitionDetails } from "./pages/competitions/CompetitionDetails";
 import { Events } from "./pages/events/Events";
 import { Endpoints } from "./pages/games/endpoints/Endpoints";
 import { AuthRequired } from "./AuthRequired";
-import { WebStorageStateStore } from 'oidc-client-ts';
-import { AuthProvider } from 'react-oidc-context';
+import { WebStorageStateStore } from "oidc-client-ts";
+import { AuthProvider } from "react-oidc-context";
 
 const queryClient = getQueryClient();
 
@@ -31,7 +30,7 @@ const oidcConfig = {
   authority: "https://100.90.251.1:25651/realms/harness",
   client_id: "harness",
   redirect_uri: window.location.origin,
-  response_type: 'code',
+  response_type: "code",
   scope: "openid profile email",
   loadUserInfo: true,
 };
