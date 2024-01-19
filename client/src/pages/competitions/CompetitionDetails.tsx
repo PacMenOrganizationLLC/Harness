@@ -1,38 +1,42 @@
-import { useNavigate, useParams } from "react-router-dom"
-import { useDeleteCompetitionMutation, useGetCompetitionQuery } from "./competitionHooks"
-import { Spinner } from "../../components/Spinner"
-import { CompetitionEditorModal } from "./CompetitionEditorModal"
-import { AddSessionModal } from "../sessions/AddSessionModal"
-import { useGetSessionsQuery } from "../sessions/sessionHooks"
-import { SessionItem } from "../sessions/SessionItem"
+import { useNavigate, useParams } from "react-router-dom";
+import {
+  useDeleteCompetitionMutation,
+  useGetCompetitionQuery,
+} from "./competitionHooks";
+import { Spinner } from "../../components/Spinner";
+import { CompetitionEditorModal } from "./CompetitionEditorModal";
+import { AddSessionModal } from "../sessions/AddSessionModal";
+import { useGetSessionsQuery } from "../sessions/sessionHooks";
+import { SessionItem } from "../sessions/SessionItem";
+import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
 
 export const CompetitionDetails = () => {
-  const competitionId = useParams<{ id: string }>().id
+  const competitionId = useParams<{ id: string }>().id;
   const getSessionsQuery = useGetSessionsQuery(Number(competitionId));
-  const sessions = getSessionsQuery.data ?? []
-  const competitionQuery = useGetCompetitionQuery(Number(competitionId))
-  const competition = competitionQuery.data
+  const sessions = getSessionsQuery.data ?? [];
+  const competitionQuery = useGetCompetitionQuery(Number(competitionId));
+  const competition = competitionQuery.data;
   const navigate = useNavigate();
 
   const deleteCompetitionMutation = useDeleteCompetitionMutation();
 
-  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const deleteHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.stopPropagation();
     deleteCompetitionMutation.mutate(Number(competitionId));
-    navigate('/events');
-  }
+    navigate("/events");
+  };
 
-
-  if (competitionQuery.isLoading) return <Spinner />
-  if (competitionQuery.isError) return <div>Error getting competition</div>
-  if (!competition) return <div>Could not get competition</div>
+  if (competitionQuery.isLoading) return <Spinner />;
+  if (competitionQuery.isError) return <div>Error getting competition</div>;
+  if (!competition) return <div>Could not get competition</div>;
 
   return (
     <div className="container">
       <div className="row">
         <div className="col-3 my-auto">
-          <button className="btn"
-            onClick={() => navigate(-1)}>
+          <button className="btn" onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
         </div>
@@ -49,13 +53,20 @@ export const CompetitionDetails = () => {
         </div>
       </div>
       <div>
+        Description: {competition.description ?? "No description provided"}
+      </div>
+      <div>
         <i className="bi-joystick" /> {competition.game?.name}
       </div>
       <div>
         <i className="bi-pin-map" /> {competition.location}
       </div>
       <div>
-        <i className="bi-calendar-event" /> {new Date(competition.startAt).toString()} - {new Date(competition.startAt).toString()}
+        <i className="bi-calendar-event" />{" "}
+        {new Date(competition.startAt).toDateString()},{" "}
+        {getTimeNoSeconds(competition.startAt)} -{" "}
+        {new Date(competition.endAt).toDateString()},{" "}
+        {getTimeNoSeconds(competition.endAt)}
       </div>
       <hr />
       <div className="row">
@@ -67,8 +78,9 @@ export const CompetitionDetails = () => {
         </div>
       </div>
       <div className="row">
-        {competition.competitionPrizes && competition.competitionPrizes.length > 0 ?
-          competition.competitionPrizes.map(p => (
+        {competition.competitionPrizes &&
+        competition.competitionPrizes.length > 0 ? (
+          competition.competitionPrizes.map((p) => (
             <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
               <div className="text-center border rounded my-1" key={p.id}>
                 <div>#{p.placement}</div>
@@ -76,9 +88,9 @@ export const CompetitionDetails = () => {
               </div>
             </div>
           ))
-          :
+        ) : (
           <div className="col">No prizes</div>
-        }
+        )}
       </div>
       <hr />
       <div className="row">
@@ -96,6 +108,15 @@ export const CompetitionDetails = () => {
           </div>
         ))}
       </div>
-    </div >
+      <hr />
+      <div className="row">
+        <div className="col">
+          <img
+            src={competition.imageFilename ?? ""}
+            alt="Your competition's visual graphic here"
+          ></img>
+        </div>
+      </div>
+    </div>
   );
-}
+};
