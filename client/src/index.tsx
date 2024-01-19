@@ -26,8 +26,8 @@ const root = ReactDOM.createRoot(
 
 const oidcConfig = {
   userStore: new WebStorageStateStore({ store: window.localStorage }),
-  // authority: "https://harnesskc.duckdns.org:1234/realms/harness",
-  authority: "https://100.90.251.1:25651/realms/harness",
+  authority: "https://harnesskc.duckdns.org:25651/realms/harness",
+  // authority: "https://100.90.251.1:25651/realms/harness",
   client_id: "harness",
   redirect_uri: window.location.origin,
   response_type: "code",
