@@ -33,9 +33,10 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
       >
         <div className="card-body">
           <div className="card-title fs-5 text-truncate">
-            {getGameName(competition.gameId)}
+            {competition.name}
           </div>
           <div>
+            {getGameName(competition.gameId)}
             {new Date(competition.startAt).toLocaleDateString()},{" "}
             {getTimeNoSeconds(competition.startAt)} -{" "}
             {new Date(competition.endAt).toLocaleDateString()},{" "}
