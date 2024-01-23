@@ -1,7 +1,7 @@
 import axios from "axios"
 import { Game } from "../../models/Games";
-import { BaseUrl } from "../../index";
 
+const BaseUrl = process.env.REACT_APP_API_URL;
 
 export const gameService = {
   async getGames(): Promise<Game[]> {

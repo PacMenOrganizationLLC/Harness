@@ -1,5 +1,6 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const { BaseUrl } = require("./index");
+
+const BaseUrl = process.env.REACT_APP_API_URL;
 
 module.exports = function (app) {
   app.use(

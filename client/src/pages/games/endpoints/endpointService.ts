@@ -1,6 +1,7 @@
 import axios from "axios";
 import { EndpointType, GameEndpoint } from "../../../models/GameEndpoint";
-import { BaseUrl } from "../../../index";
+
+const BaseUrl = process.env.REACT_APP_API_URL;
 
 export const endpointService = {
   async getEndpointTypes(): Promise<EndpointType[]> {

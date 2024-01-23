@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Competition } from "../../models/Competition";
-import { BaseUrl } from "../../index";
 
+const BaseUrl = process.env.REACT_APP_API_URL;
 const apiUrlBase = `${BaseUrl}/api/competition`;
 
 export const competitionService = {

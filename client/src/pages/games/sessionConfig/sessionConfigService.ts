@@ -3,7 +3,8 @@ import {
   GameConfigTemplate,
   SessionConfig,
 } from "../../../models/SessionConfig";
-import { BaseUrl } from "../../../index";
+
+const BaseUrl = process.env.REACT_APP_API_URL;
 
 export const sessionConfigService = {
   async getSessionConfigs(gameId: number): Promise<SessionConfig[]> {
