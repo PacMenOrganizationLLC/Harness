@@ -19,6 +19,12 @@ jobs:
         with:
           submodules: true
           lfs: false
+          
+      - name: Replace .env with prod.env
+        run: |
+          cd client
+          cp prod.env .env || echo "prod.env not found, using default .env"
+  
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
