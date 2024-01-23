@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Competition } from "../../models/Competition";
+import { BaseUrl } from "../..";
 
-const apiUrlBase = "http://localhost:8000/api/competition";
+const apiUrlBase = `${BaseUrl}/competition`;
 
 export const competitionService = {
   async getCompetitions(): Promise<Competition[]> {

@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: '18.x'
 
+      - name: Replace .env with prod.env
+        run: |
+          cd client
+          cp prod.env .env || echo "prod.env not found, using default .env"
+
       - name: npm install, build, and test
         run: |
           cd client

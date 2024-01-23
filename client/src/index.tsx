@@ -24,6 +24,8 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+export const BaseUrl = process.env.REACT_APP_API_URL;
+
 const oidcConfig = {
   userStore: new WebStorageStateStore({ store: window.localStorage }),
   authority: "https://harnesskc.duckdns.org:25651/realms/harness",
