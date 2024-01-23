@@ -1,9 +1,9 @@
 import axios from "axios";
 import { Session } from "../../models/Session";
 import { SessionConfig } from "../../models/SessionConfig";
-import { BaseUrl } from "../..";
+import { BaseUrl } from "../../index";
 
-const apiUrlBase = `${BaseUrl}/session`;
+const apiUrlBase = `${BaseUrl}/api/session`;
 
 export const sessionService = {
   async getSessions(competitionId: number): Promise<Session[]> {
