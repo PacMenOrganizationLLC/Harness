@@ -40,7 +40,7 @@ root.render(
     <AuthProvider {...oidcConfig}>
       <QueryClientProvider client={queryClient}>
         <Toaster />
-        {/* <AuthRequired> */}
+        <AuthRequired>
           <Router>
             <NavBar />
             <Routes>
@@ -52,7 +52,7 @@ root.render(
               <Route path="/session/:id" element={<Session />} />
             </Routes>
           </Router>
-        {/* </AuthRequired> */}
+        </AuthRequired>
       </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>
