@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Session } from "../../models/Session";
 import { SessionConfig } from "../../models/SessionConfig";
-import { BaseUrl } from "../../index";
 
+const BaseUrl = process.env.REACT_APP_API_URL;
 const apiUrlBase = `${BaseUrl}/api/session`;
 
 export const sessionService = {
