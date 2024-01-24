@@ -52,9 +52,9 @@ export const CompetitionDetails = () => {
           </button>
         </div>
       </div>
-      <div>
-        Description: {competition.description ?? "No description provided"}
-      </div>
+      {competition.description && (
+        <div className="text-center">{competition.description}</div>
+      )}
       <div>
         <i className="bi-joystick" /> {competition.game?.name}
       </div>
@@ -79,7 +79,7 @@ export const CompetitionDetails = () => {
       </div>
       <div className="row">
         {competition.competitionPrizes &&
-        competition.competitionPrizes.length > 0 ? (
+          competition.competitionPrizes.length > 0 ? (
           competition.competitionPrizes.map((p) => (
             <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
               <div className="text-center border rounded my-1" key={p.id}>
