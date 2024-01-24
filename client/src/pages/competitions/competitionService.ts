@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Competition } from "../../models/Competition";
 
-const apiUrlBase = "http://localhost:8000/api/competition";
+const BaseUrl = process.env.REACT_APP_API_URL;
+const apiUrlBase = `${BaseUrl}/api/competition`;
 
 export const competitionService = {
   async getCompetitions(): Promise<Competition[]> {
