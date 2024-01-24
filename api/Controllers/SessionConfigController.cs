@@ -77,7 +77,7 @@ public class SessionConfigController : ControllerBase
   [HttpGet("template/{gameId}")]
   public async Task<ActionResult<List<GameConfigTemplate>>> GetGameTemplateConfiguration(int gameId)
   {
-    string? url = _context.GameEndpoint.Where(g => g.GameId == gameId && g.EndpointTypeId == 3).Select(g => g.Endpoint).FirstOrDefault();
+    string? url = _context.GameEndpoint.Where(g => g.GameId == gameId && g.EndpointTypeId == 2).Select(g => g.Endpoint).FirstOrDefault();
     if (url != null && url != "")
     {
       try
