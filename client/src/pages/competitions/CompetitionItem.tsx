@@ -35,16 +35,21 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
           <div className="card-title fs-5 text-truncate">
             {competition.name}
           </div>
-          <div>
-            {getGameName(competition.gameId)}
-            {new Date(competition.startAt).toLocaleDateString()},{" "}
-            {getTimeNoSeconds(competition.startAt)} -{" "}
-            {new Date(competition.endAt).toLocaleDateString()},{" "}
-            {getTimeNoSeconds(competition.endAt)}
+          <div className="text-start">
+            <div>
+              <i className="bi-joystick me-1" />{getGameName(competition.gameId)}
+            </div>
+            <div>
+              <i className="bi-calendar-event me-1" />{formatDate(competition.startAt)} - {formatDate(competition.endAt)}
+            </div>
+            <div>
+              <i className="bi-clock me-1" />{getTimeNoSeconds(competition.endAt)} - {getTimeNoSeconds(competition.endAt)}
+            </div>
+            <div>
+              <i className="bi-pin-map me-1" />{competition.location}
+            </div>
           </div>
           <div>
-            <i className="bi-pin-map me-1" />
-            {competition.location}
           </div>
           {/* <div className="row text-center mt-2">
             <div className="col">
@@ -58,3 +63,8 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
     </div>
   );
 };
+
+function formatDate(date: Date): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(d);
+}

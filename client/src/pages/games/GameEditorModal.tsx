@@ -61,11 +61,13 @@ export const GameEditorModal: FC<{
   }
 
   const closeHandler = () => {
-    nameControl.setValue("")
-    repoLinkControl.setValue("")
-    hostUrlControl.setValue("")
-    detailsControl.setValue("")
-    createdByControl.setValue("")
+    if (!existingGame) {
+      nameControl.setValue("")
+      repoLinkControl.setValue("")
+      hostUrlControl.setValue("")
+      detailsControl.setValue("")
+      createdByControl.setValue("")
+    }
     gameEditorControls.hide()
   }
 

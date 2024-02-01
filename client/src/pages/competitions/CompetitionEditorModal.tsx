@@ -23,16 +23,17 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const games = getGamesQuery.data ?? [];
 
   const gameControl = useSelectInput(
-    existingCompetition ? existingCompetition.gameId : games[0]?.id,
+    existingCompetition ? existingCompetition.gameId : "",
     games,
     (game) => game.id,
     (game) => game.name
   );
 
-  const [startAt, setStartAt] = useState(existingCompetition?.startAt ?? new Date());
-  const [endAt, setEndAt] = useState(existingCompetition?.endAt ?? new Date());
+  const [startAt, setStartAt] = useState(existingCompetition?.startAt);
+  const [endAt, setEndAt] = useState(existingCompetition?.endAt);
   const locationControl = useTextInput(existingCompetition?.location ?? "");
   const nameControl = useTextInput(existingCompetition?.name ?? "");
+  const descriptionControl = useTextInput(existingCompetition?.description ?? "");
 
   const competitionEditorControls = useModal("Competition Editor");
   const ModalButton: ModalButton = ({ showModal }) => (
@@ -45,8 +46,8 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
           <i className="bi bi-pencil" />
         </button>
       ) : (
-        <button className="btn btn-outline-info px-2 py-1" onClick={showModal}>
-          <i className="bi-plus-lg" />
+        <button className="btn btn-outline-info" onClick={showModal}>
+          New
         </button>
       )}
     </div>
@@ -62,6 +63,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
         endAt: endAt,
         location: locationControl.value,
         name: nameControl.value,
+        description: descriptionControl.value !== "" ? descriptionControl.value : undefined
       };
       if (existingCompetition) {
         updateCompetitionMutation.mutate(newCompetition);
@@ -78,8 +80,8 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   const closeHandler = () => {
     if (!existingCompetition) {
       gameControl.setValue(0)
-      setStartAt(new Date())
-      setEndAt(new Date())
+      setStartAt(undefined)
+      setEndAt(undefined)
       locationControl.setValue("")
     }
     competitionEditorControls.hide();
@@ -104,6 +106,9 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
         <div className="modal-body">
           <form onSubmit={submitHandler}>
             <TextInput control={nameControl} label="Name" />
+            <div className="my-1">
+              <TextInput inputClassName="col-12 col-md-12" labelClassName="col-12" control={descriptionControl} label="Description" isTextArea={true} />
+            </div>
             <SelectInput control={gameControl} label="Game" />
             <div className="row mt-2">
               <label className="form-label col">

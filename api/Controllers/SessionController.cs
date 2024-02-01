@@ -31,7 +31,8 @@ public class SessionController : ControllerBase
                 .Where(e => e.EndpointType.Name == "Create Session")
                 .Where(t => t.GameId == competition.GameId)
                 .FirstOrDefaultAsync();
-            // Make the API call and get the response
+
+            // Get the multi session id if game supports
             if (competition.Game.SupportsMultiSessions == true)
             {
                 HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
