@@ -79,7 +79,7 @@ export const Session = () => {
             ></iframe>
           )}
         </div>
-        <div className="col-lg text-center">
+        <div className="col-lg-2 text-center">
           <div
             className="border rounded overflowy-scroll d-none d-lg-block"
             style={{ height: "20em", overflowX: "hidden" }}

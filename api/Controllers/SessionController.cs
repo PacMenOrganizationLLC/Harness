@@ -167,12 +167,10 @@ public class SessionController : ControllerBase
                 var currentScores = await _context.SessionScoreboard.Where(s => s.SessionId == id).ToListAsync();
                 if (currentScores.Count > 0)
                 {
-                    foreach (SessionScoreboard score in currentScores)
-                    {
-                        _context.SessionScoreboard.Remove(score);
-                    }
+                    _context.SessionScoreboard.RemoveRange(currentScores);
                     await _context.SaveChangesAsync();
                 }
+
                 foreach (var score in scores)
                 {
                     SessionScoreboard s = new()
