@@ -111,10 +111,10 @@ export const CompetitionDetails = () => {
       <hr />
       <div className="row">
         <div className="col">
-          <img
+          {/* <img
             src={competition.imageFilename ?? ""}
             alt="Your competition's visual graphic here"
-          ></img>
+          ></img> */}
         </div>
       </div>
     </div>
