@@ -71,3 +71,10 @@ export const useStopSessionMutation = (sessionId: number) => {
     }
   })
 }
+
+export const useGetGameScoreboardQuery = (sessionId: number) => {
+  return useQuery({
+    queryKey: sessionKeys.sessionsKey(sessionId),
+    queryFn: async() => await sessionService.getScoreboard(sessionId),
+  });
+}

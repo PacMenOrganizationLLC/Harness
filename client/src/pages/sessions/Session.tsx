@@ -1,8 +1,9 @@
-import { useGetSessionQuery, useStopSessionMutation } from "./sessionHooks";
+import { useGetGameScoreboardQuery, useGetSessionQuery, useStopSessionMutation } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { StartGameModal } from "./StartGameModal";
+import ScoreboardComponent from "../../components/ScoreboardDisplay";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -11,18 +12,25 @@ export const Session = () => {
   const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
 
-  const stopSessionMutation = useStopSessionMutation(parseInt(String(sessionId)));
+  const stopSessionMutation = useStopSessionMutation(
+    parseInt(String(sessionId))
+  );
 
-  if (getSessionQuery.isLoading) return <Spinner />
-  if (getSessionQuery.isError) return <h1>Error getting session</h1>
-  if (!session) return <h1>No sessions</h1>
+  const getScoreboardQuery = useGetGameScoreboardQuery(Number(sessionId));
 
+  if (getSessionQuery.isLoading) return <Spinner />;
+  if (getSessionQuery.isError) return <h1>Error getting session</h1>;
+  if (!session) return <h1>No sessions</h1>;
+
+  if (stopSessionMutation.data) {
+    // console.log("data changed");
+    console.log("data changed", stopSessionMutation.data);
+  }
   return (
     <div className={classes.customContainer}>
       <div className="row">
         <div className="col-lg-2 col-md-4 col-1 my-auto">
-          <button className="btn"
-            onClick={() => navigate(-1)}>
+          <button className="btn" onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
         </div>
@@ -35,32 +43,42 @@ export const Session = () => {
           </div>
         )}
         <div className="col-lg-1 col-md-2 col-6 px-0 text-center my-auto">
-          <button className="btn btn-outline-danger"
-            onClick={() => stopSessionMutation.mutate()}>
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => {
+              stopSessionMutation.mutate()
+            }}
+          >
             Stop Game
           </button>
         </div>
       </div>
       <div className="row vh-100 mt-1">
         <div className="col-lg-10 vh-100 border rounded px-0">
-          {(!session.playUrl || !session.playUrl.includes("http")) ? (
+          {!session.playUrl || !session.playUrl.includes("http") ? (
             <div className="text-center">
               <div className="fs-1">Unable to show game</div>
-              <div>Please check the url is valid: {session.playUrl ? session.playUrl : "None"}</div>
+              <div>
+                Please check the url is valid:{" "}
+                {session.playUrl ? session.playUrl : "None"}
+              </div>
             </div>
           ) : (
-            <iframe src={session.playUrl}
+            <iframe
+              src={session.playUrl}
               className="h-100 w-100 rounded"
-              title={`Session${session.playId}`}></iframe>
+              title={`Session${session.playId}`}
+            ></iframe>
           )}
         </div>
         <div className="col-lg text-center">
-          <div className="border rounded"
-            style={{ height: "20em" }}>
-            Scoreboard coming soon
+          <div className="border rounded" style={{ height: "20em" }}>
+            {(getScoreboardQuery.data && (
+              <ScoreboardComponent scoreBoard={getScoreboardQuery.data} />
+            )) ??
+              "Scoreboard coming soon"}
           </div>
-          <div className="border rounded mt-2"
-            style={{ height: "30em" }}>
+          <div className="border rounded mt-2" style={{ height: "30em" }}>
             Chat coming soon
           </div>
         </div>
