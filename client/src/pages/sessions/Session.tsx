@@ -1,4 +1,8 @@
-import { useGetGameScoreboardQuery, useGetSessionQuery, useStopSessionMutation } from "./sessionHooks";
+import {
+  useGetGameScoreboardQuery,
+  useGetSessionQuery,
+  useStopSessionMutation,
+} from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
@@ -46,7 +50,7 @@ export const Session = () => {
           <button
             className="btn btn-outline-danger"
             onClick={() => {
-              stopSessionMutation.mutate()
+              stopSessionMutation.mutate();
             }}
           >
             Stop Game
@@ -72,7 +76,10 @@ export const Session = () => {
           )}
         </div>
         <div className="col-lg text-center">
-          <div className="border rounded" style={{ height: "20em" }}>
+          <div
+            className="border rounded overflowy-scroll d-none d-lg-block"
+            style={{ height: "20em", overflowX: "hidden" }}
+          >
             {(getScoreboardQuery.data && (
               <ScoreboardComponent scoreBoard={getScoreboardQuery.data} />
             )) ??

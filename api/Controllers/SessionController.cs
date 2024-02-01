@@ -164,7 +164,15 @@ public class SessionController : ControllerBase
             try
             {
                 var scores = await _httpClient.GetFromJsonAsync<IEnumerable<PlayerScore>>(scoreboardUrl + "?game_id=" + id);
-
+                var currentScores = await _context.SessionScoreboard.Where(s => s.SessionId == id).ToListAsync();
+                if (currentScores.Count > 0)
+                {
+                    foreach (SessionScoreboard score in currentScores)
+                    {
+                        _context.SessionScoreboard.Remove(score);
+                    }
+                    await _context.SaveChangesAsync();
+                }
                 foreach (var score in scores)
                 {
                     SessionScoreboard s = new()

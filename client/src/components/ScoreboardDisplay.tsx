@@ -6,25 +6,25 @@ interface ScoreboardComponentProps {
 }
 
 const ScoreboardComponent: FC<ScoreboardComponentProps> = ({ scoreBoard }) => {
-  const test_array = [0, 1, 2];
   console.log(scoreBoard);
+  const filteredScoreboard = scoreBoard.filter((s) => s.rank <= 10);
   return (
-    <div>
-      <h2>Session Scoreboard</h2>
-      <table>
+    <div className="">
+      <h2>Scoreboard</h2>
+      <table className="table table-stripded">
         <thead>
           <tr>
-            <th>Rank</th>
-            <th>Player Name</th>
-            <th>Score</th>
+            <th className="mx-2 w-25">Rank</th>
+            <th className="mx-2">Player</th>
+            <th className="mx-2">Score</th>
           </tr>
         </thead>
         <tbody>
-          {scoreBoard &&
-            scoreBoard.map((scoreboard, index) => (
+          {filteredScoreboard &&
+            filteredScoreboard.map((scoreboard, index) => (
               <tr key={index}>
                 <td>{scoreboard.rank}</td>
-                <td>{scoreboard.playerName}</td>
+                <td className="text-truncate">{scoreboard.playerName}</td>
                 <td>{scoreboard.score}</td>
               </tr>
             ))}
