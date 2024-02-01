@@ -8,10 +8,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { StartGameModal } from "./StartGameModal";
 import ScoreboardComponent from "../../components/ScoreboardDisplay";
+import { useState } from "react";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
   const navigate = useNavigate();
+  const [isStopped, SetisStopped] = useState(false);
 
   const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
@@ -49,8 +51,10 @@ export const Session = () => {
         <div className="col-lg-1 col-md-2 col-6 px-0 text-center my-auto">
           <button
             className="btn btn-outline-danger"
+            disabled={isStopped}
             onClick={() => {
               stopSessionMutation.mutate();
+              SetisStopped(true);
             }}
           >
             Stop Game
