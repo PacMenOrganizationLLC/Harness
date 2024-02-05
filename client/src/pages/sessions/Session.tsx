@@ -7,7 +7,7 @@ import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { StartGameModal } from "./StartGameModal";
-import ScoreboardComponent from "../../components/ScoreboardDisplay";
+import { ScoreboardComponent } from "../../components/ScoreboardDisplay";
 import { useState } from "react";
 
 export const Session = () => {

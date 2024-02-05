@@ -1,61 +1,104 @@
-import React from "react";
+import { FC, useEffect, useState } from "react";
 import { Competition } from "../../models/Competition";
-import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
+import { FormatDate, getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
+import { Link } from "react-router-dom";
 
-interface ComptitionCarouselProps {
-  competitions: Competition[];
-  carouselId: string;
-}
+export const CompetitionCarousel: FC<{
+  competitions: Competition[],
+  title: string
+}> = ({ competitions, title }) => {
+  const [viewIndex, setViewIndex] = useState(1)
+  const [viewCount, setViewCount] = useState(4)
+  const maxIndex = Math.ceil(competitions.length / viewCount);
 
-export const CompetitionCarousel: React.FC<ComptitionCarouselProps> = ({
-  competitions,
-  carouselId,
-}) => {
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1440) {
+        setViewCount(4);
+      } else if (screenWidth >= 1024) {
+        const newCount = 3
+        setViewCount(newCount);
+      } else if (screenWidth >= 768) {
+        const newCount = 2
+        setViewCount(newCount);
+      } else {
+        setViewCount(1);
+      }
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (viewIndex > maxIndex) {
+      setViewIndex(maxIndex);
+    }
+  }, [viewIndex, competitions, viewCount, setViewCount, maxIndex])
+
+  const incrementViewIndex = () => {
+    const newIndex = (viewIndex + 1) % (Math.ceil(competitions.length / viewCount) + 1);
+    setViewIndex(newIndex === 0 ? 1 : newIndex);
+  }
+  const decrementViewIndex = () => {
+    const newIndex = (viewIndex - 1) % (maxIndex + 1)
+    setViewIndex(newIndex === 0 ? maxIndex : newIndex);
+  }
+
   return (
-    <div
-      id={`carouselExampleControls${carouselId}`}
-      className="carousel slide h-100"
-      data-bs-ride="carousel"
-    >
-      <div className="carousel-inner">
-        {competitions.map((e, index) => (
-          <div
-            key={index}
-            className={`text-center carousel-item ${index === 0 && "active"}`}
-          >
-            <div className="fw-bold fs-4">{e.name}</div>
-            <div className="fs-5">
-              {new Date(e.startAt).toLocaleDateString()},{" "}
-              {getTimeNoSeconds(e.startAt)} -{" "}
-              {new Date(e.endAt).toLocaleDateString()},{" "}
-              {getTimeNoSeconds(e.endAt)}
-            </div>
-            <div>{e.location}</div>
-          </div>
-        ))}
+    <>
+      <div className="row">
+        <div className="col offset-2">
+          <div className="text-center mt-2 fs-4 fw-bold">{title}</div>
+        </div>
+        <div className="col-2 d-flex align-items-end justify-content-end">
+          {(viewCount === competitions.length) ? (
+            <button className="btn btn-sm text-muted"
+              onClick={() => window.dispatchEvent(new Event('resize'))}>Hide</button>
+          ) : (
+            <button className="btn btn-sm text-muted"
+              onClick={() => setViewCount(competitions.length)}>View All</button>
+          )}
+        </div>
       </div>
-      {competitions.length > -1 && (
-        <>
-          <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target={`#carouselExampleControls${carouselId}`}
-            data-bs-slide="prev"
-          >
-            <i className="bi-chevron-compact-left fs-1 text-secondary" />
-            <span className="visually-hidden">Previous</span>
-          </button>
-          <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target={`#carouselExampleControls${carouselId}`}
-            data-bs-slide="next"
-          >
-            <i className="bi-chevron-compact-right fs-1 text-secondary" />
-            <span className="visually-hidden">Next</span>
-          </button>
-        </>
-      )}
-    </div>
-  );
-};
+      <div className="row">
+        <button className="btn col-auto px-0 my-auto border-0"
+          disabled={competitions.length <= viewCount}
+          onClick={decrementViewIndex}>
+          <i className="bi bi-chevron-compact-left fs-1"></i>
+        </button>
+        <div className="col my-auto">
+          <div className="row">
+            {competitions.map((c, index) => (
+              <>
+                {(index <= (viewIndex * viewCount - 1) && index >= ((viewIndex - 1) * viewCount)) && (
+                  <div key={index} className="col-12 col-md-6 col-lg-4 col-xl-3 my-1">
+                    <Link to={`/competition/${c.id}`}
+                      className="text-reset text-decoration-none">
+                      <div className="card text-center h-100 bg-secondary-subtle">
+                        <div className="card-body">
+                          <div className="card-title fw-bold">{c.name}</div>
+                          <div>{c.game?.name}</div>
+                          <div>{FormatDate(c.startAt)} - {FormatDate(c.endAt)}</div>
+                          <div>{getTimeNoSeconds(c.endAt)} - {getTimeNoSeconds(c.endAt)}</div>
+                        </div>
+                      </div>
+                    </Link >
+                  </div>
+                )}
+              </>
+            ))}
+          </div>
+        </div>
+        <button className="btn px-0 col-auto my-auto border-0"
+          disabled={competitions.length <= viewCount}
+          onClick={incrementViewIndex}>
+          <i className="bi bi-chevron-compact-right fs-1"></i>
+        </button>
+      </div >
+    </>
+  )
+}

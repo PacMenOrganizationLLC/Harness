@@ -41,7 +41,7 @@ export const CompetitionDetails = () => {
           </button>
         </div>
         <div className="col-6 text-center">
-          <h1>Nothing</h1>
+          <h1>{competition.name}</h1>
         </div>
         <div className="col-2 text-end my-auto">
           <CompetitionEditorModal existingCompetition={competition} />

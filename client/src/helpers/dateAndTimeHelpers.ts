@@ -37,3 +37,9 @@ export function FormatYearMonthDay(
   const day = String(date.getDate()).padStart(2, "0");
   return `${year + delimiter + month + delimiter + day}`;
 }
+
+export function FormatDate(date: Date): string {
+  const d = new Date(date);
+  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(d);
+}
+

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Competition } from "../../models/Competition";
 import { useGetGamesQuery } from "../games/gameHooks";
 import { useNavigate } from "react-router-dom";
-import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
+import { FormatDate, getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
 
 interface CompetitionItemProps {
   competition: Competition;
@@ -40,7 +40,7 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
               <i className="bi-joystick me-1" />{getGameName(competition.gameId)}
             </div>
             <div>
-              <i className="bi-calendar-event me-1" />{formatDate(competition.startAt)} - {formatDate(competition.endAt)}
+              <i className="bi-calendar-event me-1" />{FormatDate(competition.startAt)} - {FormatDate(competition.endAt)}
             </div>
             <div>
               <i className="bi-clock me-1" />{getTimeNoSeconds(competition.endAt)} - {getTimeNoSeconds(competition.endAt)}
@@ -64,7 +64,3 @@ export const CompetitionItem: FC<CompetitionItemProps> = ({ competition }) => {
   );
 };
 
-function formatDate(date: Date): string {
-  const d = new Date(date);
-  return new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric' }).format(d);
-}
