@@ -164,7 +164,7 @@ public class SessionController : ControllerBase
             try
             {
                 var scores = await _httpClient.GetFromJsonAsync<IEnumerable<PlayerScore>>(scoreboardUrl + "?game_id=" + id);
-
+                DateTime now = DateTime.UtcNow;
                 foreach (var score in scores)
                 {
                     SessionScoreboard s = new()
@@ -173,11 +173,12 @@ public class SessionController : ControllerBase
                         SessionId = id,
                         PlayerName = score.PlayerName,
                         Rank = score.Rank,
-                        Score = score.Score
+                        Score = score.Score,
+                        timeEntered = now
                     };
                     _context.SessionScoreboard.Add(s);
                 }
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             catch
             {
@@ -223,10 +224,46 @@ public class SessionController : ControllerBase
     }
 
     [HttpGet("sessionScoreboard/{sessionId}")]
-    public async Task<ActionResult<IEnumerable<SessionScoreboard>>> GetSessionScoreboard(int sessionId)
+    public async Task<IEnumerable<SessionScoreboard>> GetSessionScoreboard(int sessionId)
     {
-        var scoreboard = await _context.SessionScoreboard.Where(s => s.SessionId == sessionId).ToListAsync();
-        return Ok(scoreboard);
+        // Find the most recent timestamp entered for the session
+        try
+        {
+
+            DateTime mostRecentTimestamp = await _context.SessionScoreboard
+                .Where(x => x.SessionId == sessionId)  // Replace yourSessionId with the actual session ID
+                .MaxAsync(x => x.timeEntered);
+
+            mostRecentTimestamp = mostRecentTimestamp;
+
+
+            var allScoreboardRecords = await _context.SessionScoreboard
+            .Where(x => x.SessionId == sessionId)
+            .ToListAsync();
+
+            // Filter the list based on the time requirement without using LINQ
+            var scoreboard = new List<SessionScoreboard>();
+            DateTime lowerBound = mostRecentTimestamp.AddSeconds(-1);
+            DateTime upperBound = mostRecentTimestamp.AddSeconds(1);
+
+            foreach (var record in allScoreboardRecords)
+            {
+                if (record.timeEntered >= lowerBound && record.timeEntered <= upperBound)
+                {
+                    scoreboard.Add(record);
+                }
+            }
+
+            scoreboard.Sort((a, b) => a.Score.GetValueOrDefault().CompareTo(b.Score.GetValueOrDefault()));
+
+            scoreboard.Reverse();
+
+            return scoreboard;
+        }
+        catch
+        {
+            return new List<SessionScoreboard>();
+        }
     }
 
 }

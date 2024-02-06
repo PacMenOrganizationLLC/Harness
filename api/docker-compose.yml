@@ -1,0 +1,15 @@
+version: '3'
+
+
+services:
+  harness_db:
+    image: postgres:latest
+    container_name: harness_db
+    environment:
+      POSTGRES_USER: harness
+      POSTGRES_PASSWORD: harness
+      POSTGRES_DB: harness
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql

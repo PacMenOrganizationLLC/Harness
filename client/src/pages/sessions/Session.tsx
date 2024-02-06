@@ -1,13 +1,19 @@
-import { useGetGameScoreboardQuery, useGetSessionQuery, useStopSessionMutation } from "./sessionHooks";
+import {
+  useGetGameScoreboardQuery,
+  useGetSessionQuery,
+  useStopSessionMutation,
+} from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { StartGameModal } from "./StartGameModal";
-import ScoreboardComponent from "../../components/ScoreboardDisplay";
+import { ScoreboardComponent } from "../../components/ScoreboardDisplay";
+import { useState } from "react";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
   const navigate = useNavigate();
+  const [isStopped, SetisStopped] = useState(false);
 
   const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
@@ -45,8 +51,10 @@ export const Session = () => {
         <div className="col-lg-1 col-md-2 col-6 px-0 text-center my-auto">
           <button
             className="btn btn-outline-danger"
+            disabled={isStopped}
             onClick={() => {
-              stopSessionMutation.mutate()
+              stopSessionMutation.mutate();
+              SetisStopped(true);
             }}
           >
             Stop Game
@@ -71,8 +79,11 @@ export const Session = () => {
             ></iframe>
           )}
         </div>
-        <div className="col-lg text-center">
-          <div className="border rounded" style={{ height: "20em" }}>
+        <div className="col-lg-2 text-center">
+          <div
+            className="border rounded overflowy-scroll d-none d-lg-block"
+            style={{ height: "20em", overflowX: "hidden" }}
+          >
             {(getScoreboardQuery.data && (
               <ScoreboardComponent scoreBoard={getScoreboardQuery.data} />
             )) ??

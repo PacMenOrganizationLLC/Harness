@@ -12,6 +12,10 @@ drop table if exists Endpoint_Type;
 drop table if exists Event;
 drop table if exists Game;
 
+drop table if exists library_game;
+
+create extension if not exists "uuid-ossp";
+
 create table Game (
   id serial primary key,
   host_url text not null,
@@ -123,3 +127,30 @@ INSERT INTO public.session_config (name,json_config,game_id) VALUES
 	 ('ShortName','[{"key":"RechargePointsPerSecond","value":"200000"},{"key":"Password","value":"password"}]',1),
 	 ('Short Name','[{"key":"RechargePointsPerSecond","value":"200000"},{"key":"Password","value":"password"}]',1),
 	 ('LongGame','[{"key":"numRows","value":"5"},{"key":"numCols","value":"5"},{"key":"password","value":"password"},{"key":"timeLimit","value":"120"}]',2);
+
+
+
+-- Library Tables
+create table library_game (
+  id UUID primary key,
+  name text not null, 
+  description text not null,
+  created_by text not null,
+  created_at timestamp not null default NOW()
+);
+
+
+create table library_create_session_config (
+  id uuid primary key,
+  library_game_id UUID not null references library_game(id),
+  name text not null,
+  json_config json not null
+);
+
+create table library_start_session_config (
+  id uuid primary key,
+  library_game_id UUID not null references library_game(id),
+  name text not null,
+  json_config json not null
+);
+

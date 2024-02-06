@@ -32,7 +32,7 @@ public class CompetitionController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Competition>>> GetAllCompetitions()
     {
-        var competitions = await context.Competition.OrderBy(c => c.StartAt).ToListAsync();
+        var competitions = await context.Competition.Include(c => c.Game).OrderBy(c => c.StartAt).ToListAsync();
         return Ok(competitions);
     }
 
