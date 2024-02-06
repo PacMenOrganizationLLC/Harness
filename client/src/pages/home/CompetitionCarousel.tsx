@@ -57,10 +57,14 @@ export const CompetitionCarousel: FC<{
         <div className="col-2 d-flex align-items-end justify-content-end">
           {(viewCount === competitions.length) ? (
             <button className="btn btn-sm text-muted"
-              onClick={() => window.dispatchEvent(new Event('resize'))}>Hide</button>
+              onClick={() => window.dispatchEvent(new Event('resize'))}>
+              <span className="text-bold">Hide</span>
+            </button>
           ) : (
             <button className="btn btn-sm text-muted"
-              onClick={() => setViewCount(competitions.length)}>View All</button>
+              onClick={() => setViewCount(competitions.length)}>
+              <span className="text-bold">View All</span>
+            </button>
           )}
         </div>
       </div>

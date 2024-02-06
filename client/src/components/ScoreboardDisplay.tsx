@@ -10,7 +10,7 @@ export const ScoreboardComponent: FC<ScoreboardComponentProps> = ({
 }) => {
   const filteredScoreboard = scoreBoard.filter((s) => s.rank <= 10);
   return (
-    <div className="">
+    <>
       <div className="row border-bottom fw-bold">
         <div className="col-3 px-0">Rank</div>
         <div className="col text-start px-0">Player</div>
@@ -20,12 +20,11 @@ export const ScoreboardComponent: FC<ScoreboardComponentProps> = ({
         (s, index) =>
           s.rank <= 10 && (
             <div
-              className={`row ${
-                index < filteredScoreboard.length - 1 ? "border-bottom" : ""
-              } py-1`}
+              className={`row ${index < filteredScoreboard.length - 1 ? "border-bottom" : ""
+                } py-1`}
               key={s.rank}
             >
-              <div className="col-3 px-0">{s.rank}</div>
+              <div className="col-3 pe-0">{s.rank}</div>
               <div className="col text-truncate text-start px-0">
                 {s.playerName}
               </div>
@@ -33,6 +32,6 @@ export const ScoreboardComponent: FC<ScoreboardComponentProps> = ({
             </div>
           )
       )}
-    </div>
+    </>
   );
 };

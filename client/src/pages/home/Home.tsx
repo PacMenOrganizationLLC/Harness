@@ -23,25 +23,6 @@ export const Home = () => {
           <ScoreboardCarousel />
         </div>
         <div className="col-md col-12 my-1 my-md-0">
-          <button className="w-100 btn btn-outline-primary h-25">Practice</button>
-          <div className="row">
-            <div className="col">
-              <div>
-                <button className="btn btn-outline-primary w-100 mt-2">Something</button>
-              </div>
-              <div>
-                <button className="btn btn-outline-primary w-100 mt-2">Something</button>
-              </div>
-            </div>
-            <div className="col">
-              <div>
-                <button className="btn btn-outline-primary w-100 mt-2">Something</button>
-              </div>
-              <div>
-                <button className="btn btn-outline-primary w-100 mt-2">Something</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <CompetitionCarousel competitions={pastCompetitions.reverse()} title="Past Competitions" />
