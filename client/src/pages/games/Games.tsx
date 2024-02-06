@@ -23,7 +23,7 @@ export const Games = () => {
   
   return (
     <div className="container">
-      <h1 className="text-center">Games</h1>
+      <h1 className="text-center mt-2">Games</h1>
       <div className="row">
         <div className="col-md-4 col-12">
           <div className="text-end mb-2 d-md-none">

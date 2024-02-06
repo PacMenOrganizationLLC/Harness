@@ -77,20 +77,37 @@ public class SessionConfigController : ControllerBase
   [HttpGet("template/{gameId}")]
   public async Task<ActionResult<List<GameConfigTemplate>>> GetGameTemplateConfiguration(int gameId)
   {
-    string? url = _context.GameEndpoint.Where(g => g.GameId == gameId && g.EndpointTypeId == 2).Select(g => g.Endpoint).FirstOrDefault();
-    if (url != null && url != "")
+
+    Game? currentGame = await _context.Game.FirstOrDefaultAsync(g => g.Id == gameId);
+    string? url = await _context.GameEndpoint
+                                .Where(g => g.GameId == gameId && g.EndpointTypeId == 2)
+                                .Select(g => g.Endpoint)
+                                .FirstOrDefaultAsync();
+
+    if (string.IsNullOrWhiteSpace(url))
     {
-      try
+      if (currentGame != null)
       {
-        var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url);
-        return Ok(response);
+        return BadRequest($"Error getting game configuration template for game {currentGame.Name}. Please make sure you've provided the endpoint.");
       }
-      catch (Exception e)
-      {
-        Console.WriteLine(e);
-        return BadRequest("Error getting game configuration template from game api.");
-      }
+      return BadRequest("Error getting game configuration template. Please make sure you've provided the endpoint.");
     }
-    return BadRequest("Error getting game configuration template. Please make sure you've provided the endpoint.");
+
+    try
+    {
+      // Retrieve game configuration template from the provided URL
+      var response = await gameApi.GetFromJsonAsync<List<GameConfigTemplate>>(url);
+      return Ok(response);
+    }
+    catch (Exception e)
+    {
+      Console.WriteLine(e);
+      if (currentGame != null)
+      {
+        return BadRequest($"Error getting game configuration template for game {currentGame.Name} from game API.");
+      }
+      return BadRequest("Error getting game configuration template from game API.");
+    }
   }
+
 }
