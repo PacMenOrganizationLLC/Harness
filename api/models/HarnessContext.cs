@@ -19,7 +19,11 @@ public class HarnessContext : DbContext
     public DbSet<SessionConfig> SessionConfig { get; set; } = null!;
     public DbSet<EndpointType> EndpointType { get; set; } = null!;
     public DbSet<GameEndpoint> GameEndpoint { get; set; } = null!;
-    public DbSet<SessionScoreboard> SessionScoreboard { get; set; }
+    public DbSet<SessionScoreboard> SessionScoreboard { get; set; } = null!;
+
+    // Library
+    public DbSet<LibraryGame> LibraryGame { get; set; } = null!;
+    public DbSet<LibraryCreateSessionConfig> LibraryCreateSessionConfig { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
