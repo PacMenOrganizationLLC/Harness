@@ -86,8 +86,12 @@ export const CompetitionCarousel: FC<{
                         <div className="card-body">
                           <div className="card-title fw-bold">{c.name}</div>
                           <div>{c.game?.name}</div>
-                          <div>{FormatDate(c.startAt)} - {FormatDate(c.endAt)}</div>
-                          <div>{getTimeNoSeconds(c.endAt)} - {getTimeNoSeconds(c.endAt)}</div>
+                          {new Date(c.startAt).toDateString() === new Date(c.endAt).toDateString() ? (
+                            <div>{FormatDate(c.startAt)}</div>
+                          ) : (
+                            <div>{FormatDate(c.startAt)} - {FormatDate(c.endAt)}</div>
+                          )}
+                          <div>{getTimeNoSeconds(c.startAt)} - {getTimeNoSeconds(c.endAt)}</div>
                         </div>
                       </div>
                     </Link >
@@ -96,7 +100,7 @@ export const CompetitionCarousel: FC<{
               </>
             ))}
           </div>
-        </div>
+        </div >
         <button className="btn px-0 col-auto my-auto border-0"
           disabled={competitions.length <= viewCount}
           onClick={incrementViewIndex}>

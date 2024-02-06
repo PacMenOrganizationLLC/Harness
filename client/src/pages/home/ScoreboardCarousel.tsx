@@ -3,7 +3,6 @@ import { ScoreboardComponent } from "../../components/ScoreboardDisplay";
 import { SessionScoreboard } from "../../models/Session";
 
 export const ScoreboardCarousel = () => {
-  // Create an array of arrays representing multiple session scoreboards
   const scoreboards: SessionScoreboard[][] = Array.from({ length: 5 }, (_, sessionIndex) =>
     Array.from({ length: 10 }, (_, i) => ({
       id: i + 1,
@@ -14,16 +13,14 @@ export const ScoreboardCarousel = () => {
     }))
   );
 
-  // State to track the current index of the displayed scoreboard
   const [currentScoreboardIndex, setCurrentScoreboardIndex] = useState(0);
 
-  // Handlers to navigate between scoreboards
   const goToPrevious = () => {
-    setCurrentScoreboardIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+    setCurrentScoreboardIndex((prevIndex) => prevIndex === 0 ? scoreboards.length - 1 : prevIndex - 1);
   };
 
   const goToNext = () => {
-    setCurrentScoreboardIndex((prevIndex) => Math.min(prevIndex + 1, scoreboards.length - 1));
+    setCurrentScoreboardIndex((prevIndex) => prevIndex === scoreboards.length - 1 ? 0 : prevIndex + 1);
   };
 
   return (
