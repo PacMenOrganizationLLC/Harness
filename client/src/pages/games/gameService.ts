@@ -9,6 +9,11 @@ export const gameService = {
     const response = await axios.get(url);
     return response.data
   },
+  async getGame(id: string): Promise<Game> {
+    const url = `${BaseUrl}/api/Game/${id}`;
+    const response = await axios.get(url);
+    return response.data
+  },
   async addGame(game: Game) {
     const url = `${BaseUrl}/api/Game`;
     const response = await axios.post(url, game);

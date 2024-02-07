@@ -53,6 +53,18 @@ public class CompetitionController : ControllerBase
         return Ok(competition);
     }
 
+    [HttpGet("game/{gameId}")]
+    public async Task<ActionResult<IEnumerable<Competition>>> GetUpcomingCompetitionsByGameAsync(int gameId)
+    {
+        var competitions = await context.Competition
+        .Include(c => c.Game)
+        .Where(c => c.EndAt >= DateTime.UtcNow)
+        .Where(c => c.GameId == gameId)
+        .ToListAsync();
+
+        return Ok(competitions);
+    }
+
     [HttpPut]
     public async Task<IActionResult> UpdateCompetitionAsync(Competition competition)
     {

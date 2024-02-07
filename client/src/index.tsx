@@ -17,6 +17,7 @@ import { AuthRequired } from "./AuthRequired";
 import { WebStorageStateStore } from 'oidc-client-ts';
 import { AuthProvider } from 'react-oidc-context';
 import { CompetitionList } from "./pages/competitions/CompetitionList";
+import { GameInfo } from "./pages/home/GameInfo";
 
 const queryClient = getQueryClient();
 
@@ -45,6 +46,7 @@ root.render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/competitions" element={<CompetitionList />} />
+            <Route path="/game/:id" element={<GameInfo />} />
             <Route path="/competition/:id" element={<CompetitionDetails />} />
             <Route path="/session/:id" element={<Session />} />
             <Route path="/games" element={<AuthRequired><Games /></AuthRequired>} />

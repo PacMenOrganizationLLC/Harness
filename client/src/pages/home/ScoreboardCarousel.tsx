@@ -24,9 +24,9 @@ export const ScoreboardCarousel = () => {
   };
 
   return (
-    <div className="card bg-secondary-subtle">
-      <div className="card-body">
-        <div className="card-title text-center fw-bold">
+    <div className="card bg-secondary-subtle h-100">
+      <div className="card-body pt-1">
+        <div className="card-title text-center fw-bold fs-4">
           Winners Circle - Game {currentScoreboardIndex + 1}
         </div>
         <div className="row">

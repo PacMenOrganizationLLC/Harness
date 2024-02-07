@@ -7,6 +7,7 @@ const queryClient = getQueryClient();
 
 export const GameKeys = {
   gamesKey: ["gamesKey"] as const,
+  gameKey: (id?: string) => ["gameKey", id] as const,
 };
 
 export const useGetGamesQuery = () => {
@@ -15,6 +16,15 @@ export const useGetGamesQuery = () => {
     queryFn: async () => await gameService.getGames(),
   });
 };
+
+export const useGetGameQuery = (id?: string) =>
+  useQuery({
+    queryKey: GameKeys.gameKey(id),
+    queryFn: async () => {
+      if (!id) return undefined
+      return await gameService.getGame(id)
+    }
+  })
 
 export const useAddGameMutation = () => {
   return useMutation({
