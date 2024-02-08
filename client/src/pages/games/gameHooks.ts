@@ -21,10 +21,10 @@ export const useGetGameQuery = (id?: string) =>
   useQuery({
     queryKey: GameKeys.gameKey(id),
     queryFn: async () => {
-      if (!id) return undefined
-      return await gameService.getGame(id)
-    }
-  })
+      if (!id) return undefined;
+      return await gameService.getGame(id);
+    },
+  });
 
 export const useAddGameMutation = () => {
   return useMutation({
@@ -55,6 +55,14 @@ export const useDeleteGameMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(GameKeys.gamesKey);
+    },
+  });
+};
+
+export const useAddImageMutation = () => {
+  return useMutation({
+    mutationFn: async (image: FormData) => {
+      return await gameService.addImage(image);
     },
   });
 };

@@ -5,7 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.IO;
+using System.Threading.Tasks;
 namespace api.Controllers
 {
   [Route("api/[controller]")]
@@ -89,6 +90,65 @@ namespace api.Controllers
       await _context.SaveChangesAsync();
 
       return Ok("Deleted Game");
+    }
+
+    [HttpPost("Image")]
+    public async Task<IActionResult> UploadImage()
+    {
+      try
+      {
+        var file = Request.Form.Files[0]; // Get the uploaded file
+
+        // Generate a filename based on current timestamp
+        string fileName = $"{DateTime.Now.Ticks}.png";
+
+        // Define the path to save the file
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+
+        // Save the file to the specified path
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+          await file.CopyToAsync(stream);
+        }
+
+        // Return success response with the filename
+        return Ok(fileName);
+      }
+      catch (Exception ex)
+      {
+        // Return error response if an exception occurs
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+      }
+    }
+
+    [HttpGet("Image/{fileName}")]
+    public IActionResult GetImage(string fileName)
+    {
+      try
+      {
+        // Define the path to the image file
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+
+        // Check if the file exists
+        if (!System.IO.File.Exists(filePath))
+        {
+          return NotFound(); // Return 404 Not Found if the file doesn't exist
+        }
+
+        // Read the file into a byte array
+        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+        // Determine the content type based on the file extension
+        string contentType = "image/png";
+
+        // Return the file content with the appropriate content type
+        return File(fileBytes, contentType);
+      }
+      catch (Exception ex)
+      {
+        // Return error response if an exception occurs
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+      }
     }
   }
 }
