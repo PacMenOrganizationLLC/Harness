@@ -97,26 +97,28 @@ namespace api.Controllers
     {
       try
       {
-        var file = Request.Form.Files[0]; // Get the uploaded file
+        var file = Request.Form.Files[0]; 
 
-        // Generate a filename based on current timestamp
         string fileName = $"{DateTime.Now.Ticks}.png";
 
-        // Define the path to save the file
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+        var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 
-        // Save the file to the specified path
+        if (!Directory.Exists(imageDirectory))
+        {
+          Directory.CreateDirectory(imageDirectory);
+        }
+
+        var filePath = Path.Combine(imageDirectory, fileName);
+
         using (var stream = new FileStream(filePath, FileMode.Create))
         {
           await file.CopyToAsync(stream);
         }
 
-        // Return success response with the filename
         return Ok(fileName);
       }
       catch (Exception ex)
       {
-        // Return error response if an exception occurs
         return StatusCode(500, $"Internal server error: {ex.Message}");
       }
     }
