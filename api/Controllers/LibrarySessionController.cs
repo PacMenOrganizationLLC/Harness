@@ -1,15 +1,26 @@
+using api.Hubs;
 using api.models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class LibararySessionController(HarnessContext context) : ControllerBase
+public class LibararySessionController(HarnessContext context, IHubContext<LibraryHub> libraryHub) : ControllerBase
 {
     private readonly HarnessContext _context = context;
+    private readonly IHubContext<LibraryHub> _libraryHub = libraryHub;
 
+    [HttpPost("create")]
+    public async Task PostSession()
+    {
+       _libraryHub.Clients.All.SendAsync($"create_session-{"some sort of id"}", "Session MetaData", "Create Session Config");
+       throw new NotImplementedException();
+    }
+    
+    
     [HttpPost("create_config")]
     public async Task<ActionResult<LibraryCreateSessionConfig>> PostLibraryCreateSessionConfig(LibraryCreateSessionConfig libraryCreateSessionConfig)
     {
