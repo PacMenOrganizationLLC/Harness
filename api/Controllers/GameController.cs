@@ -60,6 +60,7 @@ namespace api.Controllers
         existingGame.RepoLink = game.RepoLink;
         existingGame.CreatedAt = game.CreatedAt;
         existingGame.SupportsMultiSessions = game.SupportsMultiSessions;
+        existingGame.ImageSource = game.ImageSource;
         await _context.SaveChangesAsync();
         return Ok("Updated Game Successfully");
       }

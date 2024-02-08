@@ -23,7 +23,8 @@ const ImageUploader: FC<{
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleImageChange} />
+      Image:
+      <input className="form-control mt-2" type="file" accept="image/*" onChange={handleImageChange} />
       {imageSrc && (
         <div>
           <img
