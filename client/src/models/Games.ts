@@ -7,4 +7,5 @@ export interface Game {
   createdBy: string;
   supportsMultiSessions: boolean;
   createdAt: Date;
+  imageSource?: string;
 }
