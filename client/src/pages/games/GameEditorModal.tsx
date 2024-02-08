@@ -89,6 +89,8 @@ export const GameEditorModal: FC<{
       hostUrlControl.setValue("");
       detailsControl.setValue("");
       createdByControl.setValue("");
+      setImageSource(undefined)
+      setImage(undefined)
     }
     gameEditorControls.hide();
   };
@@ -160,6 +162,9 @@ export const GameEditorModal: FC<{
               placeholder="John Smith"
               labelClassName="col-12"
             />
+            <div className="mt-2">
+              <ImageSubmit setConvertedSrc={handleSetConvertedSrc} />
+            </div>
             <div className="small">*Required</div>
             <div className="row text-center my-2">
               <div className="col">
@@ -181,11 +186,7 @@ export const GameEditorModal: FC<{
                 </button>
               </div>
             </div>
-            <div className="row text-center my-2">
-              <div className="col">
-                <ImageSubmit setConvertedSrc={handleSetConvertedSrc} />
-              </div>
-            </div>
+
           </form>
         </div>
       </div>

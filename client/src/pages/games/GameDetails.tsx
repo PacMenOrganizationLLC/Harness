@@ -28,8 +28,8 @@ export const GameDetails: FC<{
     () =>
       gameEndpointsQuery.data
         ? gameEndpointsQuery.data.filter(
-            (e) => e.endpointType?.required === true
-          )
+          (e) => e.endpointType?.required === true
+        )
         : undefined,
     [gameEndpointsQuery.data]
   );
@@ -111,7 +111,9 @@ export const GameDetails: FC<{
       <div>Details: {selectedGame.details}</div>
       <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
       <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
-      <img src={BaseUrl + selectedGame.imageSource} alt="Game" />
+      <div>
+        <img src={BaseUrl + selectedGame.imageSource} alt="Game" />
+      </div>
       <button
         className="btn btn-primary mt-2"
         onClick={() => navigate(`/endpoints/${selectedGame.id}`)}
