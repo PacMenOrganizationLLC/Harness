@@ -58,7 +58,8 @@ export const GameEditorModal: FC<{
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (image) {
-      setImageSource(await addImageMutation.mutateAsync(image));
+      const imageFilename = await addImageMutation.mutateAsync(image);
+      setImageSource(imageFilename);
       console.log(imageSource);
     }
     const newGame: Game = {
@@ -70,7 +71,7 @@ export const GameEditorModal: FC<{
       createdBy: createdByControl.value,
       createdAt: new Date(),
       supportsMultiSessions,
-      imageSource: imageSource,
+      ImageFile: image,
     };
     if (existingGame) {
       updateGameMutation.mutate(newGame);

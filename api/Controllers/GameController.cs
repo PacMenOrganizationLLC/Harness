@@ -71,6 +71,12 @@ namespace api.Controllers
     [HttpPost]
     public async Task<IActionResult> AddGame(Game game)
     {
+      if (game.ImageFile != null)
+      {
+        game.ImageSource = await GameSupport.SaveFile(game.ImageFile);
+        game.ImageFile = null;
+      }
+
       _context.Game.Add(game);
       await _context.SaveChangesAsync();
       return Ok("Added Game");
@@ -97,7 +103,7 @@ namespace api.Controllers
     {
       try
       {
-        var file = Request.Form.Files[0]; 
+        var file = Request.Form.Files[0];
 
         string fileName = $"{DateTime.Now.Ticks}.png";
 
@@ -151,6 +157,32 @@ namespace api.Controllers
         // Return error response if an exception occurs
         return StatusCode(500, $"Internal server error: {ex.Message}");
       }
+    }
+  }
+
+  public class GameSupport
+  {
+
+    public static async Task<string> SaveFile(FormFile image)
+    {
+      var file = image;
+
+      string fileName = $"{DateTime.Now.Ticks}.png";
+
+      var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Images");
+
+      if (!Directory.Exists(imageDirectory))
+      {
+        Directory.CreateDirectory(imageDirectory);
+      }
+
+      var filePath = Path.Combine(imageDirectory, fileName);
+
+      using (var stream = new FileStream(filePath, FileMode.Create))
+      {
+        await file.CopyToAsync(stream);
+      }
+      return fileName;
     }
   }
 }

@@ -13,4 +13,5 @@ public class Game
   public bool SupportsMultiSessions { get; set; }
   public DateTime CreatedAt { get; set; }
   public string? ImageSource { get; set; }
+  public FormFile? ImageFile { get; set; }
 }

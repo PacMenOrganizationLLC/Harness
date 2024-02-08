@@ -8,4 +8,5 @@ export interface Game {
   supportsMultiSessions: boolean;
   createdAt: Date;
   imageSource?: string;
+  ImageFile?: FormData;
 }
