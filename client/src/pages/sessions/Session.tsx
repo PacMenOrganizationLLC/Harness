@@ -9,6 +9,8 @@ import classes from "../../assets/WideContainer.module.scss";
 import { StartGameModal } from "./StartGameModal";
 import { ScoreboardComponent } from "../../components/ScoreboardDisplay";
 import { useState } from "react";
+import { WebsocketChat } from "../../components/chat/WebsocketChat";
+import { WebsocketProvider } from "../../components/chat/WebsocketChatContext";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -33,6 +35,8 @@ export const Session = () => {
     console.log("data changed", stopSessionMutation.data);
   }
   return (
+    <WebsocketProvider>
+
     <div className={classes.customContainer}>
       <div className="row">
         <div className="col-lg-2 col-md-4 col-1 my-auto">
@@ -56,7 +60,7 @@ export const Session = () => {
               stopSessionMutation.mutate();
               SetisStopped(true);
             }}
-          >
+            >
             Stop Game
           </button>
         </div>
@@ -73,47 +77,46 @@ export const Session = () => {
             </div>
           ) : (
             <iframe
-              src={session.playUrl}
-              className="h-100 w-100 rounded"
-              title={`Session${session.playId}`}
+            src={session.playUrl}
+            className="h-100 w-100 rounded"
+            title={`Session${session.playId}`}
             ></iframe>
-          )}
+            )}
         </div>
         <div className="col-lg-2 text-center">
           <div
             className="border rounded overflowy-scroll d-none d-lg-block"
             style={{ height: "20em", overflowX: "hidden" }}
-          >
+            >
             {(getScoreboardQuery.data && (
               <ScoreboardComponent scoreBoard={getScoreboardQuery.data} />
-            )) ??
+              )) ??
               "Scoreboard coming soon"}
           </div>
-          <div className="border rounded mt-2" style={{ height: "30em" }}>
-            Chat coming soon
-          </div>
+            <WebsocketChat />
         </div>
       </div>
       {/* <div className="row justify-content-center">
         <div className="col col-4 border border-3 rounded p-5">
-          <div className="row justify-content-center">
-            <div className="col">
-              <TextInput
-                control={passwordControl}
-                placeholder="Password"
-              />
-            </div>
-            <div className="col-auto">
-              <button
-                className={`btn btn-${hasStarted ? "danger" : "success"}`}
-                onClick={() => setHasStarted((oldBool) => !oldBool)}
-              >
-                {hasStarted ? "End" : "Start"}
-              </button>
-            </div>
-          </div>
+        <div className="row justify-content-center">
+        <div className="col">
+        <TextInput
+        control={passwordControl}
+        placeholder="Password"
+        />
+        </div>
+        <div className="col-auto">
+        <button
+        className={`btn btn-${hasStarted ? "danger" : "success"}`}
+        onClick={() => setHasStarted((oldBool) => !oldBool)}
+        >
+        {hasStarted ? "End" : "Start"}
+        </button>
+        </div>
+        </div>
         </div>
       </div> */}
     </div>
+      </WebsocketProvider>
   );
 };

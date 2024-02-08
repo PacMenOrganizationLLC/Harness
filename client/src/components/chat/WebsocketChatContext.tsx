@@ -30,39 +30,40 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
   const connection = useRef<signalR.HubConnection | null>(null);
 
   useEffect(() => {
-    console.log(window.location.hostname)
+    console.log("Connecting to the WebSocket server...");
+  
     if (window.location.hostname === 'localhost') {
-      const serverUrl = "ws://localhost:8000/api/ws/chat";
+      const serverUrl = "http://localhost:8000";
       connection.current = new signalR.HubConnectionBuilder()
-        .withUrl(serverUrl)
+        .withUrl(`${serverUrl}/ws/chat`)
         .build();
-    }
-    else {
+    } else {
       const serverUrl = "";
       connection.current = new signalR.HubConnectionBuilder()
         .withUrl(serverUrl)
         .build();
     }
-
+  
     connection.current
       .start()
       .then(() => {
-      console.log("Connected to the relay server.")
+        console.log("Connected to the WebSocket server.");
       })
       .catch((error) => {
         console.error("WebSocket Error: ", error);
       });
-
+  
     connection.current
-      .on("messageReceived", (json) => {
-        const message = JSON.parse(json)
-        addMessage(`Them: ${message.data}`, "received");
-      })
+      .on("messageReceived", (msg) => {
+        console.log("Received a message:", msg);
 
+        addMessage(msg, "received");
+      });
+  
     connection.current.onclose = () => {
       console.log("Disconnected from the server.");
     };
-
+  
     return () => {
       connection.current?.stop();
     };
@@ -75,7 +76,7 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
   const sendMessage = (msg: string) => {
     if (connection.current?.state === signalR.HubConnectionState.Connected) {
       connection.current.invoke("NewMessage", msg);
-      addMessage(`You: ${msg}`, "sent");
+      addMessage(msg, "sent");
     }
   };
 

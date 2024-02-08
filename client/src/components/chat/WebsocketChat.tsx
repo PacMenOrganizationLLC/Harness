@@ -11,7 +11,10 @@ export const WebsocketChat = () => {
 
   const handleSend = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (inputValue) {
+      console.log("Sending:", inputValue);
+
       context.sendMessage(inputValue);
       setInputValue("");
     }
@@ -19,18 +22,36 @@ export const WebsocketChat = () => {
 
   return (
     <div className="container text-center">
-      <h1>Chat</h1>
-      <div className="border rounded vh-50 frosted-glass"
-        style={{ height: "75ex" }}>
+      <h1 className="fs-5">Chat</h1>
+      <div
+        className="border rounded vh-50 p-1 overflow-y-scroll"
+        style={{ height: "40ex" }}
+      >
         {context.messages.map((message, index) => (
           <div key={index}>
             {message.from === "received" ? (
               <div className="text-start">
-                <span className="border rounded bg-primary-subtle px-2">{message.content}</span>
+                <p className="m-0 ms-2" style={{ fontSize: "12px" }}>
+                  Anonymous
+                </p>
+                <span
+                  className="border rounded bg-primary-subtle mb-1 px-2 d-inline-block overflow-hidden"
+                  style={{ maxWidth: "75%" }}
+                >
+                  {message.content}
+                </span>
               </div>
             ) : (
               <div className="text-end">
-                <span className="border rounded bg-success-subtle px-2">{message.content}</span>
+                <p className="m-0 me-2" style={{ fontSize: "12px" }}>
+                  You
+                </p>
+                <span
+                  className="border rounded bg-success-subtle mb-1 px-2 d-inline-block overflow-hidden"
+                  style={{ maxWidth: "75%" }}
+                >
+                  {message.content}
+                </span>
               </div>
             )}
           </div>
@@ -38,7 +59,7 @@ export const WebsocketChat = () => {
       </div>
       <form onSubmit={handleSend}>
         <div className="row my-1">
-          <div className="col offset-lg-4 offset-md-2">
+          <div className="col">
             <input
               type="text"
               autoFocus
@@ -47,9 +68,10 @@ export const WebsocketChat = () => {
               onChange={handleInputChange}
             />
           </div>
-          <div className="col-lg-4 col-md-2 col-auto text-start">
-            <button type="submit"
-              className="btn btn-primary">Send</button>
+          <div className="col-auto">
+            <button type="submit" className="btn btn-primary">
+              Send
+            </button>
           </div>
         </div>
       </form>

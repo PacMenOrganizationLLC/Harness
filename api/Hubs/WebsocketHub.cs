@@ -5,6 +5,8 @@ public class WebsocketHub : Hub
 {
   public async Task NewMessage(string message)
   {
-    throw new NotImplementedException();
+    string clientId = Context.ConnectionId;
+
+    await Clients.AllExcept(clientId).SendAsync("messageReceived", message);
   }
 }
