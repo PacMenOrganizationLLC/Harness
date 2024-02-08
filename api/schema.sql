@@ -141,11 +141,11 @@ create table library_game (
   created_at timestamp not null default NOW()
 );
 
-
 create table library_create_session_config (
   id uuid primary key,
   library_game_id UUID not null references library_game(id),
   name text not null,
+  is_default bool not null,
   json_config json not null
 );
 
@@ -153,6 +153,7 @@ create table library_start_session_config (
   id uuid primary key,
   library_game_id UUID not null references library_game(id),
   name text not null,
+  is_default bool not null,
   json_config json not null
 );
 

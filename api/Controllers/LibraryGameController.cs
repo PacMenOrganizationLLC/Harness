@@ -23,6 +23,7 @@ public class LibararyGameController(HarnessContext context) : ControllerBase
     {
         var games = await _context.LibraryGame
             .Include(lb => lb.LibraryCreateSessionConfigs)
+            .Include(lb => lb.LibraryStartSessionConfigs)
             .OrderByDescending(g => g.CreatedAt).ToListAsync();
         return Ok(games);
     }

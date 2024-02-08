@@ -15,4 +15,5 @@ public class LibraryGame {
     [Column("created_at")]
     public DateTime CreatedAt { get; set; }
     public IEnumerable<LibraryCreateSessionConfig>? LibraryCreateSessionConfigs { get; set; } = null!;
+    public IEnumerable<LibraryStartSessionConfig>? LibraryStartSessionConfigs { get; set; } = null!;
 }
