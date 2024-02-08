@@ -1,4 +1,6 @@
+using api.Hubs;
 using api.models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -52,6 +55,7 @@ app.UseAuthorization();
 app.UseCors("AllowAll");
 
 app.MapControllers();
+app.MapHub<LibraryHub>("/libraryhub");
 
 app.Run();
 //Make a function that increases a variable named hi to be one more than its current value
