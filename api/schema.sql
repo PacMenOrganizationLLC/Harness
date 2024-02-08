@@ -12,6 +12,8 @@ drop table if exists Endpoint_Type;
 drop table if exists Event;
 drop table if exists Game;
 
+drop table if exists library_start_session_config;
+drop table if exists library_create_session_config;
 drop table if exists library_game;
 
 create extension if not exists "uuid-ossp";
@@ -44,8 +46,8 @@ insert into endpoint_type(name, method, required, query_param_name) values('Scor
 create table Game_Endpoint (
   id serial primary key,
   endpoint text not null,
-  game_id int not null references Game(id),
-  endpoint_type_id int not null references Endpoint_Type(id)
+  game_id int not null references Game(id) ON DELETE CASCADE,
+  endpoint_type_id int not null references Endpoint_Type(id) ON DELETE CASCADE
 );
 
 create table Competition (
@@ -70,7 +72,7 @@ create table Session (
 
 create table Session_Scoreboard (
   id serial primary key,
-  session_id int not null references Session(id),
+  session_id int not null references Session(id) ON DELETE CASCADE,
   player_name text not null,
   rank int not null,
   score int 
@@ -89,7 +91,7 @@ create table Session_Config (
   id serial primary key,
   name text not null,
   json_config text not null,
-  game_id int not null references Game(id)
+  game_id int not null references Game(id) ON DELETE CASCADE
 );
 
 create table Competition_Image (
@@ -139,11 +141,11 @@ create table library_game (
   created_at timestamp not null default NOW()
 );
 
-
 create table library_create_session_config (
   id uuid primary key,
   library_game_id UUID not null references library_game(id),
   name text not null,
+  is_default bool not null,
   json_config json not null
 );
 
@@ -151,6 +153,7 @@ create table library_start_session_config (
   id uuid primary key,
   library_game_id UUID not null references library_game(id),
   name text not null,
+  is_default bool not null,
   json_config json not null
 );
 

@@ -6,6 +6,7 @@ import { Competition } from "../../models/Competition";
 export const CompetitionKeys = {
   competitionsKey: ["competitionsKey"] as const,
   competitionKey: (id: number) => ["competitionKey", id] as const,
+  competitionsByGameKey: (gameId?: string) => ["competitionsByGameKey", gameId] as const,
 };
 
 const queryClient = getQueryClient();
@@ -15,6 +16,16 @@ export const useGetCompetitionsQuery = () => {
   return useQuery({
     queryKey: CompetitionKeys.competitionsKey,
     queryFn: async () => await competitionService.getCompetitions(),
+  });
+};
+
+export const useGetCompetitionsByGameQuery = (gameId?: string) => {
+  return useQuery({
+    queryKey: CompetitionKeys.competitionsByGameKey(gameId),
+    queryFn: async () => {
+      if (!gameId) return []
+      return await competitionService.getUpcomingCompetitionsByGame(gameId)
+    },
   });
 };
 

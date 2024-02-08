@@ -10,6 +10,11 @@ export const competitionService = {
     const response = await axios.get(url);
     return response.data;
   },
+  async getUpcomingCompetitionsByGame(gameId: string): Promise<Competition[]> {
+    const url = `${apiUrlBase}/game/${gameId}`;
+    const response = await axios.get(url);
+    return response.data;
+  },
   async getCompetition(id: number): Promise<Competition> {
     const url = `${apiUrlBase}/${id}`;
     const response = await axios.get(url);

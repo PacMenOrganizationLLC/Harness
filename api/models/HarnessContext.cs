@@ -24,7 +24,8 @@ public class HarnessContext : DbContext
     // Library
     public DbSet<LibraryGame> LibraryGame { get; set; } = null!;
     public DbSet<LibraryCreateSessionConfig> LibraryCreateSessionConfig { get; set; } = null!;
-
+    public DbSet<LibraryStartSessionConfig> LibraryStartSessionConfig { get; set; } = null!;
+    
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

@@ -23,13 +23,14 @@ export const NavBar = () => {
     <nav className="bg-primary shadow">
       <div className="container">
         <div className="row">
-          <div className="col">
+          <div className="col my-auto">
             <Link to="/" className="navbar-brand">
               <img
                 className="img-fluid"
                 id="navbar-logo"
                 alt="Snow College Logo"
-                src="/SnowCollegeLogo.png" />
+                style={{ maxHeight: "12ex" }}
+                src="/SCengineering_logo.png" />
             </Link>
           </div>
           <div className="col-auto my-auto">
