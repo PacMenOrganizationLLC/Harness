@@ -1,4 +1,4 @@
-export interface Game {
+export interface GameDto {
   id: number;
   name: string;
   hostUrl: string;
@@ -7,5 +7,5 @@ export interface Game {
   createdBy: string;
   supportsMultiSessions: boolean;
   createdAt: Date;
-  imageSource?: string;
+  ImageFile?: FormData;
 }

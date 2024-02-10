@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { gameService } from "./gameService";
 import { Game } from "../../models/Games";
 import { getQueryClient } from "../../queryClient";
+import { GameDto } from "../../models/GameDto";
 
 const queryClient = getQueryClient();
 
@@ -28,7 +29,7 @@ export const useGetGameQuery = (id?: string) =>
 
 export const useAddGameMutation = () => {
   return useMutation({
-    mutationFn: async (newGame: Game) => {
+    mutationFn: async (newGame: GameDto) => {
       return await gameService.addGame(newGame);
     },
     onSuccess: () => {
@@ -39,7 +40,7 @@ export const useAddGameMutation = () => {
 
 export const useUpdateGameMutation = () => {
   return useMutation({
-    mutationFn: async (newGame: Game) => {
+    mutationFn: async (newGame: GameDto) => {
       return await gameService.updateGame(newGame);
     },
     onSuccess: () => {
@@ -55,14 +56,6 @@ export const useDeleteGameMutation = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(GameKeys.gamesKey);
-    },
-  });
-};
-
-export const useAddImageMutation = () => {
-  return useMutation({
-    mutationFn: async (image: FormData) => {
-      return await gameService.addImage(image);
     },
   });
 };

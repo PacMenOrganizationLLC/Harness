@@ -53,6 +53,10 @@ namespace api.Controllers
 
       if (existingGame != null)
       {
+        if (game.ImageSource != null)
+        {
+          existingGame.ImageSource = game.ImageSource;
+        }
         existingGame.CreatedBy = game.CreatedBy;
         existingGame.Details = game.Details;
         existingGame.HostUrl = game.HostUrl;
@@ -60,7 +64,6 @@ namespace api.Controllers
         existingGame.RepoLink = game.RepoLink;
         existingGame.CreatedAt = game.CreatedAt;
         existingGame.SupportsMultiSessions = game.SupportsMultiSessions;
-        existingGame.ImageSource = game.ImageSource;
         await _context.SaveChangesAsync();
         return Ok("Updated Game Successfully");
       }
@@ -72,11 +75,6 @@ namespace api.Controllers
     [HttpPost]
     public async Task<IActionResult> AddGame(Game game)
     {
-      if (game.ImageFile != null)
-      {
-        game.ImageSource = await GameSupport.SaveFile(game.ImageFile);
-        game.ImageFile = null;
-      }
 
       _context.Game.Add(game);
       await _context.SaveChangesAsync();
@@ -95,41 +93,10 @@ namespace api.Controllers
 
       _context.Game.Remove(game);
       await _context.SaveChangesAsync();
-
+      List<Game> games = await _context.Game.ToListAsync();
+      GameSupport.CleanUpImages(games);
       return Ok("Deleted Game");
     }
-
-    [HttpPost("Image")]
-    public async Task<IActionResult> UploadImage()
-    {
-      try
-      {
-        var file = Request.Form.Files[0];
-
-        string fileName = $"{DateTime.Now.Ticks}.png";
-
-        var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Images");
-
-        if (!Directory.Exists(imageDirectory))
-        {
-          Directory.CreateDirectory(imageDirectory);
-        }
-
-        var filePath = Path.Combine(imageDirectory, fileName);
-
-        using (var stream = new FileStream(filePath, FileMode.Create))
-        {
-          await file.CopyToAsync(stream);
-        }
-
-        return Ok(fileName);
-      }
-      catch (Exception ex)
-      {
-        return StatusCode(500, $"Internal server error: {ex.Message}");
-      }
-    }
-
     [HttpGet("Image/{fileName}")]
     public IActionResult GetImage(string fileName)
     {
@@ -148,7 +115,73 @@ namespace api.Controllers
         byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
 
         // Determine the content type based on the file extension
-        string contentType = "image/png";
+        string contentType = GameSupport.GetContentType(fileName);
+
+        // Return the file content with the appropriate content type
+        return File(fileBytes, contentType);
+      }
+      catch (Exception ex)
+      {
+        // Return error response if an exception occurs
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+      }
+    }
+
+
+    [HttpPost("Image")]
+    public async Task<IActionResult> UploadImage()
+    {
+      try
+      {
+        var file = Request.Form.Files[0]; // Get the uploaded file
+
+        // Generate a filename based on current timestamp
+        string fileName = $"{DateTime.Now.Ticks}{Path.GetExtension(file.FileName)}";
+
+        // Define the path to save the file
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", fileName);
+
+        // Save the file to the specified path
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+          await file.CopyToAsync(stream);
+        }
+
+        // Return success response with the filename
+        return Ok(fileName);
+      }
+      catch (Exception ex)
+      {
+        // Return error response if an exception occurs
+        return StatusCode(500, $"Internal server error: {ex.Message}");
+      }
+    }
+
+
+    [HttpGet("ImageWithGame/{gameId}")]
+    public async Task<IActionResult> GetImageWithGameIdAsync(int gameId)
+    {
+      var game = await _context.Game.FindAsync(gameId);
+      if (game == null || game.ImageSource == null)
+      {
+        return NotFound();
+      }
+      try
+      {
+        // Define the path to the image file
+        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", game.ImageSource);
+
+        // Check if the file exists
+        if (!System.IO.File.Exists(filePath))
+        {
+          return NotFound(); // Return 404 Not Found if the file doesn't exist
+        }
+
+        // Read the file into a byte array
+        byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+        // Determine the content type based on the file extension
+        string contentType = GameSupport.GetContentType(game.ImageSource);
 
         // Return the file content with the appropriate content type
         return File(fileBytes, contentType);
@@ -164,11 +197,12 @@ namespace api.Controllers
   public class GameSupport
   {
 
-    public static async Task<string> SaveFile(FormFile image)
+    public static async Task<string> SaveFile(IFormFile image)
     {
       var file = image;
 
-      string fileName = $"{DateTime.Now.Ticks}.png";
+      string fileExtension = Path.GetExtension(file.FileName);
+      string fileName = $"{DateTime.Now.Ticks}{fileExtension}";
 
       var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Images");
 
@@ -183,7 +217,69 @@ namespace api.Controllers
       {
         await file.CopyToAsync(stream);
       }
+
       return fileName;
     }
+
+    public static void CleanUpImages(List<Game> games)
+    {
+
+        string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Images"); // Get the path to the "Images" subdirectory
+        if (!Directory.Exists(directoryPath))
+        {
+            Console.WriteLine("Images directory not found.");
+            return;
+        }
+
+        string[] imageFiles = Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly); // Get all files in the "Images" directory
+
+        foreach (var imagePath in imageFiles)
+        {
+            string filename = Path.GetFileName(imagePath); // Extract the filename from the image path
+
+            // Check if the file is an image (you can add more image extensions as needed)
+            if (IsImage(filename))
+            {
+                // Check if the filename exists in the list of database objects
+                if (!games.Exists(obj => obj.ImageSource == filename))
+                {
+                    File.Delete(imagePath); // Delete the image file if it does not have a corresponding filename in the database
+                    Console.WriteLine($"Deleted image: {filename}");
+                }
+            }
+        }
+    }
+
+        // Helper method to check if a file is an image based on its extension
+    private static bool IsImage(string filename)
+    {
+        string extension = Path.GetExtension(filename)?.ToLower();
+        return extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif" || extension == ".bmp"; // Add more extensions as needed
+    }
+        public static string GetContentType(string fileName)
+    {
+      // Get the file extension
+      string fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
+
+      // Determine the content type based on the file extension
+      switch (fileExtension)
+      {
+        case ".png":
+          return "image/png";
+        case ".jpg":
+        case ".jpeg":
+          return "image/jpeg";
+        case ".gif":
+          return "image/gif";
+        case ".bmp":
+          return "image/bmp";
+        case ".webp":
+          return "image/webp";
+        // Add more cases as needed for other image types
+        default:
+          return "application/octet-stream"; // Default to binary data if the file type is unknown
+      }
+    }
   }
+
 }

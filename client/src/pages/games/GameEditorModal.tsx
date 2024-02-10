@@ -6,12 +6,9 @@ import {
   useModal,
 } from "../../components/CustomModal";
 import { TextInput, useTextInput } from "../../components/forms/TextInput";
-import {
-  useAddGameMutation,
-  useAddImageMutation,
-  useUpdateGameMutation,
-} from "./gameHooks";
+import { useAddGameMutation, useUpdateGameMutation } from "./gameHooks";
 import ImageSubmit from "../../components/ImageSubmit";
+import { GameDto } from "../../models/GameDto";
 
 export const GameEditorModal: FC<{
   existingGame?: Game;
@@ -19,7 +16,6 @@ export const GameEditorModal: FC<{
 }> = ({ existingGame, setSelectedGame }) => {
   const addGameMutation = useAddGameMutation();
   const updateGameMutation = useUpdateGameMutation();
-  const addImageMutation = useAddImageMutation();
   const nameControl = useTextInput(existingGame?.name ?? "");
   const hostUrlControl = useTextInput(existingGame?.hostUrl ?? "");
   const repoLinkControl = useTextInput(existingGame?.repoLink ?? "");
@@ -57,12 +53,7 @@ export const GameEditorModal: FC<{
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (image) {
-      const imageFilename = await addImageMutation.mutateAsync(image);
-      setImageSource(imageFilename);
-      console.log(imageSource);
-    }
-    const newGame: Game = {
+    const newGame: GameDto = {
       id: existingGame?.id ?? 0,
       name: nameControl.value,
       repoLink: repoLinkControl.value,
@@ -90,8 +81,8 @@ export const GameEditorModal: FC<{
       hostUrlControl.setValue("");
       detailsControl.setValue("");
       createdByControl.setValue("");
-      setImageSource(undefined)
-      setImage(undefined)
+      setImageSource(undefined);
+      setImage(undefined);
     }
     gameEditorControls.hide();
   };
@@ -187,7 +178,6 @@ export const GameEditorModal: FC<{
                 </button>
               </div>
             </div>
-
           </form>
         </div>
       </div>
