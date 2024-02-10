@@ -99,8 +99,8 @@ export const CompetitionCarousel: FC<{
                           <div className="card-body">
                             <img
                               className="card-img-top"
-                              src="..."
-                              alt="Card image cap"
+                              src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${c.gameId}`}
+                              alt="Card"
                             ></img>
                             <div className="card-title fw-bold">{c.name}</div>
                             <div>{c.game?.name}</div>
