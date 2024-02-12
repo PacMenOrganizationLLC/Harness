@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { competitionService } from "./competitionService";
 import { getQueryClient } from "../../queryClient";
-import { Competition } from "../../models/Competition";
+import { Competition, CompetitionPrize } from "../../models/Competition";
 
 export const CompetitionKeys = {
   competitionsKey: ["competitionsKey"] as const,
@@ -70,3 +70,39 @@ export const useDeleteCompetitionMutation = () => {
     },
   });
 }
+
+export const useAddCompetitionPrizeMutation= () => {
+  return useMutation({
+    mutationFn: async (prize: CompetitionPrize) => {
+      return await competitionService.addPrize(prize);
+    },
+    onSuccess: (_, prize: CompetitionPrize) => {
+      queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(prize.competitionId));
+    },
+  });
+}
+
+export const useUpdateCompetitionPrizeMutation = () => {
+  return useMutation({
+    mutationFn: async (prize: CompetitionPrize) => {
+      return await competitionService.updatePrize(prize);
+    },
+    onSuccess: (_, prize: CompetitionPrize) => {
+      queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(prize.competitionId));
+    },
+  });
+};
+
+export const useDeleteCompetitionPrizeMutation = () => {
+  return useMutation({
+    mutationFn: async (id: number) => {
+      return await competitionService.deletePrize(id);
+    },
+    onSuccess: (_, id: number) => {
+      queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(id));
+    },
+  });
+};
