@@ -1,12 +1,18 @@
 import axios from "axios";
-import { Competition } from "../../models/Competition";
+import { Competition, CompetitionPrize } from "../../models/Competition";
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 const apiUrlBase = `${BaseUrl}/api/competition`;
+const prizeUrlBase = `${BaseUrl}/api/prize`;
 
 export const competitionService = {
   async getCompetitions(): Promise<Competition[]> {
     const url = `${apiUrlBase}`;
+    const response = await axios.get(url);
+    return response.data;
+  },
+  async getUpcomingCompetitionsByGame(gameId: string): Promise<Competition[]> {
+    const url = `${apiUrlBase}/game/${gameId}`;
     const response = await axios.get(url);
     return response.data;
   },
@@ -30,5 +36,20 @@ export const competitionService = {
     const url = `${apiUrlBase}/${id}`;
     const response = await axios.delete(url);
     return response.data;
-  }
+  },
+  async addPrize(prize: CompetitionPrize) {
+    const url = `${prizeUrlBase}`;
+    const response = await axios.post(url, prize);
+    return response.data;
+  },
+  async updatePrize(prize: CompetitionPrize) {
+    const url = `${prizeUrlBase}`;
+    const response = await axios.put(url, prize);
+    return response.data;
+  },
+  async deletePrize(id: number) {
+    const url = `${prizeUrlBase}/${id}`;
+    const response = await axios.delete(url);
+    return response.data;
+  },
 }

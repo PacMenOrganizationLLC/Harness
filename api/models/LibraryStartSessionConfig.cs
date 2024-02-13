@@ -2,8 +2,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.models;
 
-[Table("library_create_session_config")]
-public class LibraryCreateSessionConfig 
+[Table("library_start_session_config")]
+public class LibraryStartSessionConfig
 {
     [Column("id")]
     public Guid Id { get; set; }
@@ -13,6 +13,6 @@ public class LibraryCreateSessionConfig
     public bool IsDefault { get; set; }
     [Column("name")]
     public string Name { get; set; } = default!;
-    [Column("json_config", TypeName = "json") ]
+    [Column("json_config", TypeName = "json")]
     public Dictionary<string, object> JsonConfig { get; set; } = default!;
 }

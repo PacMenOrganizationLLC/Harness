@@ -1,4 +1,6 @@
+using api.Hubs;
 using api.models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using api.Hubs;
@@ -8,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -61,6 +64,7 @@ app.UseAuthorization();
 app.UseCors("AllowAll");
 
 app.MapControllers();
+app.MapHub<LibraryHub>("/libraryhub");
 
 app.MapHub<WebsocketHub>("/ws/chat");
 

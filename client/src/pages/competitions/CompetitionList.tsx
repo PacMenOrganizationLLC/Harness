@@ -17,7 +17,7 @@ export const CompetitionList = () => {
 
   return (
     <div className='container'>
-      <h1 className='text-center'>Competitions</h1>
+      <h1 className='text-center mt-2'>Competitions</h1>
       <div className='text-end'>
         <CompetitionEditorModal />
       </div>

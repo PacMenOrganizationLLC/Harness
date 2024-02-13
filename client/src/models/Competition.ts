@@ -5,7 +5,7 @@ export interface CompetitionPrize {
   id: number;
   prize: string;
   competitionId: number;
-  imageFileName: string;
+  imageFileName?: string;
   placement: number;
   userId?: string;
 }

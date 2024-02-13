@@ -53,9 +53,22 @@ public class CompetitionController : ControllerBase
         return Ok(competition);
     }
 
+    [HttpGet("game/{gameId}")]
+    public async Task<ActionResult<IEnumerable<Competition>>> GetUpcomingCompetitionsByGameAsync(int gameId)
+    {
+        var competitions = await context.Competition
+        .Include(c => c.Game)
+        .Where(c => c.EndAt >= DateTime.UtcNow)
+        .Where(c => c.GameId == gameId)
+        .ToListAsync();
+
+        return Ok(competitions);
+    }
+
     [HttpPut]
     public async Task<IActionResult> UpdateCompetitionAsync(Competition competition)
     {
+        Console.WriteLine("Competition Upate !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (competition == null)
         {
             return BadRequest("Competition object cannot be null.");
@@ -84,70 +97,6 @@ public class CompetitionController : ControllerBase
         }
 
         context.Competition.Remove(competition);
-        await context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    [HttpPost("prize")]
-    public async Task<IActionResult> AddCompetitionPrizeAsync(CompetitionPrize prize)
-    {
-        if (prize == null)
-        {
-            return BadRequest("CompetitionPrize object cannot be null.");
-        }
-
-        await context.CompetitionPrize.AddAsync(prize);
-        await context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetCompetitionPrizeAsync), new { id = prize.Id }, prize);
-    }
-
-    [HttpGet("prize")]
-    public async Task<ActionResult<IEnumerable<CompetitionPrize>>> GetAllCompetitionPrizes()
-    {
-        var prizes = await context.CompetitionPrize.OrderBy(p => p.Placement).ToListAsync();
-        return Ok(prizes);
-    }
-
-    [HttpGet("prize/{id}")]
-    public async Task<ActionResult<CompetitionPrize>> GetCompetitionPrizeAsync(int id)
-    {
-        var prize = await context.CompetitionPrize.FindAsync(id);
-
-        if (prize == null)
-        {
-            return NotFound($"CompetitionPrize with id: {id} does not exist.");
-        }
-
-        return Ok(prize);
-    }
-
-    [HttpPut("prize")]
-    public async Task<IActionResult> UpdateCompetitionPrizeAsync(CompetitionPrize prize)
-    {
-        if (prize == null)
-        {
-            return BadRequest("CompetitionPrize object cannot be null.");
-        }
-
-        context.CompetitionPrize.Update(prize);
-        await context.SaveChangesAsync();
-
-        return NoContent();
-    }
-
-    [HttpDelete("prize/{id}")]
-    public async Task<IActionResult> DeleteCompetitionPrizeAsync(int id)
-    {
-        var prize = await context.CompetitionPrize.FindAsync(id);
-
-        if (prize == null)
-        {
-            return NotFound($"CompetitionPrize with id: {id} does not exist, cannot delete.");
-        }
-
-        context.CompetitionPrize.Remove(prize);
         await context.SaveChangesAsync();
 
         return NoContent();

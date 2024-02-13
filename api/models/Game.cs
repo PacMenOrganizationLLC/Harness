@@ -1,4 +1,6 @@
 
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace api.models;
 
 
@@ -12,4 +14,6 @@ public class Game
   public string CreatedBy { get; set; }
   public bool SupportsMultiSessions { get; set; }
   public DateTime CreatedAt { get; set; }
+  public string? ImageSource { get; set; }
+
 }
