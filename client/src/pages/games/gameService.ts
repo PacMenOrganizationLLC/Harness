@@ -10,22 +10,31 @@ export const gameService = {
     const response = await axios.get(url);
     return response.data;
   },
-  async getGame(id: string): Promise<Game> {
+  async getGame(id: number): Promise<Game> {
     const url = `${BaseUrl}/api/Game/${id}`;
     const response = await axios.get(url);
     return response.data;
   },
-  async addGame(game: GameDto) {
+  async addGame(game: GameDto): Promise<number> {
     const addGame: Game = await convertDtoToGame(game);
     const url = `${BaseUrl}/api/Game`;
-    while (!addGame) {}
+    while (!addGame) { }
     const response = await axios.post(url, addGame);
     return response.data;
+  },
+  async addInstructions(gameId: number, rules: string, gettingStarted: string) {
+    const url = `${BaseUrl}/api/Game/${gameId}/instructions`
+    const instructions = {
+      GameRules: rules,
+      GettingStarted: gettingStarted
+    }
+    const response = await axios.put(url, instructions)
+    return response.data
   },
   async updateGame(game: GameDto) {
     const myGame: Game = await convertDtoToGame(game);
     const url = `${BaseUrl}/api/Game/${game.id}`;
-    while (!myGame) {}
+    while (!myGame) { }
     console.log(myGame);
     const response = await axios.put(url, myGame);
     return response.data;

@@ -20,6 +20,7 @@ interface Props {
   placeholder?: string;
   isTextArea?: boolean;
   isEditing?: boolean;
+  rows?: number;
 }
 
 export const TextInput: FC<Props> = ({
@@ -30,6 +31,7 @@ export const TextInput: FC<Props> = ({
   placeholder = "",
   isTextArea = false,
   isEditing = true,
+  rows = 3,
 }) => {
   const computedLabel = label?.toLowerCase().replace(" ", "");
   const labelClasses = `${labelClassName} my-auto`;
@@ -49,6 +51,7 @@ export const TextInput: FC<Props> = ({
           <textarea
             name={computedLabel}
             id={computedLabel}
+            rows={rows}
             value={control.value}
             className="form-control"
             onChange={(e) => control.setValue(e.target.value)}

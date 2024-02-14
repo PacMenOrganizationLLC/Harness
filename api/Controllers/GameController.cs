@@ -75,10 +75,23 @@ namespace api.Controllers
     [HttpPost]
     public async Task<IActionResult> AddGame(Game game)
     {
-
       _context.Game.Add(game);
       await _context.SaveChangesAsync();
-      return Ok("Added Game");
+      return Ok(game.Id);
+    }
+
+    [HttpPut("{id}/instructions")]
+    public async Task<IActionResult> UpdateGameInstructions(int id, [FromBody] UpdateGameInstructions instructions)
+    {
+      Game? game = await _context.Game.FindAsync(id);
+      if (game == null)
+      {
+        return BadRequest("Unable to find game");
+      }
+      game.GameRules = instructions.GameRules;
+      game.GettingStartedInstructions = instructions.GettingStarted;
+      await _context.SaveChangesAsync();
+      return Ok("Updated instructions");
     }
 
     // DELETE: api/Game/5
@@ -224,39 +237,39 @@ namespace api.Controllers
     public static void CleanUpImages(List<Game> games)
     {
 
-        string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Images"); // Get the path to the "Images" subdirectory
-        if (!Directory.Exists(directoryPath))
+      string directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "Images"); // Get the path to the "Images" subdirectory
+      if (!Directory.Exists(directoryPath))
+      {
+        Console.WriteLine("Images directory not found.");
+        return;
+      }
+
+      string[] imageFiles = Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly); // Get all files in the "Images" directory
+
+      foreach (var imagePath in imageFiles)
+      {
+        string filename = Path.GetFileName(imagePath); // Extract the filename from the image path
+
+        // Check if the file is an image (you can add more image extensions as needed)
+        if (IsImage(filename))
         {
-            Console.WriteLine("Images directory not found.");
-            return;
+          // Check if the filename exists in the list of database objects
+          if (!games.Exists(obj => obj.ImageSource == filename))
+          {
+            File.Delete(imagePath); // Delete the image file if it does not have a corresponding filename in the database
+            Console.WriteLine($"Deleted image: {filename}");
+          }
         }
-
-        string[] imageFiles = Directory.GetFiles(directoryPath, "*.*", SearchOption.TopDirectoryOnly); // Get all files in the "Images" directory
-
-        foreach (var imagePath in imageFiles)
-        {
-            string filename = Path.GetFileName(imagePath); // Extract the filename from the image path
-
-            // Check if the file is an image (you can add more image extensions as needed)
-            if (IsImage(filename))
-            {
-                // Check if the filename exists in the list of database objects
-                if (!games.Exists(obj => obj.ImageSource == filename))
-                {
-                    File.Delete(imagePath); // Delete the image file if it does not have a corresponding filename in the database
-                    Console.WriteLine($"Deleted image: {filename}");
-                }
-            }
-        }
+      }
     }
 
-        // Helper method to check if a file is an image based on its extension
+    // Helper method to check if a file is an image based on its extension
     private static bool IsImage(string filename)
     {
-        string extension = Path.GetExtension(filename)?.ToLower();
-        return extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif" || extension == ".bmp"; // Add more extensions as needed
+      string extension = Path.GetExtension(filename)?.ToLower();
+      return extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif" || extension == ".bmp"; // Add more extensions as needed
     }
-        public static string GetContentType(string fileName)
+    public static string GetContentType(string fileName)
     {
       // Get the file extension
       string fileExtension = Path.GetExtension(fileName).ToLowerInvariant();
