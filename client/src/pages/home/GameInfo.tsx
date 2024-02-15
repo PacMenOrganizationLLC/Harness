@@ -7,8 +7,8 @@ import { FormatDate, getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
 export const GameInfo = () => {
   const navigate = useNavigate();
   const gameId = useParams<{ id: string }>().id;
-  const gameQuery = useGetGameQuery(gameId);
-  const game = gameQuery.data;
+  const gameQuery = useGetGameQuery(Number(gameId));
+  const game = gameQuery.data
   const competitionsQuery = useGetCompetitionsByGameQuery(gameId);
   const upcomingCompetitions = competitionsQuery.data ?? [];
 
@@ -57,45 +57,15 @@ export const GameInfo = () => {
       </div>
       <div className="row">
         <div className="col">
-          <div className="fs-4 text-center">How to Join</div>
+          <div className="fs-4 text-center">Getting Started</div>
           <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Condimentum id venenatis a condimentum vitae sapien pellentesque
-            habitant. Velit scelerisque in dictum non consectetur a erat. Elit
-            duis tristique sollicitudin nibh. Leo in vitae turpis massa. Etiam
-            dignissim diam quis enim lobortis scelerisque fermentum dui. Non
-            nisi est sit amet facilisis magna. Erat pellentesque adipiscing
-            commodo elit at imperdiet dui accumsan. Lacus viverra vitae congue
-            eu consequat ac felis donec. Netus et malesuada fames ac turpis
-            egestas sed tempus urna. Eget nunc scelerisque viverra mauris. Nisl
-            condimentum id venenatis a condimentum vitae sapien pellentesque. Et
-            malesuada fames ac turpis egestas integer eget. Faucibus purus in
-            massa tempor nec. Semper quis lectus nulla at volutpat diam. Dictum
-            sit amet justo donec enim. Odio pellentesque diam volutpat commodo
-            sed egestas egestas fringilla. Donec massa sapien faucibus et
-            molestie ac feugiat sed.
+            {game.gettingStartedInstructions}
           </div>
         </div>
         <div className="col">
           <div className="fs-4 text-center">How to Play</div>
           <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Condimentum id venenatis a condimentum vitae sapien pellentesque
-            habitant. Velit scelerisque in dictum non consectetur a erat. Elit
-            duis tristique sollicitudin nibh. Leo in vitae turpis massa. Etiam
-            dignissim diam quis enim lobortis scelerisque fermentum dui. Non
-            nisi est sit amet facilisis magna. Erat pellentesque adipiscing
-            commodo elit at imperdiet dui accumsan. Lacus viverra vitae congue
-            eu consequat ac felis donec. Netus et malesuada fames ac turpis
-            egestas sed tempus urna. Eget nunc scelerisque viverra mauris. Nisl
-            condimentum id venenatis a condimentum vitae sapien pellentesque. Et
-            malesuada fames ac turpis egestas integer eget. Faucibus purus in
-            massa tempor nec. Semper quis lectus nulla at volutpat diam. Dictum
-            sit amet justo donec enim. Odio pellentesque diam volutpat commodo
-            sed egestas egestas fringilla. Donec massa sapien faucibus et
-            molestie ac feugiat sed.
+            {game.gameRules}
           </div>
         </div>
       </div>

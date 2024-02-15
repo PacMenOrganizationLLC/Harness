@@ -8,4 +8,6 @@ export interface Game {
   supportsMultiSessions: boolean;
   createdAt: Date;
   imageSource?: string;
+  gameRules?: string;
+  gettingStartedInstructions?: string;
 }

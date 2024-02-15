@@ -9,6 +9,7 @@ import { AddSessionModal } from "../sessions/AddSessionModal";
 import { useGetSessionsQuery } from "../sessions/sessionHooks";
 import { SessionItem } from "../sessions/SessionItem";
 import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
+import { PrizeEditorModal } from "./PrizeEditorModal";
 
 export const CompetitionDetails = () => {
   const competitionId = useParams<{ id: string }>().id;
@@ -74,7 +75,7 @@ export const CompetitionDetails = () => {
           <h3>Prizes:</h3>
         </div>
         <div className="col-auto my-auto">
-          <button className="btn btn-outline-info bi-plus-lg px-2 py-1" />
+          <PrizeEditorModal competitionId={competition.id}/>
         </div>
       </div>
       <div className="row">

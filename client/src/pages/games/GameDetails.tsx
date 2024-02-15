@@ -1,10 +1,9 @@
 import { FC, useEffect, useMemo } from "react";
 import { Game } from "../../models/Games";
-import { GameEditorModal } from "./GameEditorModal";
 import { useDeleteGameMutation } from "./gameHooks";
 import { SessionConfigList } from "./sessionConfig/SessionConfigList";
 import { AddSessionConfigModal } from "./sessionConfig/AddSessionConfigModal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useGetEndpointTypesQuery,
   useGetGameEndpointsQuery,
@@ -28,8 +27,8 @@ export const GameDetails: FC<{
     () =>
       gameEndpointsQuery.data
         ? gameEndpointsQuery.data.filter(
-            (e) => e.endpointType?.required === true
-          )
+          (e) => e.endpointType?.required === true
+        )
         : undefined,
     [gameEndpointsQuery.data]
   );
@@ -96,10 +95,10 @@ export const GameDetails: FC<{
           <div className="fs-4 fw-bold text-truncate">{selectedGame.name}</div>
         </div>
         <div className="col-auto">
-          <GameEditorModal
-            existingGame={selectedGame}
-            setSelectedGame={setSelectedGame}
-          />
+          <Link to={`/game/edit/${selectedGame.id}`}
+            className="btn btn-outline-secondary">
+            <i className="bi-pencil" />
+          </Link>
         </div>
         <div className="col-auto">
           <button className="btn btn-outline-danger" onClick={deleteHandler}>

@@ -26,7 +26,6 @@ export const GameEditorModal: FC<{
   );
 
   const [image, setImage] = useState<FormData>();
-  const [imageSource, setImageSource] = useState();
   const handleSetConvertedSrc = (imageSrc: FormData | undefined) => {
     // Implement the logic to set the converted source image here
     if (imageSrc) {
@@ -81,7 +80,6 @@ export const GameEditorModal: FC<{
       hostUrlControl.setValue("");
       detailsControl.setValue("");
       createdByControl.setValue("");
-      setImageSource(undefined);
       setImage(undefined);
     }
     gameEditorControls.hide();

@@ -26,7 +26,9 @@ create table Game (
   details text,
   created_by text not null,
   created_at timestamp not null default NOW(),
-  supports_multi_sessions bool not null
+  supports_multi_sessions bool not null,
+  game_rules  text,
+  getting_started_instructions  text
 );
 
 create table Endpoint_Type (

@@ -2,6 +2,8 @@ using api.Hubs;
 using api.models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR;
+using api.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,6 +41,8 @@ builder.Services.AddDbContext<HarnessContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,6 +50,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
 }
 
 app.UseHttpsRedirection();
@@ -56,6 +65,8 @@ app.UseCors("AllowAll");
 
 app.MapControllers();
 app.MapHub<LibraryHub>("/libraryhub");
+
+app.MapHub<WebsocketHub>("/ws/chat");
 
 app.Run();
 //Make a function that increases a variable named hi to be one more than its current value

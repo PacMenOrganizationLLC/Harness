@@ -19,3 +19,5 @@
 /.vs/VSWorkspaceState.json
 /.vs/PacMenCodingChallenge/FileContentIndex
 .vscode/settings.json
+
+node_modules
