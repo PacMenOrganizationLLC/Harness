@@ -75,7 +75,7 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
 
   const sendMessage = (msg: string) => {
     if (connection.current?.state === signalR.HubConnectionState.Connected) {
-      connection.current.invoke("NewMessage", msg);
+      connection.current.invoke("NewMessage", msg, "All");
       addMessage(msg, "sent");
     }
   };

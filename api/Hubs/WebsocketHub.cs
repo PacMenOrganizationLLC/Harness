@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.SignalR;
 namespace api.Hubs;
 public class WebsocketHub : Hub
 {
-  public async Task NewMessage(string message)
+  public async Task NewMessage(string message, string groupName)
   {
-    string clientId = Context.ConnectionId;
+    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
-    await Clients.AllExcept(clientId).SendAsync("messageReceived", message);
+    await Clients.Others.SendAsync("messageReceived", message);
   }
 }
