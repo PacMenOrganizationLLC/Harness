@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
 using api.Hubs;
+using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,8 @@ var connectionString = builder.Configuration["ConnectionString"];
 
 builder.Services.AddDbContext<HarnessContext>(options =>
     options.UseNpgsql(connectionString));
+
+builder.Services.AddSingleton<FileService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

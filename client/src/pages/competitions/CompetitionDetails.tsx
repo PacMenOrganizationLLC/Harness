@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteCompetitionMutation,
+  useDeleteCompetitionPrizeMutation,
   useGetCompetitionQuery,
 } from "./competitionHooks";
 import { Spinner } from "../../components/Spinner";
@@ -18,8 +19,10 @@ export const CompetitionDetails = () => {
   const competitionQuery = useGetCompetitionQuery(Number(competitionId));
   const competition = competitionQuery.data;
   const navigate = useNavigate();
+  const BaseUrl = process.env.REACT_APP_API_URL;
 
   const deleteCompetitionMutation = useDeleteCompetitionMutation();
+  const deletePrizeMutation = useDeleteCompetitionPrizeMutation(Number(competitionId));
 
   const deleteHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -32,6 +35,8 @@ export const CompetitionDetails = () => {
   if (competitionQuery.isLoading) return <Spinner />;
   if (competitionQuery.isError) return <div>Error getting competition</div>;
   if (!competition) return <div>Could not get competition</div>;
+
+  console.log(competition);
 
   return (
     <div className="container">
@@ -75,7 +80,7 @@ export const CompetitionDetails = () => {
           <h3>Prizes:</h3>
         </div>
         <div className="col-auto my-auto">
-          <PrizeEditorModal competitionId={competition.id}/>
+          <PrizeEditorModal competitionId={competition.id} />
         </div>
       </div>
       <div className="row">
@@ -83,9 +88,24 @@ export const CompetitionDetails = () => {
           competition.competitionPrizes.length > 0 ? (
           competition.competitionPrizes.map((p) => (
             <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
-              <div className="text-center border rounded my-1" key={p.id}>
+              <div className="text-center border rounded my-1" key={p.id + "competition"}>
+                <img
+                  className="img-fluid rounded mx-auto d-block"
+                  src={`${BaseUrl}/api/prize/image/${p.imageFilename}`}
+                  alt={p.prize} />
                 <div>#{p.placement}</div>
                 <div className="text-truncate">{p.prize}</div>
+                <div className="d-flex w-100 justify-content-center">
+                  <div className="m-1">
+                    <PrizeEditorModal existingPrize={p} competitionId={competition.id} />
+                  </div>
+                  <button className="btn btn-outline-danger m-1 my-auto" onClick={(e) => {
+                    e.stopPropagation();
+                    deletePrizeMutation.mutate(p.id);
+                  }}>
+                    <i className="bi bi-x" />
+                  </button>
+                </div>
               </div>
             </div>
           ))
@@ -104,7 +124,7 @@ export const CompetitionDetails = () => {
       </div>
       <div className="row">
         {sessions.map((s) => (
-          <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id}>
+          <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id + "123"}>
             <SessionItem session={s} />
           </div>
         ))}
@@ -112,6 +132,7 @@ export const CompetitionDetails = () => {
       <hr />
       <div className="row">
         <div className="col">
+
           {/* <img
             src={competition.imageFilename ?? ""}
             alt="Your competition's visual graphic here"

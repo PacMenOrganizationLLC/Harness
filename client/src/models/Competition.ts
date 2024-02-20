@@ -5,9 +5,10 @@ export interface CompetitionPrize {
   id: number;
   prize: string;
   competitionId: number;
-  imageFileName?: string;
   placement: number;
   userId?: string;
+  imageFilename: string;
+  imageData: string;
 }
 
 export interface Competition {

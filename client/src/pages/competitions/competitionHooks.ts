@@ -95,14 +95,14 @@ export const useUpdateCompetitionPrizeMutation = () => {
   });
 };
 
-export const useDeleteCompetitionPrizeMutation = () => {
+export const useDeleteCompetitionPrizeMutation = (competitionId: number) => {
   return useMutation({
     mutationFn: async (id: number) => {
       return await competitionService.deletePrize(id);
     },
     onSuccess: (_, id: number) => {
       queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
-      queryClient.invalidateQueries(CompetitionKeys.competitionKey(id));
+      queryClient.invalidateQueries(CompetitionKeys.competitionKey(competitionId));
     },
   });
 };

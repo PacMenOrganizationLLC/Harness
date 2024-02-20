@@ -41,6 +41,19 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
     setPrize({ ...prize, [e.target.name]: e.target.value });
   }
 
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const dataUrl = e.target?.result as string;
+        const base64 = dataUrl.split(",")[1];
+        setPrize({ ...prize, imageData: base64, imageFilename: file.name });
+      }
+      reader.readAsDataURL(file);
+    }
+  }
+
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     if (existingPrize) {
       updatePrizeMutation.mutate(prize);
@@ -49,6 +62,14 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
       addPrizeMutation.mutate(prize);
     }
     e.preventDefault();
+    if (!existingPrize) {
+      setPrize({
+        id: 0,
+        prize: "",
+        competitionId,
+        placement: 0,
+      } as CompetitionPrize);
+    }
     editorControls.hide();
   }
 
@@ -86,6 +107,17 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
                   className="form-control"
                   onChange={handleChange}
                   placeholder="Placement"
+                />
+              </label>
+            </div>
+            <div>
+              <label className="form-label">
+                Image:
+                <input
+                  type="file"
+                  className="form-control"
+                  accept="image/*"
+                  onChange={(handleFileChange)}
                 />
               </label>
             </div>
