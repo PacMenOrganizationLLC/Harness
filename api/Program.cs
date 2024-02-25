@@ -1,9 +1,6 @@
 using api.Hubs;
 using api.models;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.SignalR;
-using api.Hubs;
 using api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +30,16 @@ builder.Services.AddMvc(o =>
     o.SuppressAsyncSuffixInActionNames = false;
 });
 
-var connectionString = builder.Configuration["ConnectionString"];
+var connectionString = string.Empty;
+
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration["ConnectionString"];
+}
+else
+{
+    connectionString = Environment.GetEnvironmentVariable("ConnectionString");
+}
 
 builder.Services.AddDbContext<HarnessContext>(options =>
     options.UseNpgsql(connectionString));

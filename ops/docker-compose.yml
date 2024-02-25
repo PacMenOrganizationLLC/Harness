@@ -1,15 +1,46 @@
 version: '3'
 
 services:
+  pacmen-harness-traefik:
+    container_name: pacmen-harness-traefik
+    image: traefik:v2.11
+    command: 
+      - --api.insecure=true 
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
   pacmen-harness-client:
     container_name: pacmen-harness-client
     build:
       context: ../client
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.client.rule=Host(`${TRAEFIK_HOST}`)
+      - traefik.http.routers.client.entrypoints=web
+    depends_on:
+      - pacmen-harness-api
+      - pacmen-harness-traefik
 
   pacmen-harness-api:
     container_name: pacmen-harness-api
     build:
       context: ../api
+    environment:
+      - ConnectionString=Host=pacmen-harness-db;Port=5432;Username=pacmen;Password=pacmen;Database=pacmen;
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.api.rule=Host(`api.${TRAEFIK_HOST}`)
+      - traefik.http.routers.api.entrypoints=web
+      - traefik.http.services.api.loadbalancer.server.port=8080
+    depends_on:
+      - pacmen-harness-db
+      - pacmen-harness-traefik
 
   pacmen-harness-db:
     container_name: pacmen-harness-db
@@ -20,3 +51,7 @@ services:
       POSTGRES_DB: pacmen
     volumes:
       - ../api/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+networks:
+  default:
+      name: pacmen-harness_default

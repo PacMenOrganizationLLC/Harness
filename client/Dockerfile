@@ -4,14 +4,9 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm install 
 
-ARG REACT_APP_SSO_URL=https://kc.snow.edu
-ARG REACT_APP_BASE_URL=https://portal.snow.edu/
-ARG REACT_APP_OIDC_CLIENT_ID=portal
+ARG REACT_APP_API_URL=http://api.localhost
 
-
-ENV REACT_APP_SSO_URL=$REACT_APP_SSO_URL
-ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
-ENV REACT_APP_OIDC_CLIENT_ID=$REACT_APP_OIDC_CLIENT_ID
+ENV REACT_APP_SSO_URL=$REACT_APP_API_URL
 
 COPY . .
 RUN npm run build

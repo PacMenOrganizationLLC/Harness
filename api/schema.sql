@@ -28,7 +28,8 @@ create table Game (
   created_at timestamp not null default NOW(),
   supports_multi_sessions bool not null,
   game_rules  text,
-  getting_started_instructions  text
+  getting_started_instructions  text,
+  image_source text
 );
 
 create table Endpoint_Type (
