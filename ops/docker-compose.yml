@@ -11,7 +11,7 @@ services:
       - --entrypoints.web.address=:80
     ports:
       - 1980:80
-      - 1881:8080
+      - 1981:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
