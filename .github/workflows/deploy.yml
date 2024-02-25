@@ -22,4 +22,4 @@ jobs:
       - name: Deploy to Production
         run: |
           cd ops
-          docker compose --env-file .prod.dev up -d
+          docker compose --env-file .env.prod up -d
