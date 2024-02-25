@@ -2,8 +2,23 @@ FROM node:16-alpine AS builder
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
-RUN npm install
+RUN npm install 
+
+ARG REACT_APP_SSO_URL=https://kc.snow.edu
+ARG REACT_APP_BASE_URL=https://portal.snow.edu/
+ARG REACT_APP_OIDC_CLIENT_ID=portal
+
+
+ENV REACT_APP_SSO_URL=$REACT_APP_SSO_URL
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+ENV REACT_APP_OIDC_CLIENT_ID=$REACT_APP_OIDC_CLIENT_ID
 
 COPY . .
 RUN npm run build
 
+FROM nginx
+RUN apt update && apt install -y curl
+WORKDIR /usr/share/nginx/html
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/build .
+CMD ["nginx", "-g", "daemon off;"]
