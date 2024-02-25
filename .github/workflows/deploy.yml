@@ -3,17 +3,17 @@ run-name: ${{ github.actor }} is deploying 🚀
 on: [push]
 
 jobs:
-  build:
+  Build:
     runs-on: self-hosted
     steps:
-     - name: Checkout
-       uses: actions/checkout@v4
-    - name: Build Docker Images
-      run: |
-        cd ops
-        docker-compose build --env-file .env.prod
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker Images
+        run: |
+          cd ops
+          docker-compose build --env-file .env.prod
   
-  deploy:
+  Deploy:
     runs-on: self-hosted
     needs: build
     steps:
