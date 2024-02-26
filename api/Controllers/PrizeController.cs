@@ -57,6 +57,37 @@ public class PrizeController : ControllerBase
         return Ok(prize);
     }
 
+    [HttpGet("winnable")]
+    public async Task<ActionResult<IEnumerable<CompetitionPrize>>> GetWinnablePrizes()
+    {
+        var prizes = await context.Competition
+            .Include(c => c.CompetitionPrizes)
+            .Include(c => c.Game)
+            .Where(c => c.EndAt >= DateTime.UtcNow)
+            .SelectMany(c => c.CompetitionPrizes)
+            .ToListAsync();
+            
+        foreach (var prize in prizes)
+        {
+            if (prize.ImageFilename == null)
+            {
+                switch (prize.Placement)
+                {
+                    case 1:
+                        prize.ImageFilename = "first_place_trophy.webp";
+                        break;
+                    case 2:
+                        prize.ImageFilename = "second_place_trophy.webp";
+                        break;
+                    default:
+                        prize.ImageFilename = "third_place_trophy.webp";
+                        break;
+                }
+            }
+        }
+        return prizes;
+    }
+
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCompetitionPrizeAsync(int id)
     {

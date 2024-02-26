@@ -52,4 +52,9 @@ export const competitionService = {
     const response = await axios.delete(url);
     return response.data;
   },
+  async getWinnablePrizes(): Promise<CompetitionPrize[]> {
+    const url = `${prizeUrlBase}/winnable`
+    const response = await axios.get(url);
+    return response.data;
+  }
 }

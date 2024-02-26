@@ -52,21 +52,12 @@ public class CompetitionController : ControllerBase
 
         foreach (var prize in competition.CompetitionPrizes)
         {
-            if (prize.ImageFilename == null)
+            prize.ImageFilename ??= prize.Placement switch
             {
-                switch (prize.Placement)
-                {
-                    case 1:
-                        prize.ImageFilename = "first_place_trophy.webp";
-                        break;
-                    case 2:
-                        prize.ImageFilename = "second_place_trophy.webp";
-                        break;
-                    default:
-                        prize.ImageFilename = "third_place_trophy.webp";
-                        break;
-                }
-            }
+                1 => "first_place_trophy.webp",
+                2 => "second_place_trophy.webp",
+                _ => "third_place_trophy.webp",
+            };
         }
 
         return Ok(competition);

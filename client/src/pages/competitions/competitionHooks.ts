@@ -7,6 +7,7 @@ export const CompetitionKeys = {
   competitionsKey: ["competitionsKey"] as const,
   competitionKey: (id: number) => ["competitionKey", id] as const,
   competitionsByGameKey: (gameId?: string) => ["competitionsByGameKey", gameId] as const,
+  winnablePrizesKey: ["winnablePrizesKey"] as const
 };
 
 const queryClient = getQueryClient();
@@ -71,7 +72,7 @@ export const useDeleteCompetitionMutation = () => {
   });
 }
 
-export const useAddCompetitionPrizeMutation= () => {
+export const useAddCompetitionPrizeMutation = () => {
   return useMutation({
     mutationFn: async (prize: CompetitionPrize) => {
       return await competitionService.addPrize(prize);
@@ -100,9 +101,15 @@ export const useDeleteCompetitionPrizeMutation = (competitionId: number) => {
     mutationFn: async (id: number) => {
       return await competitionService.deletePrize(id);
     },
-    onSuccess: (_, id: number) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(CompetitionKeys.competitionsKey);
       queryClient.invalidateQueries(CompetitionKeys.competitionKey(competitionId));
     },
   });
 };
+
+export const useGetWinnablePrizesQuery = () =>
+  useQuery({
+    queryKey: CompetitionKeys.winnablePrizesKey,
+    queryFn: async () => await competitionService.getWinnablePrizes()
+  })
