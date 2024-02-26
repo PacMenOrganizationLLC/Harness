@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Game } from "../../models/Games";
 import { useDeleteGameMutation } from "./gameHooks";
 import { Link } from "react-router-dom";
+import ReactMarkdown from "react-markdown";
 
 export const GameDetails: FC<{
   selectedGame: Game;
@@ -25,8 +26,10 @@ export const GameDetails: FC<{
           <div className="fs-4 fw-bold text-truncate">{selectedGame.name}</div>
         </div>
         <div className="col-auto">
-          <Link to={`/game/edit/${selectedGame.id}`}
-            className="btn btn-outline-secondary">
+          <Link
+            to={`/game/edit/${selectedGame.id}`}
+            className="btn btn-outline-secondary"
+          >
             <i className="bi-pencil" />
           </Link>
         </div>
@@ -40,8 +43,14 @@ export const GameDetails: FC<{
       <div>Details: {selectedGame.details}</div>
       <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
       <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
-      <div>How To Play: {selectedGame.gameRules}</div>
+      <div>How To Play:</div>
+      {selectedGame.gameRules && (
+        <ReactMarkdown>{selectedGame.gameRules}</ReactMarkdown>
+      )}
       <div>Getting Started: {selectedGame.gettingStartedInstructions}</div>
+      {selectedGame.gettingStartedInstructions && (
+        <ReactMarkdown>{selectedGame.gettingStartedInstructions}</ReactMarkdown>
+      )}
       {selectedGame.imageSource && (
         <div className="my-2">
           <img src={BaseUrl + selectedGame.imageSource} alt="Game" />
