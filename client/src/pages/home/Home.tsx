@@ -1,4 +1,3 @@
-import MarkdownUpload from "../../components/MarkdownUpload";
 import { Spinner } from "../../components/Spinner";
 import { useGetCompetitionsQuery } from "../competitions/competitionHooks";
 import { CompetitionCarousel } from "./CompetitionCarousel";
@@ -69,7 +68,6 @@ export const Home = () => {
           </div>
         </div>
       </div>
-      <MarkdownUpload />
     </div>
   );
 };

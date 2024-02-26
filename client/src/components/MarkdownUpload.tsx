@@ -1,7 +1,12 @@
 import React, { FC, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { TextInputControl } from "./forms/TextInput";
 
-const MarkdownUpload: FC = () => {
+interface Props {
+  control: TextInputControl;
+}
+
+export const MarkdownUpload: FC<Props> = ({ control }) => {
   const [markdownContent, setMarkdownContent] = useState<string | null>(null);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -12,6 +17,7 @@ const MarkdownUpload: FC = () => {
         const content = e.target?.result;
         if (typeof content === "string") {
           setMarkdownContent(content);
+          control.setValue(content);
         }
       };
       reader.readAsText(file);
@@ -30,5 +36,3 @@ const MarkdownUpload: FC = () => {
     </div>
   );
 };
-
-export default MarkdownUpload;
