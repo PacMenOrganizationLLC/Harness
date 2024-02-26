@@ -47,7 +47,7 @@ export const GameDetails: FC<{
       {selectedGame.gameRules && (
         <ReactMarkdown>{selectedGame.gameRules}</ReactMarkdown>
       )}
-      <div>Getting Started: {selectedGame.gettingStartedInstructions}</div>
+      <div>Getting Started:</div>
       {selectedGame.gettingStartedInstructions && (
         <ReactMarkdown>{selectedGame.gettingStartedInstructions}</ReactMarkdown>
       )}
