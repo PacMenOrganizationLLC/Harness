@@ -17,8 +17,15 @@ export const GamesCard = () => {
             <div className="col mb-2" key={g.id}>
               <Link to={`/game/${g.id}`}
                 className="text-reset text-decoration-none">
-                <div className="card">
-                  <div className="card-body">
+                <div className="card h-100">
+                  {g.imageSource && (
+                    <img
+                      className="card-img opacity-50"
+                      src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${g.id}`}
+                      alt="Card"
+                    />
+                  )}
+                  <div className={`card-body ${g.imageSource && "card-img-overlay"}`}>
                     <div className="card-title text-center fs-5 fw-bold">{g.name}</div>
                   </div>
                 </div>

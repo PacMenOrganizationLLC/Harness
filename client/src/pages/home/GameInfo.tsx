@@ -97,18 +97,6 @@ export const GameInfo = () => {
             </Link>
           </div>
         ))}
-        {game.imageSource && (
-          <div className="m-2">
-            <img
-              src={
-                process.env.REACT_APP_API_URL +
-                "/api/Game/Image/" +
-                game.imageSource
-              }
-              alt="Game"
-            />
-          </div>
-        )}
       </div>
     </div>
   );

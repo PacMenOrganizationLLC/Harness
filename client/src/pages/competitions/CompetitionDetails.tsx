@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   useDeleteCompetitionMutation,
   useDeleteCompetitionPrizeMutation,
@@ -9,8 +9,8 @@ import { CompetitionEditorModal } from "./CompetitionEditorModal";
 import { AddSessionModal } from "../sessions/AddSessionModal";
 import { useGetSessionsQuery } from "../sessions/sessionHooks";
 import { SessionItem } from "../sessions/SessionItem";
-import { getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
 import { PrizeEditorModal } from "./PrizeEditorModal";
+import { formatCompetitionDate } from "../../models/Competition";
 
 export const CompetitionDetails = () => {
   const competitionId = useParams<{ id: string }>().id;
@@ -36,10 +36,8 @@ export const CompetitionDetails = () => {
   if (competitionQuery.isError) return <div>Error getting competition</div>;
   if (!competition) return <div>Could not get competition</div>;
 
-  console.log(competition);
-
   return (
-    <div className="container">
+    <div className="container mt-2">
       <div className="row">
         <div className="col-3 my-auto">
           <button className="btn" onClick={() => navigate(-1)}>
@@ -58,9 +56,11 @@ export const CompetitionDetails = () => {
           </button>
         </div>
       </div>
-      {competition.description && (
-        <div className="text-center">{competition.description}</div>
-      )}
+      <div className="text-center">
+        <Link to={`/game/${competition.gameId}`}
+          className="btn btn-bold">Learn to Play</Link>
+      </div>
+      <div>{competition.description}</div>
       <div>
         <i className="bi-joystick" /> {competition.game?.name}
       </div>
@@ -68,11 +68,7 @@ export const CompetitionDetails = () => {
         <i className="bi-pin-map" /> {competition.location}
       </div>
       <div>
-        <i className="bi-calendar-event" />{" "}
-        {new Date(competition.startAt).toDateString()},{" "}
-        {getTimeNoSeconds(competition.startAt)} -{" "}
-        {new Date(competition.endAt).toDateString()},{" "}
-        {getTimeNoSeconds(competition.endAt)}
+        <i className="bi-calendar-event pe-1" />{formatCompetitionDate(competition)}
       </div>
       <hr />
       <div className="row">

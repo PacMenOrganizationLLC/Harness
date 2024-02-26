@@ -1,3 +1,4 @@
+import { FormatDate, getTimeNoSeconds } from "../helpers/dateAndTimeHelpers";
 import { Game } from "./Games";
 import { Session } from "./Session";
 
@@ -23,4 +24,16 @@ export interface Competition {
   imageFilename?: string;
   competitionPrizes?: CompetitionPrize[];
   sessions?: Session[];
+}
+
+export function formatCompetitionDate(competition: Competition) {
+  const isSameDay = new Date(competition.startAt).toDateString() === new Date(competition.endAt).toDateString();
+  const formattedStartDate = FormatDate(competition.startAt);
+  const formattedEndDate = FormatDate(competition.endAt);
+  const formattedStartTime = getTimeNoSeconds(competition.startAt);
+  const formattedEndTime = getTimeNoSeconds(competition.endAt);
+
+  return isSameDay
+    ? `${formattedStartDate} ${formattedStartTime} - ${formattedEndTime}`
+    : `${formattedStartDate} - ${formattedEndDate} ${formattedStartTime} - ${formattedEndTime}`;
 }

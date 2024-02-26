@@ -2,8 +2,8 @@ import { Spinner } from "../../components/Spinner";
 import { useGetCompetitionsQuery } from "../competitions/competitionHooks";
 import { CompetitionCarousel } from "./CompetitionCarousel";
 import { GamesCard } from "./GamesCard";
+import { Playground } from "./Playground";
 import { PrizeCard } from "./PrizeCard";
-import { ScoreboardCarousel } from "./ScoreboardCarousel";
 
 export const Home = () => {
   const competitionsQuery = useGetCompetitionsQuery();
@@ -26,10 +26,10 @@ export const Home = () => {
       />
       <div className="row mt-1">
         <div className="col-md-8 col-lg col-12">
-          <ScoreboardCarousel />
+          <GamesCard />
         </div>
         <div className="col-md col-12 my-1 my-md-0 ">
-          <GamesCard />
+          <Playground />
         </div>
       </div>
       <PrizeCard />

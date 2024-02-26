@@ -96,16 +96,16 @@ export const CompetitionCarousel: FC<{
                         className="text-reset text-decoration-none"
                       >
                         <div className="card text-center h-100 bg-secondary-subtle">
-                          <div className="card-body">
-                            <img
-                              className="card-img-top"
-                              src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${c.gameId}`}
-                              alt="Card"
-                            ></img>
+                          <img
+                            className="card-img opacity-50"
+                            src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${c.gameId}`}
+                            alt="Card"
+                          />
+                          <div className="card-body card-img-overlay">
                             <div className="card-title fw-bold">{c.name}</div>
                             <div>{c.game?.name}</div>
                             {new Date(c.startAt).toDateString() ===
-                            new Date(c.endAt).toDateString() ? (
+                              new Date(c.endAt).toDateString() ? (
                               <div>{FormatDate(c.startAt)}</div>
                             ) : (
                               <div>
