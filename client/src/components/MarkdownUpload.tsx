@@ -24,7 +24,7 @@ const MarkdownUpload: FC = () => {
         type="file"
         accept=".md,.txt"
         onChange={handleFileUpload}
-        style={{ marginBottom: "10px" }}
+        className="form-control"
       />
       {markdownContent && <ReactMarkdown>{markdownContent}</ReactMarkdown>}
     </div>
