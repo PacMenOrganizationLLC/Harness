@@ -8,12 +8,10 @@ using System.Text.Json;
 public class SessionController : ControllerBase
 {
     private readonly HarnessContext _context;
-    private HttpClient _httpClient;
 
     public SessionController(HarnessContext context)
     {
         _context = context;
-        _httpClient = new HttpClient();
     }
 
     [HttpPost]
@@ -26,19 +24,11 @@ public class SessionController : ControllerBase
                 .Where(c => c.Id == session.CompetitionId)
                 .FirstOrDefaultAsync();
 
-            GameEndpoint gameEndpoint = await _context.GameEndpoint
-                .Include(e => e.EndpointType)
-                .Where(e => e.EndpointType.Name == "Create Session")
-                .Where(t => t.GameId == competition.GameId)
-                .FirstOrDefaultAsync();
-
             // Get the multi session id if game supports
             if (competition.Game.SupportsMultiSessions == true)
             {
-                HttpResponseMessage? myResponse = await _httpClient.PostAsync(gameEndpoint.Endpoint, null);
-                CreateSessionResponse data = await myResponse.Content.ReadFromJsonAsync<CreateSessionResponse>();
-                session.PlayId = data.GameId;
-                session.PlayUrl = data.GameUrl;
+                session.PlayId = "Multi";
+                session.PlayUrl = "/";
             }
             else
             {
@@ -59,7 +49,6 @@ public class SessionController : ControllerBase
 
     }
 
-
     [HttpGet("competition/{competitionId}")]
     public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync(int competitionId)
     {
@@ -78,117 +67,6 @@ public class SessionController : ControllerBase
         return session;
     }
 
-    [HttpGet("getConfigs/{sessionId}")]
-    public async Task<List<SessionConfig>> GetSessionConfigs(int sessionId)
-    {
-        Session session = await _context.Session.Where(s => s.Id == sessionId).FirstOrDefaultAsync();
-        Competition competition = await _context.Competition
-               .Where(c => c.Id == session.CompetitionId)
-               .FirstOrDefaultAsync();
-
-        List<SessionConfig> configs = await _context.SessionConfig.Where(sc => sc.GameId == competition.GameId).ToListAsync();
-        return configs;
-    }
-
-
-    [HttpPost("startGame/{id}")]
-    public async Task<IActionResult> StartSessionAsync(int id, SessionConfig config)
-    {
-
-        Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();
-
-        if (session == null)
-            return NotFound();
-
-        try
-        {
-            GameEndpoint gameEndpoint = await _context.GameEndpoint
-                .Include(e => e.EndpointType)
-                .Where(e => e.EndpointType.Name == "Start Session")
-                .Where(t => t.GameId == config.GameId)
-                .FirstOrDefaultAsync();
-
-            // Convert the JSON string to HttpContent
-
-            List<GameConfigTemplate> configList = JsonSerializer.Deserialize<List<GameConfigTemplate>>(config.JsonConfig);
-            Dictionary<string, string> configs = new Dictionary<string, string>();
-
-            foreach (var configKV in configList)
-            {
-                configs[configKV.Key] = configKV.Value;
-            }
-
-
-            // Make the API call and get the response
-            var response = await _httpClient.PostAsJsonAsync<Dictionary<string, string>>(gameEndpoint.Endpoint + "?sessionId=" + session.PlayId, configs);
-
-            return Ok("Started Session Successfully");
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return BadRequest("Error starting session");
-        }
-    }
-
-    [HttpPost("stopGame")]
-    public async Task<IActionResult> StopSessionAsync(int id)
-    {
-        Session? session = await _context.Session.Where(s => s.Id == id).FirstOrDefaultAsync();
-        Competition? competition = await _context.Competition.Where(c => c.Id == session.CompetitionId).FirstOrDefaultAsync();
-
-        if (session == null)
-            return NotFound();
-
-        var stopUrl = await _context.GameEndpoint
-            .Include(e => e.Game)
-            .Where(g => g.GameId == competition.GameId
-                && g.EndpointType.Name == "Stop Session")
-            .Select(e => e.Endpoint)
-            .FirstOrDefaultAsync();
-
-        if (stopUrl != null && stopUrl != "")
-        {
-            await _httpClient.PostAsync(stopUrl, null);
-        }
-
-        var scoreboardUrl = await _context.GameEndpoint
-            .Include(e => e.Game)
-            .Where(g => g.GameId == competition.GameId
-                && g.EndpointType.Name == "Scoreboard")
-            .Select(e => e.Endpoint)
-            .FirstOrDefaultAsync();
-
-        if (scoreboardUrl != null)
-        {
-            try
-            {
-                var scores = await _httpClient.GetFromJsonAsync<IEnumerable<PlayerScore>>(scoreboardUrl + "?game_id=" + id);
-                DateTime now = DateTime.UtcNow;
-                foreach (var score in scores)
-                {
-                    SessionScoreboard s = new()
-                    {
-                        Id = 0,
-                        SessionId = id,
-                        PlayerName = score.PlayerName,
-                        Rank = score.Rank,
-                        Score = score.Score,
-                        timeEntered = now
-                    };
-                    _context.SessionScoreboard.Add(s);
-                }
-                await _context.SaveChangesAsync();
-            }
-            catch
-            {
-                return BadRequest("Error storing scores");
-            }
-        }
-
-        return Ok("Session has been stopped");
-    }
-
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteSessionAsync(int id)
     {
@@ -202,70 +80,6 @@ public class SessionController : ControllerBase
 
         return Ok("Session Deleted Successfully");
     }
-
-
-    [HttpGet("sessionScoreboard/game/{sessionId}")]
-    public async Task<ActionResult<IEnumerable<SessionScoreboard>>> QueryGameForEndOfGameScoreboard(int sessionId)
-    {
-        var session = await _context.Session.FirstOrDefaultAsync(s => s.Id == sessionId);
-        var competiton = await _context.Competition.FirstOrDefaultAsync(c => c.Id == session.CompetitionId);
-        var url = await _context.GameEndpoint.Where(ge => ge.GameId == competiton.GameId && ge.EndpointType.Name == "Scoreboard").Select(e => e.Endpoint).FirstOrDefaultAsync();
-
-        try
-        {
-            var scoreboard = await _httpClient.GetFromJsonAsync<SessionScoreboard>(url + $"?game_id={session.PlayId}");
-            return Ok(scoreboard);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(HttpContext.Request);
-            return BadRequest(ex.Message);
-        }
-    }
-
-    [HttpGet("sessionScoreboard/{sessionId}")]
-    public async Task<IEnumerable<SessionScoreboard>> GetSessionScoreboard(int sessionId)
-    {
-        // Find the most recent timestamp entered for the session
-        try
-        {
-
-            DateTime mostRecentTimestamp = await _context.SessionScoreboard
-                .Where(x => x.SessionId == sessionId)  // Replace yourSessionId with the actual session ID
-                .MaxAsync(x => x.timeEntered);
-
-            mostRecentTimestamp = mostRecentTimestamp;
-
-
-            var allScoreboardRecords = await _context.SessionScoreboard
-            .Where(x => x.SessionId == sessionId)
-            .ToListAsync();
-
-            // Filter the list based on the time requirement without using LINQ
-            var scoreboard = new List<SessionScoreboard>();
-            DateTime lowerBound = mostRecentTimestamp.AddSeconds(-1);
-            DateTime upperBound = mostRecentTimestamp.AddSeconds(1);
-
-            foreach (var record in allScoreboardRecords)
-            {
-                if (record.timeEntered >= lowerBound && record.timeEntered <= upperBound)
-                {
-                    scoreboard.Add(record);
-                }
-            }
-
-            scoreboard.Sort((a, b) => a.Score.GetValueOrDefault().CompareTo(b.Score.GetValueOrDefault()));
-
-            scoreboard.Reverse();
-
-            return scoreboard;
-        }
-        catch
-        {
-            return new List<SessionScoreboard>();
-        }
-    }
-
 }
 
 

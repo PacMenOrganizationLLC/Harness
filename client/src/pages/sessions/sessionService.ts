@@ -1,6 +1,5 @@
 import axios from "axios";
-import { Session, SessionScoreboard } from "../../models/Session";
-import { SessionConfig } from "../../models/SessionConfig";
+import { Session } from "../../models/Session";
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 const apiUrlBase = `${BaseUrl}/api/session`;
@@ -26,31 +25,6 @@ export const sessionService = {
     const url = `${apiUrlBase}/${id}`;
     const response = await axios.delete(url);
 
-    return response.data;
-  },
-  async startSession(id: number, config: SessionConfig) {
-    const url = `${apiUrlBase}/startGame/${id}`;
-    const response = await axios.post(url, config);
-    return response;
-  },
-  async stopSession(id: number): Promise<string> {
-    const url = `${apiUrlBase}/stopGame?id=${id}`;
-    const response = await axios.post(url);
-    return response.data;
-  },
-  async getGameConfigs(id: string): Promise<SessionConfig[]> {
-    const url = `${apiUrlBase}/getConfigs/${id}`;
-    const response = await axios.get(url);
-
-    return response.data;
-  },
-  async addSessionConfig() {
-    // TODO
-  },
-  async getScoreboard(id: number): Promise<SessionScoreboard[]> {
-    const url = `${apiUrlBase}/sessionScoreboard/${id}`;
-    const response = await axios.get(url);
-    console.log(response.data);
     return response.data;
   },
 };

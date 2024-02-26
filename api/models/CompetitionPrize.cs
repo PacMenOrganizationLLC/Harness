@@ -5,7 +5,7 @@ namespace api.models;
 public class CompetitionPrize
 {
     public int Id { get; set; }
-    public string Prize { get; set; }
+    public string Prize { get; set; } = string.Empty;
     public int CompetitionId { get; set; }
     public int Placement { get; set; }
     public Guid? UserId { get; set; }

@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Game } from "../../models/Games";
 import { GameDto } from "../../models/GameDto";
+import toast from "react-hot-toast";
 
 const BaseUrl = process.env.REACT_APP_API_URL;
 
@@ -51,58 +52,23 @@ export const gameService = {
     return response.data;
   },
 };
+
 const convertDtoToGame = async (gameDto: GameDto): Promise<Game> => {
-  const {
-    id,
-    name,
-    hostUrl,
-    repoLink,
-    details,
-    createdBy,
-    supportsMultiSessions,
-    createdAt,
-    ImageFile,
-  } = gameDto;
+  const { ImageFile, ...gameDetails } = gameDto;
+
+  const game: Partial<Game> = {
+    ...gameDetails,
+  };
 
   if (ImageFile) {
     try {
-      // Assuming ImageFile is a File object representing an image file
       const imageSource: string = await gameService.addImage(ImageFile);
-      return {
-        id,
-        name,
-        hostUrl,
-        repoLink,
-        details,
-        createdBy,
-        supportsMultiSessions,
-        createdAt,
-        imageSource,
-      };
+      game.imageSource = imageSource;
     } catch (error) {
       console.error("Error uploading image:", error);
-      // If there's an error uploading the image, return the game object without the imageSource
-      return {
-        id,
-        name,
-        hostUrl,
-        repoLink,
-        details,
-        createdBy,
-        supportsMultiSessions,
-        createdAt,
-      };
+      toast.error("Error uploading image");
     }
   }
 
-  return {
-    id,
-    name,
-    hostUrl,
-    repoLink,
-    details,
-    createdBy,
-    supportsMultiSessions,
-    createdAt,
-  };
+  return game as Game;
 };

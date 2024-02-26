@@ -6,7 +6,6 @@ public class Session
     public int CompetitionId { get; set; }
     public string? PlayId { get; set; }
     public string? PlayUrl { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = string.Empty;
     public DateTime CreationDate { get; set; }
-    // public Competition Competition {get; set;}
 }
