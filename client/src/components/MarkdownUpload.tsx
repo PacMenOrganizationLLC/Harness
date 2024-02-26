@@ -4,9 +4,11 @@ import { TextInputControl } from "./forms/TextInput";
 
 interface Props {
   control: TextInputControl;
+  label: string;
 }
 
-export const MarkdownUpload: FC<Props> = ({ control }) => {
+export const MarkdownUpload: FC<Props> = ({ control, label }) => {
+  const computedLabel = label?.toLowerCase().replace(" ", "");
   const [markdownContent, setMarkdownContent] = useState<string | null>(null);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +28,9 @@ export const MarkdownUpload: FC<Props> = ({ control }) => {
 
   return (
     <div>
+      <label htmlFor={computedLabel} className="col-form-label">
+        {label}:
+      </label>
       <input
         type="file"
         accept=".md,.txt"

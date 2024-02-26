@@ -36,7 +36,7 @@ export const InstructionsEditor: FC<{
     <form onSubmit={submitHandler}>
       <div className="row">
         <div className="col">
-          <MarkdownUpload control={rulesControl} />
+          <MarkdownUpload control={rulesControl} label="Game Rules" />
           {/* <TextInput
             control={rulesControl}
             label="Game Rules"
@@ -46,7 +46,10 @@ export const InstructionsEditor: FC<{
           /> */}
         </div>
         <div className="col">
-          <MarkdownUpload control={gettingStartedControl} />
+          <MarkdownUpload
+            control={gettingStartedControl}
+            label="Getting Started Instructions"
+          />
           {/* <TextInput
             control={gettingStartedControl}
             label="Getting Started Instructions"
