@@ -50,6 +50,25 @@ public class CompetitionController : ControllerBase
             return NotFound($"Competition with id: {id} does not exist.");
         }
 
+        foreach (var prize in competition.CompetitionPrizes)
+        {
+            if (prize.ImageFilename == null)
+            {
+                switch (prize.Placement)
+                {
+                    case 1:
+                        prize.ImageFilename = "first_place_trophy.webp";
+                        break;
+                    case 2:
+                        prize.ImageFilename = "second_place_trophy.webp";
+                        break;
+                    default:
+                        prize.ImageFilename = "third_place_trophy.webp";
+                        break;
+                }
+            }
+        }
+
         return Ok(competition);
     }
 

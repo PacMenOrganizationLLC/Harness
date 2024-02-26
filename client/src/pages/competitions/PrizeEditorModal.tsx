@@ -2,7 +2,6 @@ import { ChangeEvent, FormEvent, useState } from "react";
 import { CompetitionPrize } from "../../models/Competition";
 import { useAddCompetitionPrizeMutation, useUpdateCompetitionPrizeMutation } from "./competitionHooks";
 import { CustomModal, ModalButton, useModal } from "../../components/CustomModal";
-import { TextInput, useTextInput } from "../../components/forms/TextInput";
 import { nameof } from "../../utils";
 
 interface PrizeEditorModalProps {
@@ -23,9 +22,9 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
 
   const editorControls = useModal("Prize Editor");
   const ModalButton: ModalButton = ({ showModal }) => (
-    <div>
+    <>
       {existingPrize ? (
-        <button className="btn btn-outline-secondary" onClick={(e) => {
+        <button className="btn btn-outline-secondary w-100" onClick={(e) => {
           e.stopPropagation();
           showModal();
         }}>
@@ -34,7 +33,7 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
       ) : (
         <button className="btn btn-sm btn-outline-info bi-plus-lg" onClick={showModal} />
       )}
-    </div>
+    </>
   );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

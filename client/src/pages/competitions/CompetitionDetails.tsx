@@ -88,23 +88,32 @@ export const CompetitionDetails = () => {
           competition.competitionPrizes.length > 0 ? (
           competition.competitionPrizes.map((p) => (
             <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
-              <div className="text-center border rounded my-1" key={p.id + "competition"}>
-                <img
-                  className="img-fluid rounded mx-auto d-block"
-                  src={`${BaseUrl}/api/prize/image/${p.imageFilename}`}
-                  alt={p.prize} />
-                <div>#{p.placement}</div>
-                <div className="text-truncate">{p.prize}</div>
-                <div className="d-flex w-100 justify-content-center">
-                  <div className="m-1">
-                    <PrizeEditorModal existingPrize={p} competitionId={competition.id} />
+              <div className="text-center card my-1" key={p.id + "competition"}>
+                <div className="position-relative">
+                  <img
+                    className="img-fluid card-img-top"
+                    src={`${BaseUrl}/api/prize/image/${p.imageFilename}`}
+                    alt="prize"
+                    style={{ height: "30ex" }}
+                  />
+                  <div className="position-absolute top-0 start-0 bg-dark text-white px-2 py-1 opacity-75 fs-5">
+                    #{p.placement}
                   </div>
-                  <button className="btn btn-outline-danger m-1 my-auto" onClick={(e) => {
-                    e.stopPropagation();
-                    deletePrizeMutation.mutate(p.id);
-                  }}>
-                    <i className="bi bi-x" />
-                  </button>
+                </div>
+                <div className="card-body">
+                  <div className="text-truncate">{p.prize}</div>
+                  <div className="d-flex w-100 justify-content-around">
+                    <div className="m-1 w-50">
+                      <PrizeEditorModal existingPrize={p} competitionId={competition.id} />
+                    </div>
+                    <button className="btn btn-outline-danger m-1 my-auto w-50"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        deletePrizeMutation.mutate(p.id);
+                      }}>
+                      <i className="bi bi-x-lg"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

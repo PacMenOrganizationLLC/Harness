@@ -26,11 +26,13 @@ public class PrizeController : ControllerBase
             return BadRequest("CompetitionPrize object cannot be null.");
         }
 
-        prize.ImageFilename = $"{Guid.NewGuid()}_{prize.ImageFilename}";
+        if (prize.ImageData != null)
+        {
+            prize.ImageFilename = $"{Guid.NewGuid()}_{prize.ImageFilename}";
+            fileService.WriteAllBytes($"Images/prizes/{prize.ImageFilename}", prize.ImageData);
+        }
         await context.CompetitionPrize.AddAsync(prize);
         await context.SaveChangesAsync();
-
-        fileService.WriteAllBytes($"Images/prizes/{prize.ImageFilename}", prize.ImageData);
 
         return CreatedAtAction(nameof(GetCompetitionPrizeAsync), new { id = prize.Id }, prize);
     }
@@ -100,7 +102,7 @@ public class PrizeController : ControllerBase
         {
             var oldImageFilename = prizeToUpdate.ImageFilename;
             var newImageFilename = $"{Guid.NewGuid()}_{prize.ImageFilename}";
-            
+
             fileService.WriteAllBytes($"Images/prizes/{newImageFilename}", prize.ImageData);
             fileService.Delete($"Images/prizes/{oldImageFilename}");
             prizeToUpdate.ImageFilename = newImageFilename;
