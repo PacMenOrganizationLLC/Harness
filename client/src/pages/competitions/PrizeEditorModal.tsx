@@ -17,7 +17,7 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
     id: 0,
     prize: "",
     competitionId,
-    placement: 0,
+    placement: 1,
   } as CompetitionPrize);
 
   const editorControls = useModal("Prize Editor");
@@ -106,6 +106,8 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
                   className="form-control"
                   onChange={handleChange}
                   placeholder="Placement"
+                  min={1}
+                  max={100}
                 />
               </label>
             </div>
