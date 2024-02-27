@@ -19,13 +19,8 @@ export const GameEditor: FC<{
   const addGameMutation = useAddGameMutation();
   const updateGameMutation = useUpdateGameMutation();
   const nameControl = useTextInput(existingGame?.name ?? "");
-  const hostUrlControl = useTextInput(existingGame?.hostUrl ?? "");
   const repoLinkControl = useTextInput(existingGame?.repoLink ?? "");
   const detailsControl = useTextInput(existingGame?.details ?? "");
-  const createdByControl = useTextInput(existingGame?.createdBy ?? "");
-  const [supportsMultiSessions, setSupportsMultiSessions] = useState(
-    existingGame?.supportsMultiSessions ?? true
-  );
 
   const [image, setImage] = useState<FormData>();
   const handleSetConvertedSrc = (imageSrc: FormData | undefined) => {
@@ -40,11 +35,8 @@ export const GameEditor: FC<{
       id: existingGame?.id ?? 0,
       name: nameControl.value,
       repoLink: repoLinkControl.value,
-      hostUrl: hostUrlControl.value,
       details: detailsControl.value,
-      createdBy: createdByControl.value,
       createdAt: new Date(),
-      supportsMultiSessions,
       ImageFile: image,
     };
     if (existingGame) {
@@ -56,10 +48,7 @@ export const GameEditor: FC<{
   };
 
   const canSubmit =
-    nameControl.value !== "" &&
-    ((!supportsMultiSessions && hostUrlControl.value !== "") ||
-      supportsMultiSessions) &&
-    createdByControl.value !== "";
+    nameControl.value !== ""
   return (
     <form onSubmit={submitHandler}>
       <TextInput
@@ -67,29 +56,6 @@ export const GameEditor: FC<{
         label="*Name"
         labelClassName="col-12"
       />
-      <div className="form-check form-switch mt-2">
-        <input
-          className="form-check-input"
-          type="checkbox"
-          id="supportsMultiSessionsSwitch"
-          onChange={() => setSupportsMultiSessions((s) => !s)}
-          checked={supportsMultiSessions}
-        />
-        <label
-          className="form-check-label"
-          htmlFor="supportsMultiSessionsSwitch"
-        >
-          Game Supports Multiple Sessions
-        </label>
-      </div>
-      {!supportsMultiSessions && (
-        <TextInput
-          control={hostUrlControl}
-          label="*Host URL"
-          placeholder="https://your_server"
-          labelClassName="col-12"
-        />
-      )}
       <TextInput
         control={repoLinkControl}
         label="Repo Link"
@@ -101,12 +67,6 @@ export const GameEditor: FC<{
         label="Details"
         placeholder="Rules, Instructions, etc."
         isTextArea={true}
-        labelClassName="col-12"
-      />
-      <TextInput
-        control={createdByControl}
-        label="*Created By"
-        placeholder="John Smith"
         labelClassName="col-12"
       />
       <div className="mt-2">

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Game } from "../../models/Games";
+import { DockerConfig, Game } from "../../models/Games";
 import { GameDto } from "../../models/GameDto";
 import toast from "react-hot-toast";
 
@@ -39,6 +39,17 @@ export const gameService = {
     console.log(myGame);
     const response = await axios.put(url, myGame);
     return response.data;
+  },
+  async addDockerConfig(gameId: number, dockerConfig: DockerConfig) {
+    const url = `${BaseUrl}/api/Game/${gameId}/docker`
+    const body = {
+      DockerImage: dockerConfig.dockerImage,
+      Duration: dockerConfig.duration,
+      MaxAmount: dockerConfig.maxAmount,
+      ApiSubPath: dockerConfig.apiSubPath
+    }
+    const response = await axios.put(url, body)
+    return response.data
   },
   async deleteGame(id: number) {
     const url = `${BaseUrl}/api/Game/${id}`;

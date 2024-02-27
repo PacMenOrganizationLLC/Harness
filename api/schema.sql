@@ -29,8 +29,24 @@ create table Game (
   supports_multi_sessions bool not null,
   game_rules  text,
   getting_started_instructions  text,
-  image_source text
+  image_source text,
+  docker_image text,
+  api_sub_path text,
+  max_amount int,
+  duration int
 );
+
+-- ALTER TABLE Game 
+-- ADD COLUMN docker_image TEXT, 
+-- ADD COLUMN api_sub_path TEXT, 
+-- ADD COLUMN max_amount INT, 
+-- ADD COLUMN duration INT;
+
+-- ALTER TABLE Game
+-- DROP COLUMN host_url,
+-- DROP COLUMN created_by,
+-- DROP COLUMN supports_multi_sessions;
+
 
 create table Competition (
   id serial primary key,

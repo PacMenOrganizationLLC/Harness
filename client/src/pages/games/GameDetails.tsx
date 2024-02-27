@@ -39,10 +39,12 @@ export const GameDetails: FC<{
           </button>
         </div>
       </div>
-      <div>Created By: {selectedGame.createdBy}</div>
       <div>Details: {selectedGame.details}</div>
-      <div className="text-break">Host Url: {selectedGame.hostUrl}</div>
       <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
+      <div>Docker Image: {selectedGame.dockerImage}</div>
+      <div>Api Sub Path: {selectedGame.apiSubPath}</div>
+      <div>Session Duration: {selectedGame.duration}</div>
+      <div>Max Number of Sessions: {selectedGame.maxAmount}</div>
       <div>How To Play:</div>
       {selectedGame.gameRules && (
         <ReactMarkdown>{selectedGame.gameRules}</ReactMarkdown>

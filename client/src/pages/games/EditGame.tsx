@@ -4,6 +4,7 @@ import { useGetGameQuery } from "./gameHooks";
 import { Spinner } from "../../components/Spinner";
 import { InstructionsEditor } from "./InstructionsEditor";
 import { useState } from "react";
+import { DockerEditor } from "./DockerEditor";
 
 export const EditGame = () => {
   const id = useParams<{ id: string }>().id;
@@ -13,7 +14,8 @@ export const EditGame = () => {
 
   const tabs = [
     "Game",
-    "Instructions"
+    "Instructions",
+    "Docker"
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const setSelectedTab = (newKey: string) => {
@@ -32,16 +34,13 @@ export const EditGame = () => {
       <h1 className="text-center">{existingGame ? "Edit Game" : "New Game"}</h1>
       <nav aria-label="breadcrumb">
         <ol className="breadcrumb">
-          <li className={`breadcrumb-item ${selectedTab === "Game" && "active text-bold"}`}
-            role="button"
-            onClick={() => setSelectedTab("Game")}>
-            Game
-          </li>
-          <li className={`breadcrumb-item ${selectedTab === "Instructions" && "active text-bold"}`}
-            role="button"
-            onClick={() => setSelectedTab("Instructions")}>
-            Instructions
-          </li>
+          {tabs.map(t => (
+            <li className={`breadcrumb-item ${selectedTab === t && "active text-bold"}`}
+              role="button"
+              onClick={() => setSelectedTab(t)}>
+              {t}
+            </li>
+          ))}
         </ol>
       </nav>
       {selectedTab === "Game" && (
@@ -49,6 +48,9 @@ export const EditGame = () => {
       )}
       {selectedTab === "Instructions" && (
         <InstructionsEditor existingGame={existingGame} />
+      )}
+      {selectedTab === "Docker" && (
+        <DockerEditor existingGame={existingGame} />
       )}
     </div>
   )

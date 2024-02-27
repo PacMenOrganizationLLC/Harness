@@ -1,14 +1,13 @@
 import { FC, FormEvent } from "react";
 import { Game } from "../../models/Games";
 import { useTextInput } from "../../components/forms/TextInput";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useAddGameInstructionsMutation } from "./gameHooks";
 import { MarkdownUpload } from "../../components/MarkdownUpload";
 
 export const InstructionsEditor: FC<{
   existingGame?: Game;
 }> = ({ existingGame }) => {
-  const navigate = useNavigate();
   const addInstructionsMutation = useAddGameInstructionsMutation(
     existingGame?.id
   );
@@ -26,11 +25,11 @@ export const InstructionsEditor: FC<{
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addInstructionsMutation
-      .mutateAsync({
+      .mutate({
         rules: rulesControl.value,
         gettingStarted: gettingStartedControl.value,
-      })
-      .then(() => navigate("/games"));
+      });
+    setSelectedTab("Docker")
   };
   return (
     <form onSubmit={submitHandler}>
@@ -69,8 +68,11 @@ export const InstructionsEditor: FC<{
           </button>
         </div>
         <div className="col">
-          <button className="btn btn-bold w-50" type="submit">
-            Done
+          <button
+            className="btn btn-bold w-50"
+            type="submit"
+          >
+            Next
           </button>
         </div>
       </div>
