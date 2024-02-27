@@ -1,5 +1,6 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { TextInput, TextInputControl } from "./forms/TextInput";
+import ReactMarkdown from "react-markdown";
 
 interface Props {
   control: TextInputControl;
@@ -7,7 +8,7 @@ interface Props {
 }
 
 export const MarkdownUpload: FC<Props> = ({ control, label }) => {
-
+  const [isPreview, setIsPreview] = useState(false);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -21,16 +22,38 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
       reader.readAsText(file);
     }
   };
+  const handleCheckboxChange = () => {
+    setIsPreview(!isPreview);
+  };
 
   return (
     <div>
-      <TextInput
-        control={control}
-        label={label}
-        labelClassName="col-12"
-        isTextArea={true}
-        rows={12}
+      <input
+        className="form-check-input"
+        type="checkbox"
+        role="switch"
+        id="flexSwitchCheckDefault"
+        checked={isPreview}
+        onChange={handleCheckboxChange}
       />
+      {!isPreview ? (
+        <>
+          <div>Text Input Mode</div>
+          <TextInput
+            control={control}
+            label={label}
+            labelClassName="col-12"
+            isTextArea={true}
+            rows={12}
+          />
+        </>
+      ) : (
+        <div>
+          Markdown Preview Mode
+          <ReactMarkdown>{control.value}</ReactMarkdown>
+        </div>
+      )}
+
       <input
         type="file"
         accept=".md,.txt"
