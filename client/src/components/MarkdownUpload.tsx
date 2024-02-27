@@ -1,6 +1,5 @@
-import React, { FC, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import { TextInputControl } from "./forms/TextInput";
+import React, { FC } from "react";
+import { TextInput, TextInputControl } from "./forms/TextInput";
 
 interface Props {
   control: TextInputControl;
@@ -8,8 +7,6 @@ interface Props {
 }
 
 export const MarkdownUpload: FC<Props> = ({ control, label }) => {
-  const computedLabel = label?.toLowerCase().replace(" ", "");
-  const [markdownContent, setMarkdownContent] = useState<string | null>(null);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -18,7 +15,6 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
       reader.onload = (e) => {
         const content = e.target?.result;
         if (typeof content === "string") {
-          setMarkdownContent(content);
           control.setValue(content);
         }
       };
@@ -28,16 +24,19 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
 
   return (
     <div>
-      <label htmlFor={computedLabel} className="col-form-label">
-        {label}:
-      </label>
+      <TextInput
+        control={control}
+        label={label}
+        labelClassName="col-12"
+        isTextArea={true}
+        rows={12}
+      />
       <input
         type="file"
         accept=".md,.txt"
         onChange={handleFileUpload}
         className="form-control"
       />
-      {markdownContent && <ReactMarkdown>{markdownContent}</ReactMarkdown>}
     </div>
   );
 };

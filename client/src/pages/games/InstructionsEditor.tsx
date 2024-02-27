@@ -1,6 +1,6 @@
 import { FC, FormEvent } from "react";
 import { Game } from "../../models/Games";
-import { TextInput, useTextInput } from "../../components/forms/TextInput";
+import { useTextInput } from "../../components/forms/TextInput";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAddGameInstructionsMutation } from "./gameHooks";
 import { MarkdownUpload } from "../../components/MarkdownUpload";
