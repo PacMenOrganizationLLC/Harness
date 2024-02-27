@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
+import { TextInput, TextInputControl } from "./forms/TextInput";
 import ReactMarkdown from "react-markdown";
-import { TextInputControl } from "./forms/TextInput";
 
 interface Props {
   control: TextInputControl;
@@ -8,9 +8,7 @@ interface Props {
 }
 
 export const MarkdownUpload: FC<Props> = ({ control, label }) => {
-  const computedLabel = label?.toLowerCase().replace(" ", "");
-  const [markdownContent, setMarkdownContent] = useState<string | null>(null);
-
+  const [isPreview, setIsPreview] = useState(false);
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -18,26 +16,55 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
       reader.onload = (e) => {
         const content = e.target?.result;
         if (typeof content === "string") {
-          setMarkdownContent(content);
           control.setValue(content);
         }
       };
       reader.readAsText(file);
     }
   };
+  const handleCheckboxChange = () => {
+    setIsPreview(!isPreview);
+  };
 
   return (
     <div>
-      <label htmlFor={computedLabel} className="col-form-label">
-        {label}:
-      </label>
+      <div className="form-check form-switch">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          checked={isPreview}
+          onChange={handleCheckboxChange}
+        />
+        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+          Text Entry / Markdown Preview
+        </label>
+      </div>
+      {!isPreview ? (
+        <>
+          <br />
+          <TextInput
+            control={control}
+            label={label}
+            labelClassName="col-12"
+            isTextArea={true}
+            rows={12}
+          />
+        </>
+      ) : (
+        <div>
+          <br />
+          <ReactMarkdown>{control.value}</ReactMarkdown>
+        </div>
+      )}
+
       <input
         type="file"
         accept=".md,.txt"
         onChange={handleFileUpload}
         className="form-control"
       />
-      {markdownContent && <ReactMarkdown>{markdownContent}</ReactMarkdown>}
     </div>
   );
 };

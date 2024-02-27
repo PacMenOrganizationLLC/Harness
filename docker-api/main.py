@@ -31,7 +31,7 @@ async def get_container(delay: int = 30):
             "traefik.http.routers.mars.rule": "PathPrefix(`/mars`)",
             "traefik.http.routers.mars.middlewares": "mars-stripprefix@docker"
         },
-        'environment': {'DEBUG': 'true', 'LOG_LEVEL': 'verbose'}
+        # 'environment': {'DEBUG': 'true', 'LOG_LEVEL': 'verbose'}
     }
 
     container = client.containers.run(**container_config)
