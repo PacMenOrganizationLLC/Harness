@@ -28,17 +28,22 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
 
   return (
     <div>
-      <input
-        className="form-check-input"
-        type="checkbox"
-        role="switch"
-        id="flexSwitchCheckDefault"
-        checked={isPreview}
-        onChange={handleCheckboxChange}
-      />
+      <div className="form-check form-switch">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckDefault"
+          checked={isPreview}
+          onChange={handleCheckboxChange}
+        />
+        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+          Text Entry / Markdown Preview
+        </label>
+      </div>
       {!isPreview ? (
         <>
-          <div>Text Input Mode</div>
+          <br />
           <TextInput
             control={control}
             label={label}
@@ -49,7 +54,7 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
         </>
       ) : (
         <div>
-          Markdown Preview Mode
+          <br />
           <ReactMarkdown>{control.value}</ReactMarkdown>
         </div>
       )}
