@@ -15,6 +15,7 @@ class ContainerRequest(BaseModel):
     image: str
     duration: int
     internal_port: int = Field(..., alias="internalPort")
+    name: str 
 
     class Config:
         populate_by_name = True
@@ -23,8 +24,7 @@ class ContainerRequest(BaseModel):
 @app.post("/createContainer")
 async def create_container(container_request: ContainerRequest):
     delay = container_request.duration * 60  # conver to seconds
-    gameName = container_request.image.replace("/", "&^4")
-    gameName = gameName.replace("\\", "&^4")
+    gameName = container_request.name
     min_external_port = 1  # Minimum standard external port
     max_external_port = 999999  # Maximum standard external port
     random_number = random.randint(min_external_port, max_external_port)
@@ -37,8 +37,8 @@ async def create_container(container_request: ContainerRequest):
 
     container_config = {
         "image": container_request.image,
+        "name": f"{gameName}{random_number}",
         "detach": True,
-        "ports": {f"{internal_port}/tcp"},
         "labels": {
             "traefik.enable": "true",
             f"traefik.http.routers.{gameName}{random_number}.entrypoints": "web",

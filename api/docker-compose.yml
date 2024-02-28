@@ -40,4 +40,4 @@ services:
 
 networks:
   default:
-      name: harness_default
+      name: pacmen-harness_default
