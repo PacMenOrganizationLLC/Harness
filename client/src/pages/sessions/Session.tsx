@@ -17,7 +17,7 @@ export const Session = () => {
   if (!session) return <h1>No sessions</h1>;
 
   return (
-    <div className={classes.customContainer + " mt-2 h-100"}>
+    <div className={classes.customContainer + " mt-2"}>
       <div className="row">
         <div className="col-lg-2 col-md-4 col-1 my-auto">
           <button className="btn" onClick={() => navigate(-1)}>
@@ -39,7 +39,7 @@ export const Session = () => {
       ) : (
         <iframe
           src={"http://" + session.hostUrl + ":1980"}
-          className="h-100 w-100 rounded"
+          className="w-100 rounded vh-100"
           title={`Session${session.id}`}
         ></iframe>
       )}
