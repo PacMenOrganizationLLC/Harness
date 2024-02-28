@@ -17,32 +17,32 @@ export const Session = () => {
   if (!session) return <h1>No sessions</h1>;
 
   return (
-      <div className={classes.customContainer + " mt-2"}>
-        <div className="row">
-          <div className="col-lg-2 col-md-4 col-1 my-auto">
-            <button className="btn" onClick={() => navigate(-1)}>
-              <i className="bi-arrow-left fs-3" />
-            </button>
-          </div>
-          <div className="col-md-4 col-lg-8 col-10">
-            <h1 className="text-center">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
+    <div className={classes.customContainer + " mt-2"}>
+      <div className="row">
+        <div className="col-lg-2 col-md-4 col-1 my-auto">
+          <button className="btn" onClick={() => navigate(-1)}>
+            <i className="bi-arrow-left fs-3" />
+          </button>
+        </div>
+        <div className="col-md-4 col-lg-8 col-10">
+          <h1 className="text-center">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
+        </div>
+      </div>
+      {!session.hostUrl ? (
+        <div className="text-center">
+          <div className="fs-1">Unable to show game</div>
+          <div>
+            Please check the url is valid:{" "}
+            {session.hostUrl ? session.hostUrl : "None"}
           </div>
         </div>
-        {!session.hostUrl || !session.hostUrl.includes("http") ? (
-          <div className="text-center">
-            <div className="fs-1">Unable to show game</div>
-            <div>
-              Please check the url is valid:{" "}
-              {session.hostUrl ? session.hostUrl : "None"}
-            </div>
-          </div>
-        ) : (
-          <iframe
-            src={session.hostUrl}
-            className="h-100 w-100 rounded"
-            title={`Session${session.id}`}
-          ></iframe>
-        )}
-      </div>
+      ) : (
+        <iframe
+          src={"http://" + session.hostUrl}
+          className="h-100 w-100 rounded"
+          title={`Session${session.id}`}
+        ></iframe>
+      )}
+    </div>
   );
 };
