@@ -66,24 +66,15 @@ public class PrizeController : ControllerBase
             .Where(c => c.EndAt >= DateTime.UtcNow)
             .SelectMany(c => c.CompetitionPrizes)
             .ToListAsync();
-            
+
         foreach (var prize in prizes)
         {
-            if (prize.ImageFilename == null)
-            {
-                switch (prize.Placement)
+            prize.ImageFilename ??= prize.Placement switch
                 {
-                    case 1:
-                        prize.ImageFilename = "first_place_trophy.webp";
-                        break;
-                    case 2:
-                        prize.ImageFilename = "second_place_trophy.webp";
-                        break;
-                    default:
-                        prize.ImageFilename = "third_place_trophy.webp";
-                        break;
-                }
-            }
+                    1 => "first_place_trophy.webp",
+                    2 => "second_place_trophy.webp",
+                    _ => "third_place_trophy.webp",
+                };
         }
         return prizes;
     }
@@ -135,7 +126,10 @@ public class PrizeController : ControllerBase
             var newImageFilename = $"{Guid.NewGuid()}_{prize.ImageFilename}";
 
             fileService.WriteAllBytes($"Images/prizes/{newImageFilename}", prize.ImageData);
-            fileService.Delete($"Images/prizes/{oldImageFilename}");
+            if (oldImageFilename != null)
+            {
+                fileService.Delete($"Images/prizes/{oldImageFilename}");
+            }
             prizeToUpdate.ImageFilename = newImageFilename;
         }
 

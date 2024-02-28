@@ -2,6 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { gameService } from "./gameService";
 import { getQueryClient } from "../../queryClient";
 import { GameDto } from "../../models/GameDto";
+import { DockerConfig } from "../../models/Games";
+import toast from "react-hot-toast";
 
 const queryClient = getQueryClient();
 
@@ -40,7 +42,10 @@ export const useAddGameMutation = () => {
 export const useAddGameInstructionsMutation = (gameId?: number) => {
   return useMutation({
     mutationFn: async ({ rules, gettingStarted }: { rules: string, gettingStarted: string }) => {
-      if (!gameId) return
+      if (!gameId) {
+        toast.error("Please add a game first")
+        return
+      }
       return await gameService.addInstructions(gameId, rules, gettingStarted)
     },
     onSuccess: () => {
@@ -53,6 +58,21 @@ export const useUpdateGameMutation = () => {
   return useMutation({
     mutationFn: async (newGame: GameDto) => {
       return await gameService.updateGame(newGame);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(GameKeys.gamesKey);
+    },
+  });
+};
+
+export const useAddDockerConfigMutation = (gameId?: number) => {
+  return useMutation({
+    mutationFn: async (dockerConfig: DockerConfig) => {
+      if (!gameId) {
+        toast.error("Please add a game first")
+        return
+      }
+      return await gameService.addDockerConfig(gameId, dockerConfig);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(GameKeys.gamesKey);

@@ -57,13 +57,10 @@ namespace api.Controllers
         {
           existingGame.ImageSource = game.ImageSource;
         }
-        existingGame.CreatedBy = game.CreatedBy;
         existingGame.Details = game.Details;
-        existingGame.HostUrl = game.HostUrl;
         existingGame.Name = game.Name;
         existingGame.RepoLink = game.RepoLink;
         existingGame.CreatedAt = game.CreatedAt;
-        existingGame.SupportsMultiSessions = game.SupportsMultiSessions;
         await _context.SaveChangesAsync();
         return Ok("Updated Game Successfully");
       }
@@ -92,6 +89,22 @@ namespace api.Controllers
       game.GettingStartedInstructions = instructions.GettingStarted;
       await _context.SaveChangesAsync();
       return Ok("Updated instructions");
+    }
+
+    [HttpPut("{id}/docker")]
+    public async Task<IActionResult> UpdateGameDockerConfig(int id, [FromBody] DockerConfig config)
+    {
+      Game? game = await _context.Game.FindAsync(id);
+      if (game == null)
+      {
+        return BadRequest("Unable to find game");
+      }
+      game.DockerImage = config.DockerImage;
+      game.ApiSubPath = config.ApiSubPath;
+      game.MaxAmount = config.MaxAmount;
+      game.Duration = config.Duration;
+      await _context.SaveChangesAsync();
+      return Ok("Updated docker config");
     }
 
     // DELETE: api/Game/5

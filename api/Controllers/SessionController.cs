@@ -25,16 +25,7 @@ public class SessionController : ControllerBase
                 .FirstOrDefaultAsync();
 
             // Get the multi session id if game supports
-            if (competition.Game.SupportsMultiSessions == true)
-            {
-                session.PlayId = "Multi";
-                session.PlayUrl = "/";
-            }
-            else
-            {
-                session.PlayUrl = competition.Game.HostUrl;
-                session.PlayId = "Single";
-            }
+            session.PlayId = "Single";
             _context.Session.Add(session);
 
             await _context.SaveChangesAsync();
