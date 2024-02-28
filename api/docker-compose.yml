@@ -1,10 +1,9 @@
 version: '3'
 
-
 services:
   harness_db:
-    image: postgres:latest
     container_name: harness_db
+    image: postgres:latest
     environment:
       POSTGRES_USER: harness
       POSTGRES_PASSWORD: harness
@@ -13,3 +12,32 @@ services:
       - "5432:5432"
     volumes:
       - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+  
+  harness_docker_api:
+    container_name: harness_docker_api
+    build: ../docker-api
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../docker-api:/app/src
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TRAEFIK_HOST=localhost
+
+  harness_traefik:
+    container_name: harness_traefik
+    image: traefik:v2.11
+    command: 
+      - --api.insecure=true 
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "8080:8080"
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  default:
+      name: harness_default
