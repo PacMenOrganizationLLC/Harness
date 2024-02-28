@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Game } from "../../models/Games";
+import { Game } from "../../models/Game";
 import { useDeleteGameMutation } from "./gameHooks";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
@@ -45,6 +45,7 @@ export const GameDetails: FC<{
       <div>Api Sub Path: {selectedGame.apiSubPath}</div>
       <div>Session Duration: {selectedGame.duration}</div>
       <div>Max Number of Sessions: {selectedGame.maxAmount}</div>
+      <div>Internal Port: {selectedGame.internalPort}</div>
       <div>How To Play:</div>
       {selectedGame.gameRules && (
         <ReactMarkdown>{selectedGame.gameRules}</ReactMarkdown>

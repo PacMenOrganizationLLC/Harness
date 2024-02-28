@@ -33,7 +33,8 @@ create table Game (
   docker_image text,
   api_sub_path text,
   max_amount int,
-  duration int
+  duration int,
+  internal_port int
 );
 
 -- ALTER TABLE Game 
@@ -41,6 +42,7 @@ create table Game (
 -- ADD COLUMN api_sub_path TEXT, 
 -- ADD COLUMN max_amount INT, 
 -- ADD COLUMN duration INT;
+-- ADD COLUMN internal_port INT;
 
 -- ALTER TABLE Game
 -- DROP COLUMN host_url,
@@ -61,20 +63,10 @@ create table Competition (
 
 create table Session (
   id serial primary key,
+  game_id int not null references Game(id) ON DELETE CASCADE,
   competition_id int references Competition(id) ON DELETE CASCADE,
-  play_id text not null,
-  name text not null,
   creation_date timestamptz not null default NOW(),
-  play_url text not null
-);
-
-create table Session_Client (
-  id serial primary key,
-  session_id int not null references Session(id) ON DELETE CASCADE,
-  user_id UUID not null,
-  token UUID not null,
-  rank int,
-  score int
+  host_url text
 );
 
 create table Competition_Image (

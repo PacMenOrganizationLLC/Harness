@@ -6,29 +6,29 @@ import {
 } from "./competitionHooks";
 import { Spinner } from "../../components/Spinner";
 import { CompetitionEditorModal } from "./CompetitionEditorModal";
-import { AddSessionModal } from "../sessions/AddSessionModal";
-import { useGetSessionsQuery } from "../sessions/sessionHooks";
+import { useAddSessionMutation, useGetSessionsQuery } from "../sessions/sessionHooks";
 import { SessionItem } from "../sessions/SessionItem";
 import { PrizeEditorModal } from "./PrizeEditorModal";
 import { formatCompetitionDate } from "../../models/Competition";
 
 export const CompetitionDetails = () => {
-  const competitionId = useParams<{ id: string }>().id;
-  const getSessionsQuery = useGetSessionsQuery(Number(competitionId));
+  const competitionId = Number(useParams<{ id: string }>().id);
+  const getSessionsQuery = useGetSessionsQuery(competitionId);
   const sessions = getSessionsQuery.data ?? [];
-  const competitionQuery = useGetCompetitionQuery(Number(competitionId));
+  const competitionQuery = useGetCompetitionQuery(competitionId);
   const competition = competitionQuery.data;
+  const addSessionMutation = useAddSessionMutation(competitionId)
   const navigate = useNavigate();
   const BaseUrl = process.env.REACT_APP_API_URL;
 
   const deleteCompetitionMutation = useDeleteCompetitionMutation();
-  const deletePrizeMutation = useDeleteCompetitionPrizeMutation(Number(competitionId));
+  const deletePrizeMutation = useDeleteCompetitionPrizeMutation(competitionId);
 
   const deleteHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    deleteCompetitionMutation.mutate(Number(competitionId));
+    deleteCompetitionMutation.mutate(competitionId);
     navigate("/events");
   };
 
@@ -124,7 +124,8 @@ export const CompetitionDetails = () => {
           <h3>Sessions:</h3>
         </div>
         <div className="col-auto my-auto">
-          <AddSessionModal competitionId={competition.id} />
+          <button className="btn btn-outline-bold"
+            onClick={() => addSessionMutation.mutate(competition.gameId)}>New</button>
         </div>
       </div>
       <div className="row">

@@ -1,5 +1,5 @@
 import { FC } from "react"
-import { Game } from "../../models/Games"
+import { Game } from "../../models/Game"
 
 export const GameList: FC<{
   games: Game[],

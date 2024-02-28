@@ -1,5 +1,5 @@
 import axios from "axios";
-import { DockerConfig, Game } from "../../models/Games";
+import { DockerConfig, Game } from "../../models/Game";
 import { GameDto } from "../../models/GameDto";
 import toast from "react-hot-toast";
 
@@ -46,7 +46,8 @@ export const gameService = {
       DockerImage: dockerConfig.dockerImage,
       Duration: dockerConfig.duration,
       MaxAmount: dockerConfig.maxAmount,
-      ApiSubPath: dockerConfig.apiSubPath
+      ApiSubPath: dockerConfig.apiSubPath,
+      InternalPort: dockerConfig.internalPort,
     }
     const response = await axios.put(url, body)
     return response.data

@@ -1,17 +1,16 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { sessionService } from "./sessionService";
 import { getQueryClient } from "../../queryClient";
-import { Session } from "../../models/Session";
 
 const queryClient = getQueryClient();
 
 export const sessionKeys = {
-  sessionsKey: (competitionId: number) => ["sessionsKey", competitionId] as const,
+  sessionsKey: (competitionId?: number) => ["sessionsKey", competitionId] as const,
   sessionKey: (sessionId: number) => ["sessionKey", sessionId] as const,
   sessionConfigKey: (sessionConfigsId: string) => ["sessionConfigsKey", sessionConfigsId] as const,
 };
 
-export const useGetSessionsQuery = (competitionId: number) => {
+export const useGetSessionsQuery = (competitionId?: number) => {
   return useQuery({
     queryKey: sessionKeys.sessionsKey(competitionId),
     queryFn: async () => await sessionService.getSessions(competitionId),
@@ -25,10 +24,10 @@ export const useGetSessionQuery = (sessionId: number) => {
   });
 };
 
-export const useAddSessionMutation = (competitionId: number) => {
+export const useAddSessionMutation = (competitionId?: number) => {
   return useMutation({
-    mutationFn: async (newSession: Session) => {
-      return await sessionService.addSession(newSession);
+    mutationFn: async (gameId: number) => {
+      return await sessionService.addSession(gameId, competitionId);
     },
     onSuccess: () => {
       queryClient.invalidateQueries(sessionKeys.sessionsKey(competitionId));
@@ -36,7 +35,7 @@ export const useAddSessionMutation = (competitionId: number) => {
   });
 };
 
-export const useDeleteSessionMutation = (competitionId: number) => {
+export const useDeleteSessionMutation = (competitionId?: number) => {
   return useMutation({
     mutationFn: async (sessionId: number) => {
       return await sessionService.deleteSession(sessionId);

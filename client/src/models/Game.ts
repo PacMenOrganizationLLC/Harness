@@ -11,6 +11,7 @@ export interface Game {
   duration?: number;
   maxAmount?: number;
   apiSubPath?: string;
+  internalPort?: number;
 }
 
 export interface DockerConfig {
@@ -18,4 +19,5 @@ export interface DockerConfig {
   duration: number;
   maxAmount: number;
   apiSubPath: string;
+  internalPort: number;
 }

@@ -1,5 +1,5 @@
 import { FC, FormEvent, useState } from 'react'
-import { Game } from '../../models/Games'
+import { Game } from '../../models/Game'
 import ImageSubmit from '../../components/ImageSubmit';
 import { useTextInput, TextInput } from '../../components/forms/TextInput';
 import { GameDto } from '../../models/GameDto';

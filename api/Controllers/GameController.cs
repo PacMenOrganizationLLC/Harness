@@ -103,6 +103,7 @@ namespace api.Controllers
       game.ApiSubPath = config.ApiSubPath;
       game.MaxAmount = config.MaxAmount;
       game.Duration = config.Duration;
+      game.InternalPort = config.InternalPort;
       await _context.SaveChangesAsync();
       return Ok("Updated docker config");
     }

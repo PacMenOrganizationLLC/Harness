@@ -1,5 +1,5 @@
 import { FormatDate, getTimeNoSeconds } from "../helpers/dateAndTimeHelpers";
-import { Game } from "./Games";
+import { Game } from "./Game";
 import { Session } from "./Session";
 
 export interface CompetitionPrize {

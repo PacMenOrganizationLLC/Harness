@@ -14,6 +14,7 @@ public class Game
   public string? ApiSubPath { get; set; } = string.Empty;
   public int? MaxAmount { get; set; }
   public int? Duration { get; set; }
+  public int? InternalPort { get; set; }
 }
 
 public class DockerConfig
@@ -22,4 +23,5 @@ public class DockerConfig
   public string ApiSubPath { get; set; } = string.Empty;
   public int MaxAmount { get; set; }
   public int Duration { get; set; }
+  public int InternalPort { get; set; }
 }

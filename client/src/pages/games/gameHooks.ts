@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { gameService } from "./gameService";
 import { getQueryClient } from "../../queryClient";
 import { GameDto } from "../../models/GameDto";
-import { DockerConfig } from "../../models/Games";
+import { DockerConfig } from "../../models/Game";
 import toast from "react-hot-toast";
 
 const queryClient = getQueryClient();

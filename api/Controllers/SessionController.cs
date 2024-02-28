@@ -14,20 +14,29 @@ public class SessionController : ControllerBase
         _context = context;
     }
 
+    public class NewSessionRequest
+    {
+        public int GameId { get; set; }
+        public int? CompetitionId { get; set; }
+    }
+
     [HttpPost]
-    public async Task<IActionResult> AddSessionAsync(Session session)
+    public async Task<IActionResult> AddSessionAsync([FromBody] NewSessionRequest body)
     {
         try
         {
-            Competition competition = await _context.Competition
-                .Include(c => c.Game)
-                .Where(c => c.Id == session.CompetitionId)
-                .FirstOrDefaultAsync();
+            Game game = await _context.Game.Where(g => g.Id == body.GameId).FirstAsync();
 
-            // Get the multi session id if game supports
-            session.PlayId = "Single";
-            _context.Session.Add(session);
+            // make request to docker api and get host url
 
+            Session newSession = new()
+            {
+                GameId = body.GameId,
+                CompetitionId = body.CompetitionId,
+                CreationDate = DateTime.UtcNow,
+                HostUrl = "",
+            };
+            await _context.Session.AddAsync(newSession);
             await _context.SaveChangesAsync();
 
             return Ok("Added Session Successfully");
@@ -40,17 +49,24 @@ public class SessionController : ControllerBase
 
     }
 
-    [HttpGet("competition/{competitionId}")]
-    public async Task<ActionResult<IEnumerable<Session>>> GetSessionsAsync(int competitionId)
+    [HttpGet("competition")]
+    public async Task<ActionResult<IEnumerable<Session>>> GetSessionsForCompetitionAsync(int? competitionId = null)
     {
-        List<Session> sessions = await _context.Session.Where(s => s.CompetitionId == competitionId).ToListAsync();
+        List<Session> sessions = await _context.Session
+            .Include(s => s.Game)
+            .Where(s => s.CompetitionId == competitionId && s.CreationDate.AddMinutes(s.Game.Duration ?? 0) >= DateTime.UtcNow)
+            .OrderByDescending(s => s.CreationDate)
+            .ToListAsync();
         return sessions;
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Session>> GetSessionAsync(int id)
     {
-        Session? session = await _context.Session.Where((s) => s.Id == id).FirstOrDefaultAsync();
+        Session? session = await _context.Session
+            .Include(s => s.Game)
+            .Where((s) => s.Id == id)
+            .FirstOrDefaultAsync();
 
         if (session == null)
             return NotFound();

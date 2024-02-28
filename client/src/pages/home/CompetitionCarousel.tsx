@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Competition } from "../../models/Competition";
 import { FormatDate, getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
 import { Link } from "react-router-dom";
@@ -84,11 +84,10 @@ export const CompetitionCarousel: FC<{
         <div className="col my-auto">
           <div className="row">
             {competitions.map((c, index) => (
-              <>
+              <React.Fragment key={index}>
                 {index <= viewIndex * viewCount - 1 &&
                   index >= (viewIndex - 1) * viewCount && (
                     <div
-                      key={index}
                       className="col-12 col-md-6 col-lg-4 col-xl-3 my-1"
                     >
                       <Link
@@ -121,7 +120,7 @@ export const CompetitionCarousel: FC<{
                       </Link>
                     </div>
                   )}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useGetGamesQuery } from "./gameHooks";
-import { Game } from "../../models/Games";
+import { Game } from "../../models/Game";
 import { GameList } from "./GameList";
 import { GameDetails } from "./GameDetails";
 import { Spinner } from "../../components/Spinner";

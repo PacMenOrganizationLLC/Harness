@@ -1,53 +1,48 @@
-import { FC, FormEvent } from "react";
-import { TextInput, useTextInput } from "../../components/forms/TextInput";
+import { FC, FormEvent, useState } from "react";
 import {
   CustomModal,
   ModalButton,
   useModal,
 } from "../../components/CustomModal";
 import { useAddSessionMutation } from "./sessionHooks";
-import { Session } from "../../models/Session";
 import { Spinner } from "../../components/Spinner";
+import { useGetGamesQuery } from "../games/gameHooks";
+import toast from "react-hot-toast";
 
 export const AddSessionModal: FC<{
-  competitionId: number
+  competitionId?: number,
 }> = ({ competitionId }) => {
+  const [selectedGameId, setSelectedGameId] = useState<number | undefined>(undefined)
   const addSessionMutation = useAddSessionMutation(competitionId);
-
-  const nameControl = useTextInput("");
+  const gamesQuery = useGetGamesQuery();
+  const games = gamesQuery.data ?? [];
 
   const AddSessionControl = useModal("Add Session");
   const ModalButton: ModalButton = ({ showModal }) => (
     <div>
-      <button className="btn btn-outline-info px-2 py-1" onClick={showModal}>
-        <i className="bi-plus-lg" />
+      <button className="btn btn-outline-bold px-2 py-1" onClick={showModal}>
+        New
       </button>
     </div>
   );
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    const newSession: Session = {
-      id: 0,
-      competitionId,
-      name: nameControl.value,
-      creationDate: new Date()
-    };
-
-    addSessionMutation.mutateAsync(newSession).then(() => {
+    if (!selectedGameId) {
+      toast.error("Please select game")
+      return
+    }
+    addSessionMutation.mutateAsync(selectedGameId).then(() => {
       closeHandler();
     });
   };
 
   const closeHandler = () => {
-    nameControl.setValue("");
+    setSelectedGameId(undefined);
     AddSessionControl.hide();
   };
 
-
-  const canSubmit = nameControl.value !== "";
-
+  const disabled = games.length === 0 || !selectedGameId
   return (
     <CustomModal ModalButton={ModalButton} controls={AddSessionControl}>
       <div className="modal-content">
@@ -56,11 +51,25 @@ export const AddSessionModal: FC<{
           <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
-          {addSessionMutation.isLoading ? (
+          {addSessionMutation.isLoading || gamesQuery.isLoading ? (
             <Spinner />
           ) : (
             <form onSubmit={submitHandler}>
-              <TextInput control={nameControl} label="Name" />
+              <div>Please select which game you'd like to create a session for:</div>
+              {games.map((g) => (
+                <div className="form-check" key={g.id}>
+                  <input className="form-check-input"
+                    type="radio"
+                    name={`game${g.id}`}
+                    id={`game${g.id}`}
+                    onChange={() => setSelectedGameId(g.id)}
+                    checked={selectedGameId === g.id} />
+                  <label className="form-check-label"
+                    htmlFor={`game${g.id}`}>
+                    {g.name}
+                  </label>
+                </div>
+              ))}
               <div className="row text-center my-2">
                 <div className="col">
                   <button
@@ -74,7 +83,7 @@ export const AddSessionModal: FC<{
                 <div className="col">
                   <button
                     className="btn btn-primary"
-                    disabled={!canSubmit}
+                    disabled={disabled}
                     type="submit"
                   >
                     Save
