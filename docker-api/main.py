@@ -11,6 +11,10 @@ client = docker.from_env()
 TRAEFIK_HOST = os.getenv("TRAEFIK_HOST")
 
 
+def generate_random_string():
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(6))
+
 class ContainerRequest(BaseModel):
     image: str
     duration: int
@@ -25,9 +29,7 @@ class ContainerRequest(BaseModel):
 async def create_container(container_request: ContainerRequest):
     delay = container_request.duration * 60  # conver to seconds
     gameName = container_request.name
-    min_external_port = 1  # Minimum standard external port
-    max_external_port = 999999  # Maximum standard external port
-    random_number = random.randint(min_external_port, max_external_port)
+    random_number = generate_random_string()
     internal_port = container_request.internal_port
 
     async def end_container(container, delay):
