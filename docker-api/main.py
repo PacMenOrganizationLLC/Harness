@@ -1,44 +1,106 @@
 import docker
 import random
+
 import asyncio
-from fastapi import FastAPI, Path
+
+from fastapi import FastAPI, HTTPException
+
+from pydantic import BaseModel
+
+import os
 
 app = FastAPI()
+
 client = docker.from_env()
 
 
-@app.get('/getContainer/{delay}')
-async def get_container(delay: int = 30):
-    min_external_port = 3000  # Minimum standard external port
-    max_external_port = 8500  # Maximum standard external port
+TRAEFIK_HOST = os.getenv('TRAEFIK_HOST')
 
-    external_port = random.randint(min_external_port, max_external_port)
-    internal_port = 80
 
-    async def endContainer(container, delay):
+class ContainerRequest(BaseModel):
+
+    image: str
+
+    duration: int
+    
+    internal_port: int
+
+
+@app.post('/createContainer')
+
+async def create_container(container_request: ContainerRequest):
+
+    delay = container_request.duration
+
+    gameName = container_request.image.replace('/', '&^4')
+
+    gameName = gameName.replace('\\', '&^4')
+
+    min_external_port = 1 # Minimum standard external port
+
+    max_external_port = 999999  # Maximum standard external port
+
+    random_number = random.randint(min_external_port, max_external_port)
+
+    internal_port = container_request.internal_port
+
+
+    async def end_container(container, delay):
+
         await asyncio.sleep(delay)
+
         container.stop()
+
         container.remove()
 
+
     container_config = {
-        'image': 'nginx',
+
+        'image': container_request.image,
+
         'detach': True,
-        'ports': {f'{internal_port}/tcp': external_port},
+
+        'ports': {f'{internal_port}/tcp'},
+
         'labels': {
+
             "traefik.enable": "true",
-            "traefik.http.middlewares.mars-stripprefix.stripprefix.prefixes": "/mars",
-            "traefik.http.routers.mars.entrypoints": "web",
-            "traefik.http.routers.mars.rule": "PathPrefix(`/mars`)",
-            "traefik.http.routers.mars.middlewares": "mars-stripprefix@docker"
+
+            f"traefik.http.routers.{gameName}{random_number}.entrypoints": "web",
+
+            f"traefik.http.routers.{gameName}{random_number}.rule": f"Host(`{gameName}{random_number}.{TRAEFIK_HOST}`)",
+
+            f'traefik.http.services.{gameName}{random_number}.loadbalancer.server.port': f"{internal_port}"
+
         },
-        # 'environment': {'DEBUG': 'true', 'LOG_LEVEL': 'verbose'}
+
+        'network': 'pacmen-harness_default'
+
     }
+
 
     container = client.containers.run(**container_config)
 
-    container_info = container.attrs
-    container_ip = container_info['NetworkSettings']['IPAddress']
-    asyncio.create_task(endContainer(container, delay))
-    url = f'144.17.92.11:{external_port}'
 
-    return f'Container is running at: {url} with delay set to {delay} seconds'
+    container_info = container.attrs
+
+    container_ip = container_info['NetworkSettings']['IPAddress']
+
+    asyncio.create_task(end_container(container, delay))
+
+    url = f'{gameName}{random_number}.{TRAEFIK_HOST}'
+
+
+    return {'message': f'{url}'}
+
+
+
+
+@app.post('/pullImage')
+
+async def downloadImage(container_request: ContainerRequest):
+
+    client.images.pull(container_request.image)
+
+   
+

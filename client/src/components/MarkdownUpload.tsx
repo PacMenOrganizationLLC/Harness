@@ -63,7 +63,7 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
         type="file"
         accept=".md,.txt"
         onChange={handleFileUpload}
-        className="form-control"
+        className="form-control my-2"
       />
     </div>
   );
