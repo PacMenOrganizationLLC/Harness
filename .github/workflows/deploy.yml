@@ -12,10 +12,10 @@ jobs:
         run: |
           cd ops
           docker compose build
-  
+
   Deploy:
     runs-on: self-hosted
-    needs: build
+    needs: Build
     steps:
       - name: Checkout
         uses: actions/checkout@v4
