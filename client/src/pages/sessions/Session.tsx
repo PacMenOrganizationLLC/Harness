@@ -4,7 +4,6 @@ import {
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
-import { WebsocketProvider } from "../../components/chat/WebsocketChatContext";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -18,8 +17,6 @@ export const Session = () => {
   if (!session) return <h1>No sessions</h1>;
 
   return (
-    <WebsocketProvider>
-
       <div className={classes.customContainer + " mt-2"}>
         <div className="row">
           <div className="col-lg-2 col-md-4 col-1 my-auto">
@@ -46,10 +43,6 @@ export const Session = () => {
             title={`Session${session.id}`}
           ></iframe>
         )}
-        {/* <div className="col-lg-2 text-center">
-            <WebsocketChat />
-          </div> */}
       </div>
-    </WebsocketProvider>
   );
 };
