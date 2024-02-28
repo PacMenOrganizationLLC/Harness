@@ -84,7 +84,7 @@ create table Competition_Prize (
   user_id UUID
 );
 
-INSERT INTO public.game (id, host_url, name, repo_link, details, created_by, created_at, supports_multi_sessions, game_rules, getting_started_instructions, image_source, docker_image, api_sub_path, max_amount, duration, internal_port)
+INSERT INTO public.game (host_url, name, repo_link, details, created_by, created_at, supports_multi_sessions, game_rules, getting_started_instructions, image_source, docker_image, api_sub_path, max_amount, duration, internal_port)
 VALUES
-(2, 'https://hungrygame.azurewebsites.net/', 'Hungry Games', 'https://hungrygame.azurewebsites.net/', 'You eat stuff.', 'Jallen', '2023-11-08 23:58:10.015', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(1, 'host', 'Mars Rover', 'github', 'Mars rover game', 'Johnathan', '2023-11-01 21:35:54.037', TRUE, NULL, NULL, NULL, 'cwighty/mars-web', '/api', 10, 60, 80);
+('https://hungrygame.azurewebsites.net/', 'Hungry Games', 'https://hungrygame.azurewebsites.net/', 'You eat stuff.', 'Jallen', '2023-11-08 23:58:10.015', FALSE, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+('host', 'Mars Rover', 'github', 'Mars rover game', 'Johnathan', '2023-11-01 21:35:54.037', TRUE, NULL, NULL, NULL, 'cwighty/mars-web', '/api', 10, 60, 80);
