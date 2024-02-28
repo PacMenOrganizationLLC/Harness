@@ -20,10 +20,11 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddHttpClient("GameAPI");
-
-builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>()
-    .CreateClient("GameAPI"));
+builder.Services.AddSingleton(sp =>
+    new HttpClient
+    {
+        BaseAddress = new Uri("http://localhost:5000")
+    });
 
 builder.Services.AddMvc(o =>
 {

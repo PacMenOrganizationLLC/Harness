@@ -8,16 +8,25 @@ using System.Text.Json;
 public class SessionController : ControllerBase
 {
     private readonly HarnessContext _context;
+    private readonly HttpClient dockerApiClient;
 
-    public SessionController(HarnessContext context)
+    public SessionController(HarnessContext context, HttpClient dockerApiClient)
     {
         _context = context;
+        this.dockerApiClient = dockerApiClient;
     }
 
     public class NewSessionRequest
     {
         public int GameId { get; set; }
         public int? CompetitionId { get; set; }
+    }
+
+    public class NewContainerRequest
+    {
+        public string? Image { get; set; } = string.Empty;
+        public int? Duration { get; set; }
+        public int? InternalPort { get; set; }
     }
 
     [HttpPost]
@@ -27,14 +36,23 @@ public class SessionController : ControllerBase
         {
             Game game = await _context.Game.Where(g => g.Id == body.GameId).FirstAsync();
 
-            // make request to docker api and get host url
+
+            NewContainerRequest containerRequest = new()
+            {
+                Image = game.DockerImage,
+                Duration = game.Duration,
+                InternalPort = game.InternalPort
+            };
+
+            var response = await dockerApiClient.PostAsJsonAsync("/createContainer", containerRequest);
+            var result = await JsonSerializer.DeserializeAsync<Dictionary<string, string>>(await response.Content.ReadAsStreamAsync());
 
             Session newSession = new()
             {
                 GameId = body.GameId,
                 CompetitionId = body.CompetitionId,
                 CreationDate = DateTime.UtcNow,
-                HostUrl = "",
+                HostUrl = result?.GetValueOrDefault("message"),
             };
             await _context.Session.AddAsync(newSession);
             await _context.SaveChangesAsync();
