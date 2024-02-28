@@ -27,6 +27,7 @@ public class SessionController : ControllerBase
         public string? Image { get; set; } = string.Empty;
         public int? Duration { get; set; }
         public int? InternalPort { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 
     [HttpPost]
@@ -41,7 +42,8 @@ public class SessionController : ControllerBase
             {
                 Image = game.DockerImage,
                 Duration = game.Duration,
-                InternalPort = game.InternalPort
+                InternalPort = game.InternalPort,
+                Name = game.Name
             };
 
             var response = await dockerApiClient.PostAsJsonAsync("/createContainer", containerRequest);
