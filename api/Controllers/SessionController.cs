@@ -43,7 +43,7 @@ public class SessionController : ControllerBase
                 Image = game.DockerImage,
                 Duration = game.Duration,
                 InternalPort = game.InternalPort,
-                Name = game.Name
+                Name = game.Name.Replace(" ", "_")
             };
 
             var response = await dockerApiClient.PostAsJsonAsync("/createContainer", containerRequest);
