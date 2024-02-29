@@ -23,6 +23,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - TRAEFIK_HOST=localhost
+      - TRAEFIK_PORT=80
 
   harness_traefik:
     container_name: harness_traefik
