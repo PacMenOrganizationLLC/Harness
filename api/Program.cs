@@ -33,7 +33,7 @@ else
 builder.Services.AddSingleton(sp =>
     new HttpClient
     {
-        "http://localhost:5000"BaseAddress = new Uri(baseAddress)
+      BaseAddress = new Uri(baseAddress)
     });
 
 
