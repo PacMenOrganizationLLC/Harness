@@ -10,7 +10,7 @@ app = FastAPI()
 client = docker.from_env()
 
 TRAEFIK_HOST = os.getenv("TRAEFIK_HOST")
-
+TRAEFIK_PORT = os.getenv("TRAEFIK_PORT")   
 
 def generate_random_string():
     characters = string.ascii_letters + string.digits
@@ -55,7 +55,7 @@ async def create_container(container_request: ContainerRequest):
     container_info = container.attrs
     container_ip = container_info["NetworkSettings"]["IPAddress"]
     asyncio.create_task(end_container(container, delay))
-    url = f"{gameName}{random_number}.{TRAEFIK_HOST}"
+    url = f"{gameName}{random_number}.{TRAEFIK_HOST}:{TRAEFIK_PORT}"
 
     return {"message": f"{url}"}
 

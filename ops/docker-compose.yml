@@ -61,6 +61,7 @@ services:
       - pacmen-harness-traefik
     environment:
       - TRAEFIK_HOST=${TRAEFIK_HOST}
+      - TRAEFIK_PORT=${TRAEFIK_PORT}
 
   pacmen-harness-db:
     container_name: pacmen-harness-db

@@ -38,7 +38,7 @@ export const Session = () => {
         </div>
       ) : (
         <iframe
-          src={"http://" + session.hostUrl + ":1980"}
+          src={"http://" + session.hostUrl}
           className="w-100 rounded vh-100"
           title={`Session${session.id}`}
         ></iframe>
