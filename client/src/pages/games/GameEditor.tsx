@@ -1,14 +1,14 @@
-import { FC, FormEvent, useState } from 'react'
-import { Game } from '../../models/Game'
-import ImageSubmit from '../../components/ImageSubmit';
-import { useTextInput, TextInput } from '../../components/forms/TextInput';
-import { GameDto } from '../../models/GameDto';
-import { useAddGameMutation, useUpdateGameMutation } from './gameHooks';
-import { Link, useSearchParams } from 'react-router-dom';
+import { FC, FormEvent, useState } from "react";
+import { Game } from "../../models/Game";
+import ImageSubmit from "../../components/ImageSubmit";
+import { useTextInput, TextInput } from "../../components/forms/TextInput";
+import { GameDto } from "../../models/GameDto";
+import { useAddGameMutation, useUpdateGameMutation } from "./gameHooks";
+import { Link, useSearchParams } from "react-router-dom";
 
 export const GameEditor: FC<{
-  existingGame?: Game
-  setGameId: (id?: number) => void
+  existingGame?: Game;
+  setGameId: (id?: number) => void;
 }> = ({ existingGame, setGameId }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const setSelectedTab = (newKey: string) => {
@@ -42,20 +42,15 @@ export const GameEditor: FC<{
     if (existingGame) {
       updateGameMutation.mutate(newGame);
     } else {
-      addGameMutation.mutateAsync(newGame).then(g => setGameId(g));
+      addGameMutation.mutateAsync(newGame).then((g) => setGameId(g));
     }
-    setSelectedTab("Instructions")
+    setSelectedTab("Instructions");
   };
 
-  const canSubmit =
-    nameControl.value !== ""
+  const canSubmit = nameControl.value !== "";
   return (
     <form onSubmit={submitHandler}>
-      <TextInput
-        control={nameControl}
-        label="*Name"
-        labelClassName="col-12"
-      />
+      <TextInput control={nameControl} label="*Name" labelClassName="col-12" />
       <TextInput
         control={repoLinkControl}
         label="Repo Link"
@@ -69,16 +64,15 @@ export const GameEditor: FC<{
         isTextArea={true}
         labelClassName="col-12"
       />
+
       <div className="mt-2">
+        Game Image:
         <ImageSubmit setConvertedSrc={handleSetConvertedSrc} />
       </div>
       <div className="small">*Required</div>
       <div className="row text-center my-2">
         <div className="col">
-          <Link to={"/games"}
-            className="btn btn-secondary w-50"
-            type="button"
-          >
+          <Link to={"/games"} className="btn btn-secondary w-50" type="button">
             Cancel
           </Link>
         </div>
@@ -94,4 +88,4 @@ export const GameEditor: FC<{
       </div>
     </form>
   );
-}
+};

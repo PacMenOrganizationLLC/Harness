@@ -27,15 +27,18 @@ class ContainerRequest(BaseModel):
 
 @app.post("/createContainer")
 async def create_container(container_request: ContainerRequest):
+    asyncio.create_task(end_container())
     delay = container_request.duration * 60  # conver to seconds
     gameName = container_request.name
     random_number = generate_random_string()
     internal_port = container_request.internal_port
 
-    async def end_container(container, delay):
-        await asyncio.sleep(delay)
-        container.stop()
-        container.remove()
+    async def end_container():
+        containers = client.containers.list(all=True)
+        for container in containers:
+            if container.status == 'exited':
+                container.remove()
+
 
     container_config = {
         "image": container_request.image,
@@ -48,12 +51,13 @@ async def create_container(container_request: ContainerRequest):
             f"traefik.http.services.{gameName}{random_number}.loadbalancer.server.port": f"{internal_port}",
         },
         "network": "pacmen-harness_default",
+        "stop_timeout": delay,
     }
 
     container = client.containers.run(**container_config)
     container_info = container.attrs
     container_ip = container_info["NetworkSettings"]["IPAddress"]
-    asyncio.create_task(end_container(container, delay))
+    
     url = f"{gameName}{random_number}.{TRAEFIK_HOST}"
 
     return {"message": f"{url}"}
