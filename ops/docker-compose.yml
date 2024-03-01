@@ -43,6 +43,8 @@ services:
       - pacmen-harness-db
       - pacmen-harness-traefik
       - pacmen-docker-api
+    volumes:
+      - imagee-data:/app/Images
 
   pacmen-docker-api:
     container_name: pacmen-docker-api
@@ -59,6 +61,7 @@ services:
       - pacmen-harness-traefik
     environment:
       - TRAEFIK_HOST=${TRAEFIK_HOST}
+      - TRAEFIK_PORT=${TRAEFIK_PORT}
 
   pacmen-harness-db:
     container_name: pacmen-harness-db
@@ -78,3 +81,5 @@ networks:
 volumes:
   db-data:
     name: pacmen-harness_db-data
+  imagee-data:
+    name: pacmen-harness_image-data

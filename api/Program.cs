@@ -20,22 +20,22 @@ builder.Services.AddCors(options =>
         });
 });
 
+var baseAddress = string.Empty;
 if (builder.Environment.IsDevelopment())
 {
-    builder.Services.AddSingleton(sp =>
-        new HttpClient
-        {
-            BaseAddress = new Uri("http://localhost:5000")
-        });
+    baseAddress = "http://localhost:5000";
 }
 else
 {
-    builder.Services.AddSingleton(sp =>
-        new HttpClient
-        {
-            BaseAddress = new Uri(Environment.GetEnvironmentVariable("DockerApiUrl"))
-        });
+    baseAddress = Environment.GetEnvironmentVariable("DockerApiUrl");
 }
+
+builder.Services.AddSingleton(sp =>
+    new HttpClient
+    {
+      BaseAddress = new Uri(baseAddress)
+    });
+
 
 builder.Services.AddMvc(o =>
 {
