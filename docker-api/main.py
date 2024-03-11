@@ -53,7 +53,7 @@ async def create_container(container_request: ContainerRequest):
             f"traefik.http.services.{gameName}{random_number}.loadbalancer.server.port": f"{internal_port}",
         },
         "network": "pacmen-harness_default",
-        "stop_timeout": delay,
+        # "stop_timeout": delay,
     }
 
     container = client.containers.run(**container_config)
