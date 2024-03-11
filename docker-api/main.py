@@ -28,17 +28,18 @@ class ContainerRequest(BaseModel):
 
 @app.post("/createContainer")
 async def create_container(container_request: ContainerRequest):
+    async def end_container():
+        containers = client.containers.list(all=True)
+        for container in containers:
+            if container.status == 'exited':
+                container.remove()
+                
     asyncio.create_task(end_container())
     delay = container_request.duration * 60  # conver to seconds
     gameName = container_request.name
     random_number = generate_random_string()
     internal_port = container_request.internal_port
 
-    async def end_container():
-        containers = client.containers.list(all=True)
-        for container in containers:
-            if container.status == 'exited':
-                container.remove()
 
 
     container_config = {
