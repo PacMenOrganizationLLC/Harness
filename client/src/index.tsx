@@ -18,6 +18,7 @@ import { AuthProvider } from 'react-oidc-context';
 import { CompetitionList } from "./pages/competitions/CompetitionList";
 import { GameInfo } from "./pages/home/GameInfo";
 import { EditGame } from "./pages/games/EditGame";
+import { Spinner } from "./components/Spinner";
 
 const queryClient = getQueryClient();
 
@@ -45,6 +46,7 @@ root.render(
           <NavBar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/jonathan" element={<Spinner />} />
             <Route path="/competitions" element={<CompetitionList />} />
             <Route path="/game/:id" element={<GameInfo />} />
             <Route path="/game/edit/:id" element={<EditGame />} />
