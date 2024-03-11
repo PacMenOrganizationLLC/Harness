@@ -25,10 +25,10 @@ export const Home = () => {
         title="Upcoming Competitions"
       />
       <div className="row mt-1">
-        <div className="col-md-8 col-lg col-12">
+        <div className="col-md-6 col-lg col-12">
           <GamesCard />
         </div>
-        <div className="col-md col-12 my-1 my-md-0 ">
+        <div className="col-md-6 col-12 my-1 my-md-0 ">
           <Playground />
         </div>
       </div>

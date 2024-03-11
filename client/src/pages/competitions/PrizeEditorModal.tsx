@@ -66,7 +66,7 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
         id: 0,
         prize: "",
         competitionId,
-        placement: 0,
+        placement: 1,
       } as CompetitionPrize);
     }
     editorControls.hide();

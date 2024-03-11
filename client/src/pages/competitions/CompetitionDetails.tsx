@@ -38,16 +38,16 @@ export const CompetitionDetails = () => {
 
   return (
     <div className="container mt-2">
-      <div className="row">
-        <div className="col-3 my-auto">
+      <div className="row mb-1">
+        <div className="col-2 col-md-3 my-auto">
           <button className="btn" onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
         </div>
-        <div className="col-6 text-center">
-          <h1>{competition.name}</h1>
+        <div className="col-10 col-md-6 my-auto text-md-center">
+          <h1 className="my-auto">{competition.name}</h1>
         </div>
-        <div className="col-2 text-end my-auto">
+        <div className="col-10 col-md-2 text-end my-auto">
           <CompetitionEditorModal existingCompetition={competition} />
         </div>
         <div className="col-1 my-auto">
@@ -58,7 +58,7 @@ export const CompetitionDetails = () => {
       </div>
       <div className="text-center">
         <Link to={`/game/${competition.gameId}`}
-          className="btn btn-bold">Learn to Play</Link>
+          className="btn btn-outline-bold w-50">Learn to Play</Link>
       </div>
       <div>{competition.description}</div>
       <div>

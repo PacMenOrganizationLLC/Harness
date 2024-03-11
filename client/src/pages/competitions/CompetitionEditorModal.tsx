@@ -79,10 +79,11 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
 
   const closeHandler = () => {
     if (!existingCompetition) {
-      gameControl.setValue(0)
       setStartAt(undefined)
       setEndAt(undefined)
       locationControl.setValue("")
+      nameControl.setValue("")
+      descriptionControl.setValue("")
     }
     competitionEditorControls.hide();
   }

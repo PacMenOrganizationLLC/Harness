@@ -39,24 +39,25 @@ export const GameDetails: FC<{
           </button>
         </div>
       </div>
-      <div>Details: {selectedGame.details}</div>
-      <div className="text-break">Repo Link: {selectedGame.repoLink}</div>
-      <div>Docker Image: {selectedGame.dockerImage}</div>
-      <div>Api Sub Path: {selectedGame.apiSubPath}</div>
-      <div>Session Duration: {selectedGame.duration}</div>
-      <div>Max Number of Sessions: {selectedGame.maxAmount}</div>
-      <div>Internal Port: {selectedGame.internalPort}</div>
-      <div>How To Play:</div>
+      <div><span className="fw-bold">Details:</span> {selectedGame.details}</div>
+      <div className="text-break"><span className="fw-bold">Repo Link:</span> {selectedGame.repoLink}</div>
+      <div><span className="fw-bold">Docker Image:</span> {selectedGame.dockerImage}</div>
+      <div><span className="fw-bold">Api Sub Path:</span> {selectedGame.apiSubPath}</div>
+      <div><span className="fw-bold">Session Duration:</span> {selectedGame.duration}</div>
+      <div><span className="fw-bold">Max Number of Sessions:</span> {selectedGame.maxAmount}</div>
+      <div><span className="fw-bold">Internal Port:</span> {selectedGame.internalPort}</div>
+
+      <div className="fw-bold">How To Play:</div>
       {selectedGame.gameRules && (
         <ReactMarkdown>{selectedGame.gameRules}</ReactMarkdown>
       )}
-      <div>Getting Started:</div>
+      <div className="fw-bold">Getting Started:</div>
       {selectedGame.gettingStartedInstructions && (
         <ReactMarkdown>{selectedGame.gettingStartedInstructions}</ReactMarkdown>
       )}
       {selectedGame.imageSource && (
         <div className="my-2">
-          <img src={BaseUrl + selectedGame.imageSource} alt="Game" />
+          <img src={BaseUrl + selectedGame.imageSource} alt="Game" className="img-fluid" style={{ maxHeight: "20ex" }} />
         </div>
       )}
     </div>
