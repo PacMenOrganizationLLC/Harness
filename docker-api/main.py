@@ -59,7 +59,7 @@ async def create_container(container_request: ContainerRequest):
     container = client.containers.run(**container_config)
     container_info = container.attrs
     container_ip = container_info["NetworkSettings"]["IPAddress"]
-    asyncio.create_task(end_container(container, delay))
+    # asyncio.create_task(end_container(container, delay))
     url = f"{gameName}{random_number}.{TRAEFIK_HOST}:{TRAEFIK_PORT}"
 
     return {"message": f"{url}"}
