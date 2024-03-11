@@ -20,13 +20,10 @@ create extension if not exists "uuid-ossp";
 
 create table Game (
   id serial primary key,
-  host_url text not null,
   name text not null,
   repo_link text,
   details text,
-  created_by text not null,
   created_at timestamp not null default NOW(),
-  supports_multi_sessions bool not null,
   game_rules  text,
   getting_started_instructions  text,
   image_source text,
