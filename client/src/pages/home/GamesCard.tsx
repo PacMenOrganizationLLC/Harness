@@ -23,6 +23,7 @@ export const GamesCard = () => {
                       className="card-img opacity-50"
                       src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${g.id}`}
                       alt="Card"
+                      style={{ maxHeight: "20ex" }}
                     />
                   )}
                   <div className={`card-body ${g.imageSource && "card-img-overlay"}`}>

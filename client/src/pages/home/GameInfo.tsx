@@ -30,7 +30,7 @@ export const GameInfo = () => {
         <div className="col my-auto">
           <h1 className="text-md-center my-auto">{game.name}</h1>
         </div>
-        <div className="col-auto my-auto text-end">
+        <div className="col-md-3 col-auto my-auto text-end">
           {game.repoLink && (
             <a
               href={game.repoLink}
