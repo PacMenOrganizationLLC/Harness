@@ -1,7 +1,7 @@
 import { useGetCompetitionsQuery } from './competitionHooks';
 import { Spinner } from '../../components/Spinner';
-import { CompetitionItem } from './CompetitionItem';
 import { CompetitionEditorModal } from './CompetitionEditorModal';
+import { CompetitionCard } from '../../components/CompetitionCard';
 
 
 export const CompetitionList = () => {
@@ -24,7 +24,7 @@ export const CompetitionList = () => {
       <div className="row">
         {upcoming.map((c) => (
           <div className='col-lg-3 col-md-6 col-12 my-1 px-1' key={c.id}>
-            <CompetitionItem competition={c} />
+            <CompetitionCard competition={c} />
           </div>
         ))}
       </ div>
@@ -33,7 +33,7 @@ export const CompetitionList = () => {
       <div className="row">
         {past.map((c) => (
           <div className='col-lg-3 col-md-6 col-12 my-1 px-1' key={c.id}>
-            <CompetitionItem competition={c} />
+            <CompetitionCard competition={c} />
           </div>
         ))}
       </ div>

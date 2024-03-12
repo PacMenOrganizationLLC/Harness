@@ -11,6 +11,7 @@ export const GameList: FC<{
       {games.map((g) => (
         <div className={`list-group-item list-group-item-action text-truncate
           ${g.id === selectedGame?.id && "active"}`}
+          role="button"
           onClick={() => setSelectedGame(g)}
           key={g.id}>
           {g.name}

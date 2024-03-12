@@ -65,16 +65,17 @@ public class PrizeController : ControllerBase
             .Include(c => c.Game)
             .Where(c => c.EndAt >= DateTime.UtcNow)
             .SelectMany(c => c.CompetitionPrizes)
+            .OrderBy(c => c.Placement)
             .ToListAsync();
 
         foreach (var prize in prizes)
         {
             prize.ImageFilename ??= prize.Placement switch
-                {
-                    1 => "first_place_trophy.webp",
-                    2 => "second_place_trophy.webp",
-                    _ => "third_place_trophy.webp",
-                };
+            {
+                1 => "first_place_trophy.webp",
+                2 => "second_place_trophy.webp",
+                _ => "third_place_trophy.webp",
+            };
         }
         return prizes;
     }

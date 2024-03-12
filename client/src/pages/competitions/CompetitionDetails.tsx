@@ -10,6 +10,8 @@ import { useAddSessionMutation, useGetSessionsQuery } from "../sessions/sessionH
 import { SessionItem } from "../sessions/SessionItem";
 import { PrizeEditorModal } from "./PrizeEditorModal";
 import { formatCompetitionDate } from "../../models/Competition";
+import toast from "react-hot-toast";
+import { ConfirmationToast } from "../../components/ConfirmationToast";
 
 export const CompetitionDetails = () => {
   const competitionId = Number(useParams<{ id: string }>().id);
@@ -28,8 +30,16 @@ export const CompetitionDetails = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.stopPropagation();
-    deleteCompetitionMutation.mutate(competitionId);
-    navigate("/events");
+    toast((t) => (
+      <ConfirmationToast
+        toastId={t.id}
+        message={"Are you sure? This will permanently delete the competition."}
+        confirmHandler={() => {
+          deleteCompetitionMutation.mutate(competitionId);
+          toast.dismiss(t.id);
+          navigate("/competitions");
+        }} />
+    ), { duration: Infinity })
   };
 
   if (competitionQuery.isLoading) return <Spinner />;
@@ -82,7 +92,7 @@ export const CompetitionDetails = () => {
       <div className="row">
         {competition.competitionPrizes &&
           competition.competitionPrizes.length > 0 ? (
-          competition.competitionPrizes.map((p) => (
+          competition.competitionPrizes.sort((a, b) => a.placement - b.placement).map((p) => (
             <div className="col-lg-3 col-md-6 col-12 my-1 px-1">
               <div className="text-center card my-1" key={p.id + "competition"}>
                 <div className="position-relative">
@@ -92,7 +102,7 @@ export const CompetitionDetails = () => {
                     alt="prize"
                     style={{ height: "30ex" }}
                   />
-                  <div className="position-absolute top-0 start-0 bg-dark text-white px-2 py-1 opacity-75 fs-5">
+                  <div className="position-absolute top-0 start-0 bg-dark text-white px-2 py-1 opacity-75 fs-5 rounded">
                     #{p.placement}
                   </div>
                 </div>

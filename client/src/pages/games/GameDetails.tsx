@@ -3,6 +3,8 @@ import { Game } from "../../models/Game";
 import { useDeleteGameMutation } from "./gameHooks";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
+import toast from "react-hot-toast";
+import { ConfirmationToast } from "../../components/ConfirmationToast";
 
 export const GameDetails: FC<{
   selectedGame: Game;
@@ -12,8 +14,16 @@ export const GameDetails: FC<{
   const BaseUrl = process.env.REACT_APP_API_URL + "/api/Game/Image/";
 
   const deleteHandler = () => {
-    deleteGameMutation.mutate(selectedGame.id);
-    setSelectedGame(undefined);
+    toast((t) => (
+      <ConfirmationToast
+        toastId={t.id}
+        message={"Are you sure? This will permanently delete the game."}
+        confirmHandler={() => {
+          deleteGameMutation.mutate(selectedGame.id);
+          toast.dismiss(t.id);
+          setSelectedGame(undefined);
+        }} />
+    ), { duration: Infinity })
   };
 
   return (
