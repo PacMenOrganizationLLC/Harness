@@ -1,0 +1,9 @@
+POST http://localhost:5000/createContainer
+Content-Type: application/json
+
+{
+    "image": "nginx",
+    "duration": 1,
+    "internalPort": 80,
+    "name": "my_container"
+}

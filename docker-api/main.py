@@ -2,6 +2,7 @@ import string
 import docker
 import random
 import asyncio
+import threading
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import os
@@ -28,6 +29,10 @@ class ContainerRequest(BaseModel):
 
 @app.post("/createContainer")
 async def create_container(container_request: ContainerRequest):
+    
+    def time_out():
+        print(delay)
+        container.stop(timeout = delay)
     async def end_container():
         containers = client.containers.list(all=True)
         for container in containers:
@@ -53,13 +58,13 @@ async def create_container(container_request: ContainerRequest):
             f"traefik.http.services.{gameName}{random_number}.loadbalancer.server.port": f"{internal_port}",
         },
         "network": "pacmen-harness_default",
-        # "stop_timeout": delay,
     }
 
     container = client.containers.run(**container_config)
     container_info = container.attrs
     container_ip = container_info["NetworkSettings"]["IPAddress"]
-    # asyncio.create_task(end_container(container, delay))
+    stop_thread = threading.Thread(target=time_out)
+    stop_thread.start()
     url = f"{gameName}{random_number}.{TRAEFIK_HOST}:{TRAEFIK_PORT}"
 
     return {"message": f"{url}"}
