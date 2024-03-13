@@ -58,10 +58,13 @@ export const MarkdownUpload: FC<Props> = ({ control, label }) => {
           <ReactMarkdown>{control.value}</ReactMarkdown>
         </div>
       )}
-
+      <label htmlFor="fileInput" className="form-label">
+        .md/.txt
+      </label>
       <input
         type="file"
         accept=".md,.txt"
+        id="fileInput"
         onChange={handleFileUpload}
         className="form-control my-2"
         title="Upload a Markdown (.md) or Text (.txt) file"
