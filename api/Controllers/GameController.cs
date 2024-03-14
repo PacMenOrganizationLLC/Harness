@@ -185,6 +185,7 @@ namespace api.Controllers
 
 
     [HttpGet("ImageWithGame/{gameId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImageWithGameIdAsync(int gameId)
     {
       var game = await _context.Game.FindAsync(gameId);
