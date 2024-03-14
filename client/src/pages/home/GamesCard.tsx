@@ -21,7 +21,7 @@ export const GamesCard = () => {
                   {g.imageSource && (
                     <img
                       className="card-img opacity-50"
-                      src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${g.id}`}
+                      src={`/api/Game/ImageWithGame/${g.id}`}
                       alt="Card"
                       style={{ maxHeight: "20ex" }}
                     />

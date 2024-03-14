@@ -15,7 +15,7 @@ export const CompetitionCard: FC<{
         <img
           className="card-img opacity-50"
           style={{ maxHeight: "20ex" }}
-          src={`${process.env.REACT_APP_API_URL}/api/Game/ImageWithGame/${competition.gameId}`}
+          src={`/api/Game/ImageWithGame/${competition.gameId}`}
           alt="Card"
         />
         <div className="card-body card-img-overlay">

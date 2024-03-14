@@ -21,7 +21,6 @@ export const CompetitionDetails = () => {
   const competition = competitionQuery.data;
   const addSessionMutation = useAddSessionMutation(competitionId)
   const navigate = useNavigate();
-  const BaseUrl = process.env.REACT_APP_API_URL;
 
   const deleteCompetitionMutation = useDeleteCompetitionMutation();
   const deletePrizeMutation = useDeleteCompetitionPrizeMutation(competitionId);
@@ -98,7 +97,7 @@ export const CompetitionDetails = () => {
                 <div className="position-relative">
                   <img
                     className="img-fluid card-img-top"
-                    src={`${BaseUrl}/api/prize/image/${p.imageFilename}`}
+                    src={`/api/prize/image/${p.imageFilename}`}
                     alt="prize"
                     style={{ height: "30ex" }}
                   />

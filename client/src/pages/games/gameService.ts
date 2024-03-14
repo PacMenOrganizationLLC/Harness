@@ -2,9 +2,6 @@ import axios from "axios";
 import { DockerConfig, Game } from "../../models/Game";
 import { GameDto } from "../../models/GameDto";
 import toast from "react-hot-toast";
-import { useAuth } from "react-oidc-context";
-
-const BaseUrl = process.env.REACT_APP_API_URL;
 
 export const gameService = {
   async getGames(): Promise<Game[]> {
