@@ -33,7 +33,7 @@ export const Games = () => {
           </div>
           <div className="text-center my-2 d-none d-md-block">
             <Link to={"/game/edit/new"}
-              className="btn btn-outline-info">
+              className="btn btn-outline-bold">
               New
             </Link>
           </div>

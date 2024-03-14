@@ -10,7 +10,6 @@ import { Games } from "./pages/games/Games";
 import { getQueryClient } from "./queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Session } from "./pages/sessions/Session";
-import { Toaster } from "react-hot-toast";
 import { CompetitionDetails } from "./pages/competitions/CompetitionDetails";
 import { AuthRequired } from "./AuthRequired";
 import { WebStorageStateStore } from 'oidc-client-ts';
@@ -18,6 +17,8 @@ import { AuthProvider } from 'react-oidc-context';
 import { CompetitionList } from "./pages/competitions/CompetitionList";
 import { GameInfo } from "./pages/home/GameInfo";
 import { EditGame } from "./pages/games/EditGame";
+import { Spinner } from "./components/Spinner";
+import { CustomToaster } from "./components/CustomToaster";
 
 const queryClient = getQueryClient();
 
@@ -40,11 +41,12 @@ root.render(
   <React.StrictMode>
     <AuthProvider {...oidcConfig}>
       <QueryClientProvider client={queryClient}>
-        <Toaster />
+        <CustomToaster />
         <Router>
           <NavBar />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/jonathan" element={<Spinner />} />
             <Route path="/competitions" element={<CompetitionList />} />
             <Route path="/game/:id" element={<GameInfo />} />
             <Route path="/game/edit/:id" element={<EditGame />} />

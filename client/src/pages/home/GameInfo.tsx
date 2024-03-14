@@ -22,15 +22,15 @@ export const GameInfo = () => {
   return (
     <div className="container mt-2">
       <div className="row">
-        <div className="col-3 my-auto">
-          <button className="btn" onClick={() => navigate(-1)}>
+        <div className="col-md-3 col-auto my-auto">
+          <button className="btn btn-sm" onClick={() => navigate(-1)}>
             <i className="bi-arrow-left fs-3" />
           </button>
         </div>
-        <div className="col-6 my-auto">
-          <h1 className="text-center">{game.name}</h1>
+        <div className="col my-auto">
+          <h1 className="text-md-center my-auto">{game.name}</h1>
         </div>
-        <div className="col my-auto text-end">
+        <div className="col-md-3 col-auto my-auto text-end">
           {game.repoLink && (
             <a
               href={game.repoLink}
@@ -39,33 +39,30 @@ export const GameInfo = () => {
               className="text-decoration-none fs-4"
             >
               <i className="bi-github pe-1" />
-              Github
+              <span className="d-none d-md-inline">Github</span>
             </a>
           )}
         </div>
-        <div className="col my-auto">
-          <a
-            href="https://marswebpacmen.azurewebsites.net/swagger/index.html"
-            target="_blank"
-            rel="noreferrer"
-            className="text-decoration-none fs-4"
-          >
-            <i className="bi-box-arrow-up-right pe-1" />
-            Swagger
-          </a>
-        </div>
       </div>
       <div className="row">
-        <div className="col">
-          <div className="fs-4 text-center">Getting Started</div>
-          <div>
-            {game.gettingStartedInstructions}
+        <div className="col-md ">
+          <div className="card shadow bg-secondary-subtle">
+            <div className="card-body">
+              <div className="fs-4 text-center">Getting Started</div>
+              <div>
+                {game.gettingStartedInstructions}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="col">
-          <div className="fs-4 text-center">How to Play</div>
-          <div>
-            {game.gameRules}
+        <div className="col-md mt-2 mt-md-0">
+          <div className="card shadow bg-secondary-subtle">
+            <div className="card-body">
+              <div className="fs-4 text-center">How to Play</div>
+              <div>
+                {game.gameRules}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,7 +79,7 @@ export const GameInfo = () => {
                   <div className="card-title fw-bold">{c.name}</div>
 
                   {new Date(c.startAt).toDateString() ===
-                  new Date(c.endAt).toDateString() ? (
+                    new Date(c.endAt).toDateString() ? (
                     <div>{FormatDate(c.startAt)}</div>
                   ) : (
                     <div>

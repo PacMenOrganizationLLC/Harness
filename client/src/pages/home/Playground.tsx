@@ -13,9 +13,9 @@ export const Playground = () => {
   return (
     <div className="card bg-secondary-subtle h-100">
       <div className="card-body pt-1">
-        <div className='row'>
+        <div className='row w-100'>
           <div className='col-8 offset-2'>
-            <div className="card-title fw-bold text-center fs-4">Playground</div>
+            <div className="fw-bold text-center fs-4">Playground</div>
           </div>
           <div className='my-auto col-2 text-end'>
             <AddSessionModal />

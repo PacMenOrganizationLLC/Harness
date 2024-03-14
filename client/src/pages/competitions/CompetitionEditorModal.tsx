@@ -79,10 +79,11 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
 
   const closeHandler = () => {
     if (!existingCompetition) {
-      gameControl.setValue(0)
       setStartAt(undefined)
       setEndAt(undefined)
       locationControl.setValue("")
+      nameControl.setValue("")
+      descriptionControl.setValue("")
     }
     competitionEditorControls.hide();
   }
@@ -92,7 +93,7 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
   if (!games) return <div>No games found</div>;
 
   const canSubmit =
-    gameControl.value !== 0 && locationControl.value !== "" && startAt && endAt && startAt < endAt;
+    gameControl.value !== 0 && locationControl.value !== "" && startAt && endAt && startAt < endAt && nameControl.value !== "";
 
   return (
     <CustomModal ModalButton={ModalButton} controls={competitionEditorControls}>
@@ -105,22 +106,22 @@ export const CompetitionEditorModal: FC<CompetitionEditorModalProps> = (
         </div>
         <div className="modal-body">
           <form onSubmit={submitHandler}>
-            <TextInput control={nameControl} label="Name" />
+            <TextInput control={nameControl} label="*Name" />
             <div className="my-1">
               <TextInput inputClassName="col-12 col-md-12" labelClassName="col-12" control={descriptionControl} label="Description" isTextArea={true} />
             </div>
-            <SelectInput control={gameControl} label="Game" />
+            <SelectInput control={gameControl} label="*Game" />
             <div className="row mt-2">
               <label className="form-label col">
-                Start At:
+                *Start At:
                 <input type="datetime-local" value={FormatDatetimeLocalInput(startAt)} className="form-control" onChange={(e) => setStartAt(new Date(e.target.value))} />
               </label>
               <label className="form-label col">
-                End At:
+                *End At:
                 <input type="datetime-local" value={FormatDatetimeLocalInput(endAt)} className="form-control" onChange={(e) => setEndAt(new Date(e.target.value))} />
               </label>
             </div>
-            <TextInput control={locationControl} label="Location" />
+            <TextInput control={locationControl} label="*Location" />
             <div className="row text-center my-2">
               <div className="col">
                 <button
