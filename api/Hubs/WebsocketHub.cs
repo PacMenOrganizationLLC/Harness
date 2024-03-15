@@ -22,9 +22,13 @@ public class toxicityHandler
   public static async Task<bool> PassesTestAsync(string input)
   {
     HttpClient toxicityClient = new() { BaseAddress = new Uri(uri) };
-    var config = new toxicityConfig { value = input };
+
+    var config = new toxicityConfig { value = input }
+    ;
     HttpResponseMessage response = await toxicityClient.PostAsJsonAsync("toxicityscore", config);
+
     response.EnsureSuccessStatusCode();
+
     double toxicityScore = double.Parse(await response.Content.ReadAsStringAsync());
     return toxicityScore < .75;
   }
