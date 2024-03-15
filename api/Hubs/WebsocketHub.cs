@@ -8,16 +8,16 @@ public class WebsocketHub : Hub
   {
     await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 
-    if (await toxicityHandler.PassesTestAsync(message))
+    if (await ToxicityHandler.PassesTestAsync(message))
     {
       await Clients.Others.SendAsync("messageReceived", message);
     }
   }
 }
 
-public class toxicityHandler
+public class ToxicityHandler
 {
-  static string uri = Environment.GetEnvironmentVariable("DockerApiUrl") ?? "";
+  static readonly string uri = Environment.GetEnvironmentVariable("DockerApiUrl") ?? "";
 
   public static async Task<bool> PassesTestAsync(string input)
   {
