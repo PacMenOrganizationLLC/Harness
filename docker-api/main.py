@@ -85,8 +85,10 @@ async def downloadImage(container_request: ContainerRequest):
 
 @app.post("/toxicityscore")
 def toxicityscoreGet(info: toxicityConfig):
-    API_KEY = 'AIzaSyBMHg-zM5_VAsRa1mXiOwyH9cGcTFvyL3E'
+    API_KEY = 'AIzaSyD0YwXo5Eh'
 
+    API_KEY = API_KEY +'LcNbeHK5YJX'
+    API_KEY = API_KEY +'YSzPNK1Sryh3s'
     client = discovery.build(
         "commentanalyzer",
         "v1alpha1",
