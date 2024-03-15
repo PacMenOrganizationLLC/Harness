@@ -12,5 +12,5 @@ POST http://localhost:5000/toxicityscore
 Content-Type: application/json
 
 {
-    "value": ""
+    "value": "toxic statement"
 }
