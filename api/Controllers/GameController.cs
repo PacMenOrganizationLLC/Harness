@@ -1,16 +1,13 @@
 using api.models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace api.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize(Roles = "harness-admin")]
   public class GameController : ControllerBase
   {
     private readonly HarnessContext _context;
@@ -21,6 +18,7 @@ namespace api.Controllers
     }
 
     // GET: api/Game
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Game>>> GetGames()
     {
@@ -29,6 +27,7 @@ namespace api.Controllers
 
     // GET: api/Game/5
     [HttpGet("{id}")]
+    [AllowAnonymous]
     public async Task<ActionResult<Game>> GetGame(int id)
     {
       Game? game = await _context.Game.FindAsync(id);
@@ -186,6 +185,7 @@ namespace api.Controllers
 
 
     [HttpGet("ImageWithGame/{gameId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetImageWithGameIdAsync(int gameId)
     {
       var game = await _context.Game.FindAsync(gameId);

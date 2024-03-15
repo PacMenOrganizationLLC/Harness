@@ -11,7 +11,7 @@ export const GameDetails: FC<{
   setSelectedGame: (g?: Game) => void;
 }> = ({ selectedGame, setSelectedGame }) => {
   const deleteGameMutation = useDeleteGameMutation();
-  const BaseUrl = process.env.REACT_APP_API_URL + "/api/Game/Image/";
+  const imageUrl = "/api/Game/Image/";
 
   const deleteHandler = () => {
     toast((t) => (
@@ -67,7 +67,7 @@ export const GameDetails: FC<{
       )}
       {selectedGame.imageSource && (
         <div className="my-2">
-          <img src={BaseUrl + selectedGame.imageSource} alt="Game" className="img-fluid" style={{ maxHeight: "20ex" }} />
+          <img src={imageUrl + selectedGame.imageSource} alt="Game" className="img-fluid" style={{ maxHeight: "20ex" }} />
         </div>
       )}
     </div>

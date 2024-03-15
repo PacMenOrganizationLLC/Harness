@@ -4,7 +4,7 @@ COPY package.json .
 COPY package-lock.json .
 RUN npm install 
 
-ARG REACT_APP_API_URL=http://api.pacmen-harness.duckdns.org:1980
+ARG REACT_APP_API_URL=http://pacmen-harness-api:8080
 
 ENV REACT_APP_SSO_URL=$REACT_APP_API_URL
 

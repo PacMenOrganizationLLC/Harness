@@ -1,8 +1,7 @@
 import axios from "axios";
 import { Session } from "../../models/Session";
 
-const BaseUrl = process.env.REACT_APP_API_URL;
-const apiUrlBase = `${BaseUrl}/api/session`;
+const apiUrlBase = `/api/session`;
 
 export const sessionService = {
   async getSessions(competitionId?: number): Promise<Session[]> {
