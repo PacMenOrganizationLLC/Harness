@@ -7,6 +7,10 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import os
 
+from googleapiclient import discovery
+import json
+
+
 app = FastAPI()
 client = docker.from_env()
 
@@ -25,6 +29,9 @@ class ContainerRequest(BaseModel):
 
     class Config:
         populate_by_name = True
+
+class toxicityConfig(BaseModel):
+    value: str
 
 
 @app.post("/createContainer")
@@ -74,3 +81,25 @@ async def create_container(container_request: ContainerRequest):
 async def downloadImage(container_request: ContainerRequest):
 
     client.images.pull(container_request.image)
+
+
+@app.post("/toxicityscore")
+def toxicityscoreGet(info: toxicityConfig):
+    API_KEY = 'AIzaSyBMHg-zM5_VAsRa1mXiOwyH9cGcTFvyL3E'
+
+    client = discovery.build(
+        "commentanalyzer",
+        "v1alpha1",
+        developerKey=API_KEY,
+        discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
+        static_discovery=False,
+    )
+
+    analyze_request = {
+        'comment': {'text': info.value},
+        'requestedAttributes': {'TOXICITY': {}}
+    }
+
+    response = client.comments().analyze(body=analyze_request).execute()
+    toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
+    return {toxicity_score}
