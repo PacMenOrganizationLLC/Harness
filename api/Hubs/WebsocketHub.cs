@@ -3,29 +3,36 @@ using Microsoft.AspNetCore.SignalR;
 namespace api.Hubs;
 public class WebsocketHub : Hub
 {
-
   public async Task NewMessage(string message, string groupName)
   {
-    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-
     if (await ToxicityHandler.PassesTestAsync(message))
     {
-      await Clients.Others.SendAsync("messageReceived", message);
+      await Clients.OthersInGroup(groupName).SendAsync("messageReceived", message);
     }
     else
     {
-      await Clients.Others.SendAsync("messageReceived", ToxicityHandler.GetRandomSweetMessage());
-
+      await Clients.OthersInGroup(groupName).SendAsync("messageReceived", ToxicityHandler.GetRandomSweetMessage());
     }
+  }
+
+  public async Task LeaveGroup(string groupName)
+  {
+    await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+  }
+
+  public async Task JoinGroup(string groupName)
+  {
+    await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
   }
 }
 
+
 public class ToxicityHandler
 {
-  static Random random = new Random();
-  static readonly string uri = Environment.GetEnvironmentVariable("DockerApiUrl") ?? "";
+  static readonly Random random = new();
+  static readonly string uri = Environment.GetEnvironmentVariable("DockerApiUrl") ?? "http://localhost:5000";
 
-  static string[] sweetMessages = {
+  static readonly string[] sweetMessages = {
     "Let's keep the conversation kind and uplifting. This comment has been replaced.",
     "We believe in spreading positivity. Comment updated for a better vibe.",
     "Every interaction counts. Let's make them all pleasant. Comment replaced.",
@@ -42,13 +49,13 @@ public class ToxicityHandler
   {
     HttpClient toxicityClient = new() { BaseAddress = new Uri(uri) };
 
-    var config = new toxicityConfig { value = input }
+    var config = new ToxicityConfig { Value = input }
     ;
     HttpResponseMessage response = await toxicityClient.PostAsJsonAsync("toxicityscore", config);
 
-    response.EnsureSuccessStatusCode();
+    if (!response.IsSuccessStatusCode) return false;
 
-    double toxicityScore = double.Parse(await response.Content.ReadAsStringAsync());
+    double toxicityScore = double.Parse((await response.Content.ReadAsStringAsync()).Replace('[', '0').Replace(']', '0'));
     toxicityScore = Math.Round(toxicityScore * 100) / 100.0;
     return toxicityScore < .75;
   }
@@ -59,7 +66,7 @@ public class ToxicityHandler
     return sweetMessages[randomIndex];
   }
 }
-public class toxicityConfig
+public class ToxicityConfig
 {
-  public string value { get; set; }
+  public required string Value { get; set; }
 }

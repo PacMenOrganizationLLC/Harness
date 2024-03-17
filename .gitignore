@@ -1,7 +1,7 @@
 ﻿################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
-
+.mono
 *.bin
 /api/.vs/api/FileContentIndex
 /api/.vs/api/v17

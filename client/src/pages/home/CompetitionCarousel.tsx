@@ -51,6 +51,9 @@ export const CompetitionCarousel: FC<{
   return (
     <>
       <div className="text-center mt-2 fs-4 fw-bold">{title}</div>
+      {competitions.length === 0 && (
+        <div className="text-center">None</div>
+      )}
       {competitions.length > viewCount && (
         <div className="d-flex align-items-end justify-content-end">
           {viewCount === competitions.length ? (

@@ -1,9 +1,39 @@
-import React, { FormEvent, useContext, useState } from "react";
+import React, { FormEvent, useContext, useState, useEffect, useRef, FC } from "react";
 import { WebsocketContext } from "./WebsocketChatContext";
 
-export const WebsocketChat = () => {
+export const WebsocketChat: FC<{
+  group: string
+}> = ({ group }) => {
   const context = useContext(WebsocketContext);
   const [inputValue, setInputValue] = useState<string>("");
+  const chatContainerRef = useRef<HTMLDivElement | null>(null); // Use this ref for the container
+
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      const scrollHeight = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop = scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [context.messages]);
+
+  useEffect(() => {
+    if (context.isConnected) {
+      context.joinGroup(group);
+      console.log("Joined group");
+    } else {
+      console.log("Connection not ready");
+    }
+
+    return () => {
+      if (context.isConnected) {
+        context.leaveGroup(group);
+        console.log("Left group");
+      }
+    };
+  }, [group, context, context.isConnected]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -13,19 +43,19 @@ export const WebsocketChat = () => {
     e.preventDefault();
 
     if (inputValue) {
-      console.log("Sending:", inputValue);
+      console.log("Sending to group", group, ":", inputValue);
 
-      context.sendMessage(inputValue);
+      context.sendMessage(inputValue, group);
       setInputValue("");
     }
   };
 
   return (
-    <div className="container text-center">
-      <h1 className="fs-5">Chat</h1>
+    <>
       <div
-        className="border rounded vh-50 p-1 overflow-y-scroll"
-        style={{ height: "40ex" }}
+        ref={chatContainerRef}
+        className="border rounded h-50 p-1 overflow-y-auto"
+        style={{ maxHeight: "60vh" }}
       >
         {context.messages.map((message, index) => (
           <div key={index}>
@@ -75,6 +105,6 @@ export const WebsocketChat = () => {
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 };

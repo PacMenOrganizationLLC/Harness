@@ -4,6 +4,8 @@ import {
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
+import { WebsocketProvider } from "../../components/chat/WebsocketChatContext";
+import { WebsocketChat } from "../../components/chat/WebsocketChat";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -17,32 +19,42 @@ export const Session = () => {
   if (!session) return <h1>No sessions</h1>;
 
   return (
-    <div className={classes.customContainer + " mt-2"}>
-      <div className="row">
-        <div className="col-lg-2 col-md-4 col-1 my-auto">
-          <button className="btn" onClick={() => navigate(-1)}>
-            <i className="bi-arrow-left fs-3" />
-          </button>
-        </div>
-        <div className="col-md-4 col-lg-8 col-10">
-          <h1 className="text-center">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
-        </div>
-      </div>
-      {!session.hostUrl ? (
-        <div className="text-center">
-          <div className="fs-1">Unable to show game</div>
-          <div>
-            Please check the url is valid:{" "}
-            {session.hostUrl ? session.hostUrl : "None"}
+    <WebsocketProvider>
+      <div className={classes.customContainer + " mt-2"}>
+        <div className="row w-100">
+          <div className="col-lg-2 col-md-4 col-1 my-auto">
+            <button className="btn" onClick={() => navigate(-1)}>
+              <i className="bi-arrow-left fs-3" />
+            </button>
+          </div>
+          <div className="col-md-4 col-lg-8 col-10">
+            <h1 className="text-center">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
           </div>
         </div>
-      ) : (
-        <iframe
-          src={"http://" + session.hostUrl}
-          className="w-100 rounded vh-100"
-          title={`Session${session.id}`}
-        ></iframe>
-      )}
-    </div>
+        <div className="row w-100">
+          <div className="col-9">
+
+            {!session.hostUrl ? (
+              <div className="text-center">
+                <div className="fs-1">Unable to show game</div>
+                <div>
+                  Please check the url is valid:{" "}
+                  {session.hostUrl ? session.hostUrl : "None"}
+                </div>
+              </div>
+            ) : (
+              <iframe
+                src={"http://" + session.hostUrl}
+                className="w-100 rounded vh-100"
+                title={`Session${session.id}`}
+              ></iframe>
+            )}
+          </div>
+          <div className="col-3 text-center">
+            <WebsocketChat group={`session${sessionId}`} />
+          </div>
+        </div>
+      </div>
+    </WebsocketProvider>
   );
 };

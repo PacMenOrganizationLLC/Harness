@@ -10,7 +10,10 @@ import * as signalR from "@microsoft/signalr";
 
 interface WebsocketChatContextType {
   messages: MessageType[];
-  sendMessage: (msg: string) => void;
+  sendMessage: (msg: string, group: string) => void;
+  joinGroup: (group: string) => void;
+  leaveGroup: (group: string) => void;
+  isConnected: boolean;
 }
 
 interface MessageType {
@@ -21,17 +24,22 @@ interface MessageType {
 export const WebsocketContext = createContext<WebsocketChatContextType>({
   messages: [],
   sendMessage: () => { },
+  joinGroup: () => { },
+  leaveGroup: () => { },
+  isConnected: false
 });
 
 export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [isConnected, setIsConnected] = useState(false);
   const connection = useRef<signalR.HubConnection | null>(null);
+  const actionQueue = useRef<Array<() => void>>([]);
 
   useEffect(() => {
     console.log("Connecting to the WebSocket server...");
-  
+
     if (window.location.hostname === 'localhost') {
       const serverUrl = "http://localhost:8000";
       connection.current = new signalR.HubConnectionBuilder()
@@ -43,29 +51,27 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
         .withUrl(serverUrl)
         .build();
     }
-  
-    connection.current
-      .start()
-      .then(() => {
-        console.log("Connected to the WebSocket server.");
-      })
-      .catch((error) => {
-        console.error("WebSocket Error: ", error);
-      });
-  
+
+    connection.current.start().then(() => {
+      console.log("Connected to the WebSocket server.");
+      setIsConnected(true);
+      actionQueue.current.forEach(action => action());
+      actionQueue.current = [];
+    }).catch((error) => console.error("WebSocket Error: ", error));
+
     connection.current
       .on("messageReceived", (msg) => {
         console.log("Received a message:", msg);
 
         addMessage(msg, "received");
       });
-  
+
     connection.current.onclose = () => {
       console.log("Disconnected from the server.");
     };
-  
+
     return () => {
-      connection.current?.stop();
+      connection.current?.stop().then(() => setIsConnected(false));
     };
   }, []);
 
@@ -73,15 +79,31 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
     setMessages((prev) => [...prev, { from: type, content: msg }]);
   };
 
-  const sendMessage = (msg: string) => {
+  const sendMessage = (msg: string, group: string) => {
     if (connection.current?.state === signalR.HubConnectionState.Connected) {
-      connection.current.invoke("NewMessage", msg, "All");
+      connection.current.invoke("NewMessage", msg, group);
       addMessage(msg, "sent");
     }
   };
 
+  const executeOrQueueAction = (action: () => void) => {
+    if (isConnected) {
+      action();
+    } else {
+      actionQueue.current.push(action);
+    }
+  };
+
+  const joinGroup = (group: string) => {
+    executeOrQueueAction(() => connection.current?.invoke("JoinGroup", group));
+  };
+
+  const leaveGroup = (group: string) => {
+    executeOrQueueAction(() => connection.current?.invoke("LeaveGroup", group));
+  };
+
   return (
-    <WebsocketContext.Provider value={{ messages, sendMessage }}>
+    <WebsocketContext.Provider value={{ messages, sendMessage, joinGroup, leaveGroup, isConnected }}>
       {children}
     </WebsocketContext.Provider>
   );
