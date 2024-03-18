@@ -22,13 +22,13 @@ export const Session = () => {
     <WebsocketProvider>
       <div className={classes.customContainer + " mt-2"}>
         <div className="row w-100">
-          <div className="col-lg-2 col-md-4 col-1 my-auto">
+          <div className="col-lg-2 col-md-auto col-1 my-auto">
             <button className="btn" onClick={() => navigate(-1)}>
               <i className="bi-arrow-left fs-3" />
             </button>
           </div>
-          <div className="col-md-4 col-lg-8 col-10">
-            <h1 className="text-center">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
+          <div className="col-md col-lg-8 col-10 my-auto">
+            <h1 className="text-center my-auto">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
           </div>
         </div>
         <div className="row w-100">

@@ -79,10 +79,10 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
     setMessages((prev) => [...prev, { from: type, content: msg }]);
   };
 
-  const sendMessage = (msg: string, group: string) => {
+  const sendMessage = async (msg: string, group: string) => {
     if (connection.current?.state === signalR.HubConnectionState.Connected) {
-      connection.current.invoke("NewMessage", msg, group);
-      addMessage(msg, "sent");
+      const newMessage = await connection.current.invoke("NewMessage", msg, group);
+      addMessage(newMessage, "sent");
     }
   };
 
@@ -99,8 +99,11 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const leaveGroup = (group: string) => {
-    executeOrQueueAction(() => connection.current?.invoke("LeaveGroup", group));
+    if (isConnected && connection.current && connection.current.state === signalR.HubConnectionState.Connected) {
+      connection.current.invoke("LeaveGroup", group).catch((error) => console.error("Error leaving group:", error));
+    }
   };
+
 
   return (
     <WebsocketContext.Provider value={{ messages, sendMessage, joinGroup, leaveGroup, isConnected }}>

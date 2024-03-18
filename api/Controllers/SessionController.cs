@@ -59,7 +59,7 @@ public class SessionController : ControllerBase
             await _context.Session.AddAsync(newSession);
             await _context.SaveChangesAsync();
 
-            return Ok("Added Session Successfully");
+            return Ok(newSession.Id);
         }
         catch (Exception e)
         {

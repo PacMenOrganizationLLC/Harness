@@ -22,16 +22,12 @@ export const WebsocketChat: FC<{
   useEffect(() => {
     if (context.isConnected) {
       context.joinGroup(group);
-      console.log("Joined group");
     } else {
       console.log("Connection not ready");
     }
 
     return () => {
-      if (context.isConnected) {
-        context.leaveGroup(group);
-        console.log("Left group");
-      }
+      context.leaveGroup(group);
     };
   }, [group, context, context.isConnected]);
 

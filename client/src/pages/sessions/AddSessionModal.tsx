@@ -8,11 +8,13 @@ import { useAddSessionMutation } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useGetGamesQuery } from "../games/gameHooks";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 export const AddSessionModal: FC<{
   competitionId?: number,
 }> = ({ competitionId }) => {
   const [selectedGameId, setSelectedGameId] = useState<number | undefined>(undefined)
+  const navigate = useNavigate();
   const addSessionMutation = useAddSessionMutation(competitionId);
   const gamesQuery = useGetGamesQuery();
   const games = gamesQuery.data ?? [];
@@ -32,7 +34,8 @@ export const AddSessionModal: FC<{
       toast.error("Please select game")
       return
     }
-    addSessionMutation.mutateAsync(selectedGameId).then(() => {
+    addSessionMutation.mutateAsync(selectedGameId).then((id) => {
+      navigate(`/session/${id}`)
       closeHandler();
     });
   };

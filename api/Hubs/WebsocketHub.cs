@@ -3,16 +3,19 @@ using Microsoft.AspNetCore.SignalR;
 namespace api.Hubs;
 public class WebsocketHub : Hub
 {
-  public async Task NewMessage(string message, string groupName)
+  public async Task<string> NewMessage(string message, string groupName)
   {
+    string newMessage;
     if (await ToxicityHandler.PassesTestAsync(message))
     {
-      await Clients.OthersInGroup(groupName).SendAsync("messageReceived", message);
+      newMessage = message;
     }
     else
     {
-      await Clients.OthersInGroup(groupName).SendAsync("messageReceived", ToxicityHandler.GetRandomSweetMessage());
+      newMessage = ToxicityHandler.GetRandomSweetMessage();
     }
+    await Clients.OthersInGroup(groupName).SendAsync("messageReceived", newMessage);
+    return newMessage;
   }
 
   public async Task LeaveGroup(string groupName)
