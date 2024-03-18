@@ -1,5 +1,6 @@
 using api.models;
 using api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,6 +8,7 @@ namespace api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "harness-admin")]
 public class PrizeController : ControllerBase
 {
     private readonly HarnessContext context;
@@ -37,6 +39,7 @@ public class PrizeController : ControllerBase
         return CreatedAtAction(nameof(GetCompetitionPrizeAsync), new { id = prize.Id }, prize);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CompetitionPrize>>> GetAllCompetitionPrizes()
     {
@@ -44,6 +47,7 @@ public class PrizeController : ControllerBase
         return Ok(prizes);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<CompetitionPrize>> GetCompetitionPrizeAsync(int id)
     {
@@ -57,6 +61,7 @@ public class PrizeController : ControllerBase
         return Ok(prize);
     }
 
+    [AllowAnonymous]
     [HttpGet("winnable")]
     public async Task<ActionResult<IEnumerable<CompetitionPrize>>> GetWinnablePrizes()
     {
@@ -98,6 +103,7 @@ public class PrizeController : ControllerBase
         return NoContent();
     }
 
+    [AllowAnonymous]
     [HttpGet("image/{filename}")]
     public IActionResult GetCompetitionPrizeImage(string filename)
     {
