@@ -5,16 +5,15 @@ public class WebsocketHub : Hub
 {
   public async Task<string> NewMessage(string message, string groupName)
   {
-    string newMessage;
+    string newMessage = message;
     if (await ToxicityHandler.PassesTestAsync(message))
     {
-      newMessage = message;
+      await Clients.OthersInGroup(groupName).SendAsync("messageReceived", message);
     }
     else
     {
       newMessage = ToxicityHandler.GetRandomSweetMessage();
     }
-    await Clients.OthersInGroup(groupName).SendAsync("messageReceived", newMessage);
     return newMessage;
   }
 
