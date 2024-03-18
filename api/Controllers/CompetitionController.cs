@@ -1,4 +1,5 @@
 using api.models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ namespace api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize(Roles = "harness-admin")]
 public class CompetitionController : ControllerBase
 {
     private readonly HarnessContext context;
@@ -29,6 +31,7 @@ public class CompetitionController : ControllerBase
         return CreatedAtAction(nameof(GetCompetitionAsync), new { id = competition.Id }, competition);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Competition>>> GetAllCompetitions()
     {
@@ -36,6 +39,7 @@ public class CompetitionController : ControllerBase
         return Ok(competitions);
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<Competition>> GetCompetitionAsync(int id)
     {
@@ -63,6 +67,7 @@ public class CompetitionController : ControllerBase
         return Ok(competition);
     }
 
+    [AllowAnonymous]
     [HttpGet("game/{gameId}")]
     public async Task<ActionResult<IEnumerable<Competition>>> GetUpcomingCompetitionsByGameAsync(int gameId)
     {
