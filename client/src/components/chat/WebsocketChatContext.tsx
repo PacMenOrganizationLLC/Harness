@@ -46,7 +46,7 @@ export const WebsocketProvider: React.FC<{ children: ReactNode }> = ({
         .withUrl(`${serverUrl}/ws/chat`)
         .build();
     } else {
-      const serverUrl = "";
+      const serverUrl = process.env.REACT_APP_API_URL + "/ws/chat" ?? "";
       connection.current = new signalR.HubConnectionBuilder()
         .withUrl(serverUrl)
         .build();
