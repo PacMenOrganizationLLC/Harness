@@ -3,6 +3,7 @@ import docker
 import random
 import asyncio
 import threading
+import re
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import os
@@ -32,6 +33,10 @@ class ContainerRequest(BaseModel):
 
 class toxicityConfig(BaseModel):
     value: str
+
+def split_text_on_punctuation(text):
+    # Use regular expression to split text on punctuation
+    return re.split(r'[,.!?]+', text)
 
 
 @app.post("/createContainer")
@@ -96,12 +101,41 @@ def toxicityscoreGet(info: toxicityConfig):
         discoveryServiceUrl="https://commentanalyzer.googleapis.com/$discovery/rest?version=v1alpha1",
         static_discovery=False,
     )
+    text_parts = split_text_on_punctuation(info.value)
 
+    # Initialize variables to keep track of the highest toxicity score and its corresponding text
+    max_toxicity_score = 0
+    max_toxicity_text = ""
+
+    
+    for text_part in text_parts:
+        if len(text_part) > 0:
+            analyze_request = {
+                'comment': {'text': text_part},
+                'requestedAttributes': {'TOXICITY': {}}
+            }
+
+            # Execute the analysis
+            response = client.comments().analyze(body=analyze_request).execute()
+            toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
+
+            # Update max toxicity score and corresponding text if the current score is higher
+            if toxicity_score > max_toxicity_score:
+                max_toxicity_score = toxicity_score
+                print(toxicity_score)
+                max_toxicity_text = text_part
+
+    # Analyze toxicity for the entire text
     analyze_request = {
         'comment': {'text': info.value},
         'requestedAttributes': {'TOXICITY': {}}
     }
-
     response = client.comments().analyze(body=analyze_request).execute()
     toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
-    return {toxicity_score}
+    print(toxicity_score)
+
+    # Compare the toxicity score for the entire text with the max toxicity score from individual parts
+    if toxicity_score > max_toxicity_score:
+        return {toxicity_score}  # Return the toxicity score for the entire text
+    else:
+        return {max_toxicity_score}  # Return the max toxicity score from individual parts
