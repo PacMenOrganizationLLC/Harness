@@ -3,6 +3,7 @@ import { useGetGameQuery } from "../games/gameHooks";
 import { Spinner } from "../../components/Spinner";
 import { useGetCompetitionsByGameQuery } from "../competitions/competitionHooks";
 import { FormatDate, getTimeNoSeconds } from "../../helpers/dateAndTimeHelpers";
+import ReactMarkdown from "react-markdown";
 
 export const GameInfo = () => {
   const navigate = useNavigate();
@@ -50,7 +51,9 @@ export const GameInfo = () => {
             <div className="card-body">
               <div className="fs-4 text-center">Getting Started</div>
               <div>
-                {game.gettingStartedInstructions}
+                <ReactMarkdown>
+                  {game.gettingStartedInstructions}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
@@ -60,7 +63,9 @@ export const GameInfo = () => {
             <div className="card-body">
               <div className="fs-4 text-center">How to Play</div>
               <div>
-                {game.gameRules}
+                <ReactMarkdown>
+                  {game.gameRules}
+                </ReactMarkdown>
               </div>
             </div>
           </div>
