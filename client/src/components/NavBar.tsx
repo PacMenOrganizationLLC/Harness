@@ -1,5 +1,6 @@
 import { useAuth } from "react-oidc-context";
 import { Link, useLocation } from "react-router-dom";
+import { useIsAdmin } from "../userHooks";
 
 export const NavBar = () => {
   const location = useLocation();
@@ -19,6 +20,8 @@ export const NavBar = () => {
   const login = () => {
     auth.signinRedirect();
   };
+
+  const isAdmin = useIsAdmin();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-primary shadow">
@@ -58,13 +61,15 @@ export const NavBar = () => {
                 </button>
               </Link>
             </li>
-            <li className="nav-item">
-              <Link to="/games" className={`nav-link`}>
-                <button className={`btn btn-primary fs-5 ${isActive("games") && "active"}`}>
-                  <i className="bi-joystick pe-1" />Games
-                </button>
-              </Link>
-            </li>
+            {isAdmin &&
+              <li className="nav-item">
+                <Link to="/games" className={`nav-link`}>
+                  <button className={`btn btn-primary fs-5 ${isActive("games") && "active"}`}>
+                    <i className="bi-joystick pe-1" />Games
+                  </button>
+                </Link>
+              </li>
+            }
             <li className="nav-item my-auto">
               {auth.user ? (
                 <button className="btn btn-bold"
