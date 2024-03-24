@@ -50,8 +50,8 @@ export const GameInfo = () => {
           <div className="card shadow bg-secondary-subtle">
             <div className="card-body">
               <div className="fs-4 text-center">Getting Started</div>
-              <div>
-                <ReactMarkdown>
+              <div style={{ maxHeight: "50vh" }} className="overflow-y-auto">
+                <ReactMarkdown >
                   {game.gettingStartedInstructions}
                 </ReactMarkdown>
               </div>
@@ -62,7 +62,7 @@ export const GameInfo = () => {
           <div className="card shadow bg-secondary-subtle">
             <div className="card-body">
               <div className="fs-4 text-center">How to Play</div>
-              <div>
+              <div style={{ maxHeight: "50vh" }} className="overflow-y-auto">
                 <ReactMarkdown>
                   {game.gameRules}
                 </ReactMarkdown>

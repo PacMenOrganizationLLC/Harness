@@ -6,6 +6,8 @@ export const WebsocketChat: FC<{
 }> = ({ group }) => {
   const context = useContext(WebsocketContext);
   const [inputValue, setInputValue] = useState<string>("");
+  const [isDisabled, setIsDisabled] = useState(false);
+
   const chatContainerRef = useRef<HTMLDivElement | null>(null); // Use this ref for the container
 
   const scrollToBottom = () => {
@@ -44,6 +46,12 @@ export const WebsocketChat: FC<{
       context.sendMessage(inputValue, group);
       setInputValue("");
     }
+
+    setIsDisabled(true);
+
+    setTimeout(() => {
+      setIsDisabled(false);
+    }, 500);
   };
 
   return (
@@ -90,12 +98,14 @@ export const WebsocketChat: FC<{
               type="text"
               autoFocus
               className="form-control"
+              maxLength={300}
               value={inputValue}
               onChange={handleInputChange}
             />
           </div>
           <div className="col-auto">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary"
+              disabled={isDisabled}>
               Send
             </button>
           </div>
