@@ -18,11 +18,13 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const authority = process.env.REACT_APP_AUTHORITY ?? "";
+const clientId = process.env.REACT_APP_CLIENT_ID ?? "";
+
 const oidcConfig = {
   userStore: new WebStorageStateStore({ store: window.localStorage }),
-  authority: "https://harnesskc.duckdns.org:25651/realms/harness",
-  // authority: "https://100.90.251.1:25651/realms/harness",
-  client_id: "harness",
+  authority: authority,
+  client_id: clientId,
   redirect_uri: window.location.origin,
   response_type: "code",
   scope: "openid profile email",
