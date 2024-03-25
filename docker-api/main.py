@@ -107,15 +107,6 @@ def toxicityScoreCall(text: str, client):
 
     trying = True  # Flag to ensure the function is retried only once
 
-    if text.__contains__("*"):
-        return .90
-
-    if text.__contains__("NAKED"):
-        return .90
-    if text.__contains__("naked"):
-        return .90
-    if text.__contains__("htt"):
-        return .90
     max_tries = 5
     tries = 0
     while trying:
