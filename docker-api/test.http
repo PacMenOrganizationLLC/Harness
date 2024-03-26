@@ -12,5 +12,9 @@ POST http://localhost:5000/toxicityscore
 Content-Type: application/json
 
 {
-    "value": ""
+    "value": "this is a test"
 }
+
+
+# POST http://localhost:5000/spamtoxicityapi
+# Content-Type: application/json

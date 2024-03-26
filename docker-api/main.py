@@ -4,6 +4,7 @@ import random
 import asyncio
 import threading
 import re
+import time
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 import os
@@ -90,6 +91,50 @@ async def downloadImage(container_request: ContainerRequest):
 
 @app.post("/toxicityscore")
 def toxicityscoreGet(info: toxicityConfig):
+    return toxicityScoreRun(info)
+
+@app.post("/spamtoxicityapi")
+def spamScore():
+    spamTarget = toxicityConfig(value = "a")
+    for i in range(120):
+        time.sleep(.5)
+        print(i)
+        toxicityScoreRun(spamTarget)
+
+def toxicityScoreCall(text: str, client):
+    retry_delay = 5  # Initial retry delay in seconds
+    max_delay = 60   # Maximum retry delay in seconds
+
+    trying = True  # Flag to ensure the function is retried only once
+
+    max_tries = 5
+    tries = 0
+    while trying:
+        try:
+            # Your original function logic goes here
+            analyze_request = {
+                'comment': {'text': text},
+                'requestedAttributes': {'TOXICITY': {}}
+            }
+            response = client.comments().analyze(body=analyze_request).execute()
+
+            print(response)
+            toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
+            trying = False
+            return toxicity_score
+
+        except Exception as e:
+            # Handle the failure and retry if necessary
+            print(f"Encountered an error: {e}")
+            print(f"Retrying after {retry_delay} seconds...")
+            time.sleep(retry_delay)
+            tries +=1
+            if(tries >= max_tries):
+                trying = False
+            # Increment retry delay exponentially, up to the maximum delay
+            retry_delay = min(retry_delay +4, max_delay)
+
+def toxicityScoreRun(info: toxicityConfig):
     API_KEY = 'AIzaSyD0YwXo5Eh'
 
     API_KEY = API_KEY +'LcNbeHK5YJX'
@@ -110,28 +155,16 @@ def toxicityscoreGet(info: toxicityConfig):
     
     for text_part in text_parts:
         if len(text_part) > 0:
-            analyze_request = {
-                'comment': {'text': text_part},
-                'requestedAttributes': {'TOXICITY': {}}
-            }
-
-            # Execute the analysis
-            response = client.comments().analyze(body=analyze_request).execute()
-            toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
+            toxicity_score = toxicityScoreCall(text_part, client)
 
             # Update max toxicity score and corresponding text if the current score is higher
-            if toxicity_score > max_toxicity_score:
-                max_toxicity_score = toxicity_score
-                print(toxicity_score)
-                max_toxicity_text = text_part
+        if toxicity_score > max_toxicity_score:
+            max_toxicity_score = toxicity_score
+            print(toxicity_score)
+            max_toxicity_text = text_part
 
     # Analyze toxicity for the entire text
-    analyze_request = {
-        'comment': {'text': info.value},
-        'requestedAttributes': {'TOXICITY': {}}
-    }
-    response = client.comments().analyze(body=analyze_request).execute()
-    toxicity_score = response['attributeScores']['TOXICITY']['summaryScore']['value']
+    toxicity_score = toxicityScoreCall(info.value, client)
     print(toxicity_score)
 
     # Compare the toxicity score for the entire text with the max toxicity score from individual parts

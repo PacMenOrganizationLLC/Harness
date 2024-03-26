@@ -19,7 +19,7 @@ export const AddSessionModal: FC<{
   const gamesQuery = useGetGamesQuery();
   const games = gamesQuery.data ?? [];
 
-  const AddSessionControl = useModal("Add Session");
+  const AddSessionControl = useModal("Create Session");
   const ModalButton: ModalButton = ({ showModal }) => (
     <div>
       <button className="btn btn-outline-bold px-2 py-1" onClick={showModal}>
@@ -89,7 +89,7 @@ export const AddSessionModal: FC<{
                     disabled={disabled}
                     type="submit"
                   >
-                    Save
+                    Create
                   </button>
                 </div>
               </div>
