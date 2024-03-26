@@ -16,6 +16,9 @@ export const GameEditor: FC<{
     newSearchParams.set("tab", newKey);
     setSearchParams(newSearchParams);
   };
+
+  const imageUrl = "/api/Game/Image/";
+
   const addGameMutation = useAddGameMutation();
   const updateGameMutation = useUpdateGameMutation();
   const nameControl = useTextInput(existingGame?.name ?? "");
@@ -70,8 +73,15 @@ export const GameEditor: FC<{
       <div className="mt-2">
         Game Image:
         <ImageSubmit setConvertedSrc={handleSetConvertedSrc} />
-        {showCurrentImage && (
-          <img src={existingGame?.imageSource} alt="Current Choice" />
+        {existingGame && existingGame.imageSource && showCurrentImage && (
+          <div className="my-2">
+            <img
+              src={imageUrl + existingGame.imageSource}
+              alt="Game"
+              className="img-fluid"
+              style={{ maxHeight: "20ex" }}
+            />
+          </div>
         )}
       </div>
 
