@@ -1,6 +1,11 @@
 name: Pacmen Coding Competition Harness
 run-name: ${{ github.actor }} is deploying 🚀
-on: [push]
+on:
+  push:
+    branches:
+      - main
+
+
 
 jobs:
   Build:

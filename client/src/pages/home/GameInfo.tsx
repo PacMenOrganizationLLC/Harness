@@ -9,7 +9,7 @@ export const GameInfo = () => {
   const navigate = useNavigate();
   const gameId = useParams<{ id: string }>().id;
   const gameQuery = useGetGameQuery(Number(gameId));
-  const game = gameQuery.data
+  const game = gameQuery.data;
   const competitionsQuery = useGetCompetitionsByGameQuery(gameId);
   const upcomingCompetitions = competitionsQuery.data ?? [];
 
@@ -51,9 +51,7 @@ export const GameInfo = () => {
             <div className="card-body">
               <div className="fs-4 text-center">Getting Started</div>
               <div style={{ maxHeight: "50vh" }} className="overflow-y-auto">
-                <ReactMarkdown >
-                  {game.gettingStartedInstructions}
-                </ReactMarkdown>
+                <ReactMarkdown>{game.gettingStartedInstructions}</ReactMarkdown>
               </div>
             </div>
           </div>
@@ -63,9 +61,7 @@ export const GameInfo = () => {
             <div className="card-body">
               <div className="fs-4 text-center">How to Play</div>
               <div style={{ maxHeight: "50vh" }} className="overflow-y-auto">
-                <ReactMarkdown>
-                  {game.gameRules}
-                </ReactMarkdown>
+                <ReactMarkdown>{game.gameRules}</ReactMarkdown>
               </div>
             </div>
           </div>
@@ -84,7 +80,7 @@ export const GameInfo = () => {
                   <div className="card-title fw-bold">{c.name}</div>
 
                   {new Date(c.startAt).toDateString() ===
-                    new Date(c.endAt).toDateString() ? (
+                  new Date(c.endAt).toDateString() ? (
                     <div>{FormatDate(c.startAt)}</div>
                   ) : (
                     <div>

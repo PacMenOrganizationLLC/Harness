@@ -12,6 +12,7 @@ import { PrizeEditorModal } from "./PrizeEditorModal";
 import { formatCompetitionDate } from "../../models/Competition";
 import toast from "react-hot-toast";
 import { ConfirmationToast } from "../../components/ConfirmationToast";
+import { useIsAdmin } from "../../userHooks";
 
 export const CompetitionDetails = () => {
   const competitionId = Number(useParams<{ id: string }>().id);
@@ -24,6 +25,8 @@ export const CompetitionDetails = () => {
 
   const deleteCompetitionMutation = useDeleteCompetitionMutation();
   const deletePrizeMutation = useDeleteCompetitionPrizeMutation(competitionId);
+
+  const isAdmin = useIsAdmin();
 
   const deleteHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -56,14 +59,18 @@ export const CompetitionDetails = () => {
         <div className="col-10 col-md-6 my-auto text-md-center">
           <h1 className="my-auto">{competition.name}</h1>
         </div>
-        <div className="col-10 col-md-2 text-end my-auto">
-          <CompetitionEditorModal existingCompetition={competition} />
-        </div>
-        <div className="col-1 my-auto">
-          <button className="btn btn-outline-danger" onClick={deleteHandler}>
-            <i className="bi bi-trash" />
-          </button>
-        </div>
+        {isAdmin &&
+          <>
+            <div className="col-10 col-md-2 text-end my-auto">
+              <CompetitionEditorModal existingCompetition={competition} />
+            </div>
+            <div className="col-1 my-auto">
+              <button className="btn btn-outline-danger" onClick={deleteHandler}>
+                <i className="bi bi-trash" />
+              </button>
+            </div>
+          </>
+        }
       </div>
       <div className="text-center">
         <Link to={`/game/${competition.gameId}`}
