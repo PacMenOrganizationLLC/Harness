@@ -11,10 +11,10 @@ export const CompetitionCard: FC<{
       to={`/competition/${competition.id}`}
       className="text-reset text-decoration-none"
     >
-      <div className="card text-center h-100 bg-secondary-subtle">
+      <div className="card text-center bg-secondary-subtle">
         <img
-          className="card-img opacity-50"
-          style={{ maxHeight: "20ex" }}
+          className="card-img opacity-25"
+          style={{ maxHeight: "30ex" }}
           src={`/api/Game/ImageWithGame/${competition.gameId}`}
           alt="Card"
         />
