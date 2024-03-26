@@ -23,9 +23,11 @@ export const GameEditor: FC<{
   const detailsControl = useTextInput(existingGame?.details ?? "");
 
   const [image, setImage] = useState<FormData>();
+  const [showCurrentImage, setShowCurrentImage] = useState(true);
   const handleSetConvertedSrc = (imageSrc: FormData | undefined) => {
     if (imageSrc) {
       setImage(imageSrc);
+      setShowCurrentImage(false);
     }
   };
 
@@ -68,7 +70,11 @@ export const GameEditor: FC<{
       <div className="mt-2">
         Game Image:
         <ImageSubmit setConvertedSrc={handleSetConvertedSrc} />
+        {showCurrentImage && (
+          <img src={existingGame?.imageSource} alt="Current Choice" />
+        )}
       </div>
+
       <div className="small">*Required</div>
       <div className="row text-center my-2">
         <div className="col">
