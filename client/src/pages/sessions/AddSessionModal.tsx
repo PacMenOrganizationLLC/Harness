@@ -11,9 +11,11 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 export const AddSessionModal: FC<{
-  competitionId?: number,
+  competitionId?: number;
 }> = ({ competitionId }) => {
-  const [selectedGameId, setSelectedGameId] = useState<number | undefined>(undefined)
+  const [selectedGameId, setSelectedGameId] = useState<number | undefined>(
+    undefined
+  );
   const navigate = useNavigate();
   const addSessionMutation = useAddSessionMutation(competitionId);
   const gamesQuery = useGetGamesQuery();
@@ -31,11 +33,11 @@ export const AddSessionModal: FC<{
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selectedGameId) {
-      toast.error("Please select game")
-      return
+      toast.error("Please select game");
+      return;
     }
     addSessionMutation.mutateAsync(selectedGameId).then((id) => {
-      navigate(`/session/${id}`)
+      navigate(`/session/${id}`);
       closeHandler();
     });
   };
@@ -45,12 +47,12 @@ export const AddSessionModal: FC<{
     AddSessionControl.hide();
   };
 
-  const disabled = games.length === 0 || !selectedGameId
+  const disabled = games.length === 0 || !selectedGameId;
   return (
     <CustomModal ModalButton={ModalButton} controls={AddSessionControl}>
       <div className="modal-content">
         <div className="modal-header">
-          <div className="modal-title fw-bold fs-4">Create Session</div>
+          <div className="modal-title fw-bold fs-4">Create Sandbox</div>
           <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
@@ -58,17 +60,20 @@ export const AddSessionModal: FC<{
             <Spinner />
           ) : (
             <form onSubmit={submitHandler}>
-              <div>Please select which game you'd like to create a session for:</div>
+              <div>
+                Please select which game you'd like to create a session for:
+              </div>
               {games.map((g) => (
                 <div className="form-check" key={g.id}>
-                  <input className="form-check-input"
+                  <input
+                    className="form-check-input"
                     type="radio"
                     name={`game${g.id}`}
                     id={`game${g.id}`}
                     onChange={() => setSelectedGameId(g.id)}
-                    checked={selectedGameId === g.id} />
-                  <label className="form-check-label"
-                    htmlFor={`game${g.id}`}>
+                    checked={selectedGameId === g.id}
+                  />
+                  <label className="form-check-label" htmlFor={`game${g.id}`}>
                     {g.name}
                   </label>
                 </div>
