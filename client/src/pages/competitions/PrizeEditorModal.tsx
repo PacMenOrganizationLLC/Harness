@@ -86,12 +86,10 @@ export const PrizeEditorModal = ({
         competitionId,
         placement: 1,
       } as CompetitionPrize);
-      const fileInput = document.getElementById(
-        "fileInput"
-      ) as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = "";
-      }
+    }
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = "";
     }
 
     editorControls.hide();
