@@ -10,6 +10,7 @@ export interface CompetitionPrize {
   userId?: string;
   imageFilename: string;
   imageData: string;
+  winnerName: string;
 }
 
 export interface Competition {
@@ -20,14 +21,16 @@ export interface Competition {
   startAt: Date;
   endAt: Date;
   location: string;
-  game?: Game
+  game?: Game;
   imageFilename?: string;
   competitionPrizes?: CompetitionPrize[];
   sessions?: Session[];
 }
 
 export function formatCompetitionDate(competition: Competition) {
-  const isSameDay = new Date(competition.startAt).toDateString() === new Date(competition.endAt).toDateString();
+  const isSameDay =
+    new Date(competition.startAt).toDateString() ===
+    new Date(competition.endAt).toDateString();
   const formattedStartDate = FormatDate(competition.startAt);
   const formattedEndDate = FormatDate(competition.endAt);
   const formattedStartTime = getTimeNoSeconds(competition.startAt);
