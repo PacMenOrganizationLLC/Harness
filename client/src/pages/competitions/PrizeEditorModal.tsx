@@ -22,7 +22,6 @@ export const PrizeEditorModal = ({
 }: PrizeEditorModalProps) => {
   const addPrizeMutation = useAddCompetitionPrizeMutation();
   const updatePrizeMutation = useUpdateCompetitionPrizeMutation();
-
   const [prize, setPrize] = useState(
     existingPrize ??
       ({
@@ -32,6 +31,7 @@ export const PrizeEditorModal = ({
         placement: 1,
       } as CompetitionPrize)
   );
+  const [reloadTrigger, SetTriggerReload] = useState(0);
 
   const editorControls = useModal("Prize Editor");
   const ModalButton: ModalButton = ({ showModal }) => (
@@ -91,6 +91,7 @@ export const PrizeEditorModal = ({
     if (fileInput) {
       fileInput.value = "";
     }
+    SetTriggerReload(() => reloadTrigger + 1);
 
     editorControls.hide();
   };
