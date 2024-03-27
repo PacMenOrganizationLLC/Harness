@@ -1,7 +1,14 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { CompetitionPrize } from "../../models/Competition";
-import { useAddCompetitionPrizeMutation, useUpdateCompetitionPrizeMutation } from "./competitionHooks";
-import { CustomModal, ModalButton, useModal } from "../../components/CustomModal";
+import {
+  useAddCompetitionPrizeMutation,
+  useUpdateCompetitionPrizeMutation,
+} from "./competitionHooks";
+import {
+  CustomModal,
+  ModalButton,
+  useModal,
+} from "../../components/CustomModal";
 import { nameof } from "../../utils";
 
 interface PrizeEditorModalProps {
@@ -9,36 +16,48 @@ interface PrizeEditorModalProps {
   existingPrize?: CompetitionPrize;
 }
 
-export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorModalProps) => {
+export const PrizeEditorModal = ({
+  competitionId,
+  existingPrize,
+}: PrizeEditorModalProps) => {
   const addPrizeMutation = useAddCompetitionPrizeMutation();
   const updatePrizeMutation = useUpdateCompetitionPrizeMutation();
 
-  const [prize, setPrize] = useState(existingPrize ?? {
-    id: 0,
-    prize: "",
-    competitionId,
-    placement: 1,
-  } as CompetitionPrize);
+  const [prize, setPrize] = useState(
+    existingPrize ??
+      ({
+        id: 0,
+        prize: "",
+        competitionId,
+        placement: 1,
+      } as CompetitionPrize)
+  );
 
   const editorControls = useModal("Prize Editor");
   const ModalButton: ModalButton = ({ showModal }) => (
     <>
       {existingPrize ? (
-        <button className="btn btn-outline-secondary w-100" onClick={(e) => {
-          e.stopPropagation();
-          showModal();
-        }}>
+        <button
+          className="btn btn-outline-secondary w-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            showModal();
+          }}
+        >
           <i className="bi bi-pencil" />
         </button>
       ) : (
-        <button className="btn btn-sm btn-outline-info bi-plus-lg" onClick={showModal} />
+        <button
+          className="btn btn-sm btn-outline-info bi-plus-lg"
+          onClick={showModal}
+        />
       )}
     </>
   );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPrize({ ...prize, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -48,16 +67,15 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
         const dataUrl = e.target?.result as string;
         const base64 = dataUrl.split(",")[1];
         setPrize({ ...prize, imageData: base64, imageFilename: file.name });
-      }
+      };
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     if (existingPrize) {
       updatePrizeMutation.mutate(prize);
-    }
-    else {
+    } else {
       addPrizeMutation.mutate(prize);
     }
     e.preventDefault();
@@ -70,7 +88,7 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
       } as CompetitionPrize);
     }
     editorControls.hide();
-  }
+  };
 
   return (
     <CustomModal ModalButton={ModalButton} controls={editorControls}>
@@ -118,15 +136,25 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
                   type="file"
                   className="form-control"
                   accept="image/*"
-                  onChange={(handleFileChange)}
+                  onChange={handleFileChange}
+                />
+              </label>
+            </div>
+            <div>
+              <label className="form-label">
+                Winner:
+                <input
+                  type="text"
+                  name={nameof<CompetitionPrize>("winnerName")}
+                  className="form-control"
+                  onChange={handleChange}
+                  value={prize.winnerName}
+                  placeholder="Winner"
                 />
               </label>
             </div>
             <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-primary"
-                type="submit"
-              >
+              <button className="btn btn-primary" type="submit">
                 Save
               </button>
             </div>
@@ -134,5 +162,5 @@ export const PrizeEditorModal = ({ competitionId, existingPrize }: PrizeEditorMo
         </div>
       </div>
     </CustomModal>
-  )
-}
+  );
+};
