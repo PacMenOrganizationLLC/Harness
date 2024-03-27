@@ -50,7 +50,7 @@ export const AddSessionModal: FC<{
     <CustomModal ModalButton={ModalButton} controls={AddSessionControl}>
       <div className="modal-content">
         <div className="modal-header">
-          <div className="modal-title fw-bold fs-4">Add Session</div>
+          <div className="modal-title fw-bold fs-4">Create Session</div>
           <button className="btn btn-close" onClick={closeHandler}></button>
         </div>
         <div className="modal-body">
