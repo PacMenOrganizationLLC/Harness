@@ -86,7 +86,14 @@ export const PrizeEditorModal = ({
         competitionId,
         placement: 1,
       } as CompetitionPrize);
+      const fileInput = document.getElementById(
+        "fileInput"
+      ) as HTMLInputElement;
+      if (fileInput) {
+        fileInput.value = "";
+      }
     }
+
     editorControls.hide();
   };
 
@@ -133,6 +140,7 @@ export const PrizeEditorModal = ({
               <label className="form-label">
                 Image:
                 <input
+                  id="fileInput"
                   type="file"
                   className="form-control"
                   accept="image/*"
