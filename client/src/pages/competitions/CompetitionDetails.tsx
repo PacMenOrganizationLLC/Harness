@@ -44,6 +44,8 @@ export const CompetitionDetails = () => {
     ), { duration: Infinity })
   };
 
+  const isPast = new Date(competition?.endAt ?? "") < new Date();
+
   if (competitionQuery.isLoading) return <Spinner />;
   if (competitionQuery.isError) return <div>Error getting competition</div>;
   if (!competition) return <div>Could not get competition</div>;
@@ -59,7 +61,7 @@ export const CompetitionDetails = () => {
         <div className="col-10 col-md-6 my-auto text-md-center">
           <h1 className="my-auto">{competition.name}</h1>
         </div>
-        {isAdmin &&
+        {isAdmin && !isPast &&
           <>
             <div className="col-10 col-md-2 text-end my-auto">
               <CompetitionEditorModal existingCompetition={competition} />
@@ -91,9 +93,11 @@ export const CompetitionDetails = () => {
         <div className="col">
           <h3>Prizes:</h3>
         </div>
-        <div className="col-auto my-auto">
-          <PrizeEditorModal competitionId={competition.id} />
-        </div>
+        {isAdmin && !isPast &&
+          <div className="col-auto my-auto">
+            <PrizeEditorModal competitionId={competition.id} />
+          </div>
+        }
       </div>
       <div className="row">
         {competition.competitionPrizes &&
@@ -134,24 +138,30 @@ export const CompetitionDetails = () => {
           <div className="col">No prizes</div>
         )}
       </div>
-      <hr />
-      <div className="row">
-        <div className="col">
-          <h3>Sessions:</h3>
-        </div>
-        <div className="col-auto my-auto">
-          <button className="btn btn-outline-bold"
-            onClick={() => addSessionMutation.mutate(competition.gameId)}>New</button>
-        </div>
-      </div>
-      <div className="row">
-        {sessions.map((s) => (
-          <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id + "123"}>
-            <SessionItem session={s} />
+      {!isPast &&
+        <>
+          <hr />
+          <div className="row">
+            <div className="col">
+              <h3>Sessions:</h3>
+            </div>
+            {isAdmin && !isPast &&
+              <div className="col-auto my-auto">
+                <button className="btn btn-outline-bold"
+                  onClick={() => addSessionMutation.mutate(competition.gameId)}>New</button>
+              </div>
+            }
           </div>
-        ))}
-      </div>
-      <hr />
+          <div className="row">
+            {sessions.map((s) => (
+              <div className="col-lg-3 col-md-6 col-12 my-1 px-1" key={s.id + "123"}>
+                <SessionItem session={s} />
+              </div>
+            ))}
+          </div>
+          <hr />
+        </>
+      }
       <div className="row">
         <div className="col">
 
