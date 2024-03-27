@@ -9,6 +9,7 @@ import { GameInfo } from './home/GameInfo'
 import { Home } from './home/Home'
 import { Session } from './sessions/Session'
 import { useIsAdmin } from '../userHooks'
+import { CookieRequired } from '../CookieRequired'
 
 export const AppRoutes = () => {
 
@@ -21,7 +22,7 @@ export const AppRoutes = () => {
       <Route path="/competitions" element={<CompetitionList />} />
       <Route path="/game/:id" element={<GameInfo />} />
       <Route path="/game/edit/:id" element={<EditGame />} />
-      <Route path="/competition/:id" element={<CompetitionDetails />} />
+      <Route path="/competition/:id" element={<CookieRequired><CompetitionDetails /></CookieRequired>} />
       <Route path="/session/:id" element={<Session />} />
       {isAdmin &&
         <Route path="/games" element={<AuthRequired><Games /></AuthRequired>} />
