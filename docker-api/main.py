@@ -79,10 +79,10 @@ async def create_container(container_request: ContainerRequest):
     stop_thread = threading.Thread(target=time_out)
     stop_thread.start()
     url = f"{gameName}{random_number}.{TRAEFIK_HOST}:{TRAEFIK_PORT}"
-    while True:
-        if container.status == "running":
-            break
-        time.sleep(.5)
+    # while True:
+    #     if container.status == "running":
+    #         break
+    #     time.sleep(.5)
     return {"message": f"{url}"}
 
 
