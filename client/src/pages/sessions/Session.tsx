@@ -1,3 +1,4 @@
+import React, { useRef } from 'react';
 import {
   useGetSessionQuery,
 } from "./sessionHooks";
@@ -10,9 +11,20 @@ import { WebsocketChat } from "../../components/chat/WebsocketChat";
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
   const navigate = useNavigate();
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const getSessionQuery = useGetSessionQuery(Number(sessionId));
   const session = getSessionQuery.data;
+
+  const toggleFullScreen = () => {
+    if (iframeRef.current && !document.fullscreenElement) {
+      iframeRef.current.requestFullscreen().catch((err) => {
+        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+      });
+    } else if (document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  };
 
   if (getSessionQuery.isLoading) return <Spinner />;
   if (getSessionQuery.isError) return <h1>Error getting session</h1>;
@@ -24,33 +36,44 @@ export const Session = () => {
         <div className="row w-100">
           <div className="col-lg-2 col-md-auto col-1 my-auto">
             <button className="btn" onClick={() => navigate(-1)}>
-              <i className="bi-arrow-left fs-3" />
+              <i className="bi-arrow-left fs-3"></i>
             </button>
           </div>
           <div className="col-md col-lg-8 col-10 my-auto">
             <h1 className="text-center my-auto">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
           </div>
         </div>
-        <div className="row w-100">
-          <div className="col-9">
-
-            {!session.hostUrl ? (
-              <div className="text-center">
-                <div className="fs-1">Unable to show game</div>
-                <div>
-                  Please check the url is valid:{" "}
-                  {session.hostUrl ? session.hostUrl : "None"}
+        <div className='row w-100'>
+          <div className='col-lg-9 col-12'>
+            <div className="position-relative" style={{ zIndex: 10 }}>
+              <button
+                className="btn btn-sm btn-outline-secondary bg-transparent position-absolute top-0 end-0 m-2"
+                onClick={toggleFullScreen}
+                style={{ zIndex: 20 }}
+                title="Toggle Fullscreen"
+              >
+                <i className="bi-fullscreen"></i>
+              </button>
+              {!session.hostUrl ? (
+                <div className="text-center">
+                  <div className="fs-1">Unable to show game</div>
+                  <div>
+                    Please check the url is valid:{" "}
+                    {session.hostUrl ? session.hostUrl : "None"}
+                  </div>
                 </div>
-              </div>
-            ) : (
-              <iframe
-                src={"http://" + session.hostUrl}
-                className="w-100 rounded vh-100"
-                title={`Session${session.id}`}
-              ></iframe>
-            )}
+              ) : (
+                <iframe
+                  ref={iframeRef}
+                  src={"http://" + session.hostUrl}
+                  className="w-100 rounded vh-100"
+                  title={`Session${session.id}`}
+                  style={{ zIndex: 1 }} // Ensure iframe is below the button
+                ></iframe>
+              )}
+            </div>
           </div>
-          <div className="col-3 text-center">
+          <div className="col-lg-3 col-12 text-center mt-2 mt-lg-0">
             <WebsocketChat group={`session${sessionId}`} />
           </div>
         </div>

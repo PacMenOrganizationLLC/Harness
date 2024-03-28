@@ -59,7 +59,7 @@ export const WebsocketChat: FC<{
       <div
         ref={chatContainerRef}
         className="border rounded h-50 p-1 overflow-y-auto"
-        style={{ maxHeight: "60vh" }}
+        style={{ maxHeight: "60vh", minHeight: "40vh" }}
       >
         {context.messages.map((message, index) => (
           <div key={index}>
