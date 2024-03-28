@@ -1,6 +1,4 @@
-import {
-  useGetSessionQuery,
-} from "./sessionHooks";
+import { useGetSessionQuery } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
@@ -28,12 +26,17 @@ export const Session = () => {
             </button>
           </div>
           <div className="col-md col-lg-8 col-10 my-auto">
-            <h1 className="text-center my-auto">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
+            <h1 className="text-center my-auto">
+              {!session.competitionId && "Sandbox"} {session.game?.name}{" "}
+              {session.id}
+            </h1>
+            <h3 className="text-right my-auto">
+              {"http://" + session.hostUrl}
+            </h3>
           </div>
         </div>
         <div className="row w-100">
           <div className="col-9">
-
             {!session.hostUrl ? (
               <div className="text-center">
                 <div className="fs-1">Unable to show game</div>
