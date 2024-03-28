@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { WebsocketProvider } from "../../components/chat/WebsocketChatContext";
 import { WebsocketChat } from "../../components/chat/WebsocketChat";
+import toast from 'react-hot-toast';
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -19,7 +20,7 @@ export const Session = () => {
   const toggleFullScreen = () => {
     if (iframeRef.current && !document.fullscreenElement) {
       iframeRef.current.requestFullscreen().catch((err) => {
-        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        toast.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
       });
     } else if (document.fullscreenElement) {
       document.exitFullscreen();
