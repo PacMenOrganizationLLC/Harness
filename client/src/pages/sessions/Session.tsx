@@ -1,13 +1,11 @@
-import React, { useRef } from 'react';
-import {
-  useGetSessionQuery,
-} from "./sessionHooks";
+import React, { useRef } from "react";
+import { useGetSessionQuery } from "./sessionHooks";
 import { Spinner } from "../../components/Spinner";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "../../assets/WideContainer.module.scss";
 import { WebsocketProvider } from "../../components/chat/WebsocketChatContext";
 import { WebsocketChat } from "../../components/chat/WebsocketChat";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export const Session = () => {
   const sessionId = useParams<{ id: string }>().id;
@@ -20,7 +18,9 @@ export const Session = () => {
   const toggleFullScreen = () => {
     if (iframeRef.current && !document.fullscreenElement) {
       iframeRef.current.requestFullscreen().catch((err) => {
-        toast.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        toast.error(
+          `Error attempting to enable full-screen mode: ${err.message} (${err.name})`
+        );
       });
     } else if (document.fullscreenElement) {
       document.exitFullscreen();
@@ -45,13 +45,15 @@ export const Session = () => {
               {!session.competitionId && "Sandbox"} {session.game?.name}{" "}
               {session.id}
             </h1>
-            <h3 className="text-right my-auto">
-              {"http://" + session.hostUrl}
+          </div>
+          <div className="col-md col-lg-8 col-10 my-auto">
+            <h3 className="text-center my-auto">
+              Api: {"http://" + session.hostUrl}
             </h3>
           </div>
         </div>
-        <div className='row w-100'>
-          <div className='col-lg-9 col-12'>
+        <div className="row w-100">
+          <div className="col-lg-9 col-12">
             <div className="position-relative" style={{ zIndex: 10 }}>
               <button
                 className="btn btn-sm btn-outline-secondary bg-transparent position-absolute top-0 end-0 m-2"
