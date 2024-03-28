@@ -10,6 +10,7 @@ public class CompetitionPrize
     public int Placement { get; set; }
     public Guid? UserId { get; set; }
     public string? ImageFilename { get; set; }
+    public string? WinnerName { get; set; }
     [NotMapped]
     public byte[]? ImageData { get; set; }
 }

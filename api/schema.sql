@@ -78,5 +78,7 @@ create table Competition_Prize (
   competition_id int not null references Competition(id) ON DELETE CASCADE,
   image_filename text,
   placement int not null,
+  winner_name text,
   user_id UUID
 );
+

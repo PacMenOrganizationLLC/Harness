@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Competition, CompetitionPrize } from "../../models/Competition";
 
-const apiUrlBase = `/api/competition`;
-const prizeUrlBase = `/api/prize`;
+const apiUrlBase = `/api/Competition`;
+const prizeUrlBase = `/api/Prize`;
 
 export const competitionService = {
   async getCompetitions(): Promise<Competition[]> {
