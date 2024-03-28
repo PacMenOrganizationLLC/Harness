@@ -40,7 +40,13 @@ export const Session = () => {
             </button>
           </div>
           <div className="col-md col-lg-8 col-10 my-auto">
-            <h1 className="text-center my-auto">{!session.competitionId && "Sandbox"} {session.game?.name} {session.id}</h1>
+            <h1 className="text-center my-auto">
+              {!session.competitionId && "Sandbox"} {session.game?.name}{" "}
+              {session.id}
+            </h1>
+            <h3 className="text-right my-auto">
+              {"http://" + session.hostUrl}
+            </h3>
           </div>
         </div>
         <div className='row w-100'>
