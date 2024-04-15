@@ -170,7 +170,7 @@ Interviews with stakeholders, especially product owners
 - User testing
 - Product owner approval
 
-## What iterative process will be used during the project?
+## What iterative process will be used during the project? 
 - Scrum:
     - Sprint length of 1 week
     - Switch SM each week
